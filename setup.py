@@ -10,7 +10,8 @@ setup(
         license='MIT',
         packages=[
             'motile',
-            'motile.constraints'
+            'motile.constraints',
+            'motile.costs'
         ],
         install_requires=[
             'networkx',
