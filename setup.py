@@ -11,7 +11,8 @@ setup(
         packages=[
             'motile',
             'motile.constraints',
-            'motile.costs'
+            'motile.costs',
+            'motile.variables'
         ],
         install_requires=[
             'networkx',
