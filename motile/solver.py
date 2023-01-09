@@ -68,8 +68,9 @@ class Solver:
             self.ilp_solver.set_timeout(self.timeout)
 
         solution, message = self.ilp_solver.solve()
+        if len(message):
+            logger.info("ILP solver returned with: %s", message)
 
-        logger.info(message)
         return solution
 
     def get_variables(self, cls):
