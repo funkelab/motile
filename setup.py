@@ -9,7 +9,8 @@ setup(
         author_email='funkej@janelia.hhmi.org',
         license='MIT',
         packages=[
-            'motile'
+            'motile',
+            'motile.constraints'
         ],
         install_requires=[
             'networkx',
