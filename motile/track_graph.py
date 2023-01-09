@@ -5,7 +5,8 @@ logger = logging.getLogger(__name__)
 
 
 class TrackGraph(nx.DiGraph):
-    """A track graph of objects and inter-frame edges between them.
+    """A graph of objects with positions in time and space, and inter-frame
+    edges between them.
 
     Args:
 
@@ -15,134 +16,128 @@ class TrackGraph(nx.DiGraph):
         ``incoming_graph_data``. This can be used to populate a track graph
         with entries from a generic networkx graph.
 
-    frame_key (``string``, optional):
+    frame_attribute (``string``, optional):
 
         The name of the node attribute that corresponds to the frame of the
-        node. Defaults to "t".
-
-    roi (``daisy.Roi``, optional)
-
-        The region of interest that the graph covers. Used for solving.
-
+        object. Defaults to "t".
     """
 
     def __init__(
             self,
             graph_data=None,
-            frame_key='t',
-            roi=None):
-        super(TrackGraph, self).__init__(incoming_graph_data=graph_data)
+            frame_attribute='t'):
 
-        self.begin = None
-        self.end = None
-        self._objs_by_frame = {}
-        self.frame_key = frame_key
-        self.roi = roi
+        super().__init__(incoming_graph_data=graph_data)
 
-        if graph_data is not None and len(graph_data.nodes) > 0:
-            frames = [
-                self.nodes[obj][self.frame_key]
-                for obj in self.nodes
-                if self.frame_key in self.nodes[obj]
-            ]
-            if len(frames) == 0 and len(self.nodes) > 0:
-                raise ValueError("Frame key %s not found in objs"
-                                 % self.frame_key)
+        self.frame_attribute = frame_attribute
+        self._graph_changed = True
 
-            self.begin = min(frames)
-            self.end = max(frames) + 1
-            remove_nodes = []
-            for obj in self.nodes:
-                if self.frame_key not in self.nodes[obj]:
-                    remove_nodes.append(obj)
-                    continue
-                t = self.nodes[obj][self.frame_key]
-                if t not in self._objs_by_frame:
-                    self._objs_by_frame[t] = []
-                self._objs_by_frame[t].append(obj)
-            self.remove_nodes_from(remove_nodes)
-
-        for u, v in self.edges:
-            if self.frame_key not in self.nodes[v]:
-                continue
-            if (
-                    self.nodes[u][self.frame_key] <=
-                    self.nodes[v][self.frame_key]):
-                raise RuntimeError(
-                    "edge from %d to %d does not go backwards in time, but "
-                    "from frame %d to %d" % (
-                        u, v,
-                        self.nodes[u][self.frame_key],
-                        self.nodes[v][self.frame_key]))
+        self._update_metadata()
 
     def prev_edges(self, node):
-        '''Get all edges that point backward from ``node``.'''
-
-        return self.out_edges(node)
-
-    def next_edges(self, node):
-        '''Get all edges that point forward from ``node``.'''
+        '''Get all edges that point forward into ``node``.'''
 
         return self.in_edges(node)
 
+    def next_edges(self, node):
+        '''Get all edges that point forward out of ``node``.'''
+
+        return self.out_edges(node)
+
     def get_frames(self):
-        '''Get a tuple ``(t_1, t_2)`` of the first and last frame this track
-        graph has nodes for.'''
+        '''Get a tuple ``(t_begin, t_end)`` of the first and last frame
+        (exclusive) this track graph has nodes for.'''
 
-        return (min(self._objs_by_frame.keys()),
-                max(self._objs_by_frame.keys()))
+        self._update_metadata()
 
-    def objs_by_frame(self, t):
-        '''Get all objs in frame ``t``.'''
+        return (self.t_begin, self.t_end)
 
-        if t not in self._objs_by_frame:
+    def nodes_by_frame(self, t):
+        '''Get all nodes in frame ``t``.'''
+
+        self._update_metadata()
+
+        if t not in self._nodes_by_frame:
             return []
-        return self._objs_by_frame[t]
+        return self._nodes_by_frame[t]
 
-    def get_tracks(self, require_selected=False, selected_key='selected'):
-        '''Get a generator of track graphs, each corresponding to one track
-        (i.e., a connected component in the track graph).
+    def _update_metadata(self):
 
-        Args:
+        if not self._graph_changed:
+            return
 
-            require_selected (``bool``):
+        self._graph_changed = False
 
-                If ``True``, consider only edges that have a selected_key
-                attribute that is set to ``True``. Otherwise, each edge will be
-                considered for the connected component analysis.
+        if self.number_of_nodes() == 0:
 
-            selected_key (``str``):
+            self._nodes_by_frame = {}
+            self.t_begin = None
+            self.t_end = None
+            return
 
-                Only used if require_selected=True. Determines the attribute
-                name to check if an edge is selected. Default value is
-                'selected'.
+        self._nodes_by_frame = {}
+        for node, data in self.nodes(data=True):
+            t = data[self.frame_attribute]
+            if t not in self._nodes_by_frame:
+                self._nodes_by_frame[t] = []
+            self._nodes_by_frame[t].append(node)
 
-        Returns:
+        frames = self._nodes_by_frame.keys()
+        self.t_begin = min(frames)
+        self.t_end = max(frames) + 1
 
-            A generator object of graphs, one for each track.
-        '''
+        # ensure edges point forwards in time
+        for u, v in self.edges:
+            t_u = self.nodes[u][self.frame_attribute]
+            t_v = self.nodes[v][self.frame_attribute]
+            assert t_u < t_v, \
+                f"Edge ({u}, {v}) does not point forwards in time, but from " \
+                f"frame {t_u} to {t_v}"
 
-        if not require_selected:
+        self._graph_changed = False
 
-            graph = self
+    # wrappers around node/edge add/remove methods:
 
-        else:
+    def add_node(self, n, **attr):
+        super().add_node(n, **attr)
+        self._graph_changed = True
 
-            selected_edges = [
-                e
-                for e in self.edges
-                if (selected_key in self.edges[e]
-                    and self.edges[e][selected_key])
-            ]
-            graph = self.edge_subgraph(selected_edges)
+    def add_nodes_from(self, nodes, **attr):
+        super().add_nodes_from(nodes, **attr)
+        self._graph_changed = True
 
-        if len(self.nodes) == 0:
-            return []
+    def remove_node(self, n):
+        super().remove_node(n)
+        self._graph_changed = True
 
-        return [
-            TrackGraph(
-                graph_data=graph.subgraph(g).copy(),
-                frame_key=self.frame_key,
-                roi=self.roi)
-            for g in nx.weakly_connected_components(graph)
-        ]
+    def remove_nodes_from(self, nodes):
+        super().remove_nodes_from(nodes)
+        self._graph_changed = True
+
+    def add_edge(self, u, v, **attr):
+        super().add_edge(u, v, **attr)
+        self._graph_changed = True
+
+    def add_edges_from(self, ebunch_to_add, **attr):
+        super().add_edges_from(ebunch_to_add, **attr)
+        self._graph_changed = True
+
+    def add_weighted_edges_From(self, ebunch_to_add):
+        super().add_weighted_edges_From(ebunch_to_add)
+        self._graph_changed = True
+
+    def remove_edge(self, u, v):
+        super().remove_edge(u, v)
+        self._graph_changed = True
+
+    def update(self, edges, nodes):
+        super().update(edges, nodes)
+        self._graph_changed = True
+
+    def clear(self):
+        super().clear()
+        self._graph_changed = True
+
+    def clear_edges(self):
+        super().clear_edges()
+        self._graph_changed = True
