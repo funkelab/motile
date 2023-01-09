@@ -5,7 +5,7 @@ class Variable(ABC):
 
     @staticmethod
     @abstractmethod
-    def instantiate(self, solver):
+    def instantiate(solver):
         """Create and return specific variables (and optionally linear
         constraints) for the given solver.
 
