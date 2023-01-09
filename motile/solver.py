@@ -1,3 +1,4 @@
+from .constraints import SelectEdgeNodes
 import logging
 import numpy as np
 import pylp
@@ -6,8 +7,20 @@ logger = logging.getLogger(__name__)
 
 
 class Solver:
+    """Create a solver for a given track graph.
 
-    def __init__(self, track_graph):
+    Args:
+
+        track_graph (:class:`TrackGraph`):
+            The graph of objects to track over time.
+
+        skip_core_constraints (bool, default=False):
+            If true, add no constraints to the solver at all. Otherwise, core
+            constraints that ensure consistencies between selected nodes and
+            edges are added.
+    """
+
+    def __init__(self, track_graph, skip_core_constraints=False):
 
         self.graph = track_graph
         self.variables = {}
@@ -18,6 +31,9 @@ class Solver:
 
         self.num_variables = 0
         self.costs = np.zeros((0,), dtype=np.float32)
+
+        if not skip_core_constraints:
+            self.add_constraints(SelectEdgeNodes())
 
     def add_costs(self, costs):
 
