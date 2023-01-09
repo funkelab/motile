@@ -3,7 +3,7 @@ from .variables import NodeSelected, EdgeSelected, NodeAppear
 
 class NodeSelection:
 
-    def __init__(self, weight, attribute='score', constant=0.0):
+    def __init__(self, weight, attribute='costs', constant=0.0):
 
         self.weight = weight
         self.attribute = attribute
@@ -28,7 +28,7 @@ class NodeSelection:
 
 class EdgeSelection:
 
-    def __init__(self, weight, attribute='score', constant=0.0):
+    def __init__(self, weight, attribute='costs', constant=0.0):
 
         self.weight = weight
         self.attribute = attribute
