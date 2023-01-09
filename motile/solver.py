@@ -10,7 +10,7 @@ class Solver:
     def __init__(self, track_graph):
 
         self.graph = track_graph
-        self.indicators = {}
+        self.variables = {}
 
         self.ilp_solver = None
         self.objective = None
@@ -58,12 +58,22 @@ class Solver:
 
     def get_variables(self, cls):
 
-        if cls not in self.indicators:
+        if cls not in self.variables:
 
             logger.info("Adding %s variables...", cls.__name__)
-            self.indicators[cls] = cls.instantiate(self)
 
-        return self.indicators[cls]
+            result = cls.instantiate(self)
+            try:
+                variables, constraints = result
+            except ValueError:
+                variables = result
+                constraints = []
+
+            self.variables[cls] = variables
+            for constraint in constraints:
+                self.constraints.add(constraint)
+
+        return self.variables[cls]
 
     # TODO: add variable_type
     def allocate_variables(self, num_variables):
