@@ -5,11 +5,6 @@ import pylp
 
 class NodeSplit(Variable):
 
-    def __init__(self, index, node):
-
-        self.index = index
-        self.node = node
-
     @staticmethod
     def instantiate(solver):
 
@@ -17,8 +12,8 @@ class NodeSplit(Variable):
         indices = solver.allocate_variables(num_nodes)
 
         split_indicators = {
-            node: NodeSplit(index, node)
-            for index, node in zip(indices, solver.graph.nodes)
+            node: index
+            for node, index in zip(solver.graph.nodes, indices)
         }
 
         edge_indicators = solver.get_variables(EdgeSelected)
@@ -42,18 +37,18 @@ class NodeSplit(Variable):
             constraint2 = pylp.LinearConstraint()
 
             constraint1.set_coefficient(
-                split_indicators[node].index,
+                split_indicators[node],
                 2.0)
             constraint2.set_coefficient(
-                split_indicators[node].index,
+                split_indicators[node],
                 len(next_edges) - 1.0)
 
             for next_edge in next_edges:
                 constraint1.set_coefficient(
-                    edge_indicators[next_edge].index,
+                    edge_indicators[next_edge],
                     -1.0)
                 constraint2.set_coefficient(
-                    edge_indicators[next_edge].index,
+                    edge_indicators[next_edge],
                     -1.0)
 
             constraint1.set_relation(pylp.Relation.LessEqual)

@@ -13,4 +13,4 @@ class Appear(Costs):
         appear_indicators = solver.get_variables(NodeAppear)
 
         for var in appear_indicators.values():
-            solver.add_variable_cost(var.index, self.constant)
+            solver.add_variable_cost(var, self.constant)

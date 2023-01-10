@@ -24,9 +24,9 @@ class SelectEdgeNodes(Constraint):
 
             u, v = edge
 
-            ind_e = edge_indicators[edge].index
-            ind_u = node_indicators[u].index
-            ind_v = node_indicators[v].index
+            ind_e = edge_indicators[edge]
+            ind_u = node_indicators[u]
+            ind_v = node_indicators[v]
 
             constraint = pylp.LinearConstraint()
             constraint.set_coefficient(ind_e, 2)

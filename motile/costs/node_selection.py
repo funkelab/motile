@@ -14,10 +14,7 @@ class NodeSelection(Costs):
 
         node_variables = solver.get_variables(NodeSelected)
 
-        for var in node_variables.values():
-
-            index = var.index
-            node = var.node
+        for node, index in node_variables.items():
 
             cost = (
                 solver.graph.nodes[node][self.attribute] * self.weight +

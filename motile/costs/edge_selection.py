@@ -14,10 +14,7 @@ class EdgeSelection(Costs):
 
         edge_variables = solver.get_variables(EdgeSelected)
 
-        for var in edge_variables.values():
-
-            index = var.index
-            edge = var.edge
+        for edge, index in edge_variables.items():
 
             cost = (
                 solver.graph.edges[edge][self.attribute] * self.weight +

@@ -32,7 +32,7 @@ class MaxParents(Constraint):
 
             # all incoming edges
             for edge in solver.graph.prev_edges(node):
-                constraint.set_coefficient(edge_indicators[edge].index, 1)
+                constraint.set_coefficient(edge_indicators[edge], 1)
 
             # relation, value
             constraint.set_relation(pylp.Relation.LessEqual)

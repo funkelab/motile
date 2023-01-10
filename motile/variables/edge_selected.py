@@ -3,11 +3,6 @@ from .variable import Variable
 
 class EdgeSelected(Variable):
 
-    def __init__(self, index, edge):
-
-        self.index = index
-        self.edge = edge
-
     @staticmethod
     def instantiate(solver):
 
@@ -15,8 +10,8 @@ class EdgeSelected(Variable):
         indices = solver.allocate_variables(num_edges)
 
         variables = {
-            edge: EdgeSelected(index, edge)
-            for index, edge in zip(indices, solver.graph.edges)
+            edge: index
+            for edge, index in zip(solver.graph.edges, indices)
         }
 
         return variables

@@ -5,11 +5,6 @@ import pylp
 
 class NodeAppear(Variable):
 
-    def __init__(self, index, node):
-
-        self.index = index
-        self.node = node
-
     @staticmethod
     def instantiate(solver):
 
@@ -17,8 +12,8 @@ class NodeAppear(Variable):
         indices = solver.allocate_variables(num_nodes)
 
         appear_indicators = {
-            node: NodeAppear(index, node)
-            for index, node in zip(indices, solver.graph.nodes)
+            node: index
+            for node, index in zip(solver.graph.nodes, indices)
         }
 
         edge_indicators = solver.get_variables(EdgeSelected)
@@ -42,18 +37,18 @@ class NodeAppear(Variable):
             constraint2 = pylp.LinearConstraint()
 
             constraint1.set_coefficient(
-                appear_indicators[node].index,
+                appear_indicators[node],
                 1.0)
             constraint2.set_coefficient(
-                appear_indicators[node].index,
+                appear_indicators[node],
                 len(prev_edges))
 
             for prev_edge in prev_edges:
                 constraint1.set_coefficient(
-                    edge_indicators[prev_edge].index,
+                    edge_indicators[prev_edge],
                     1.0)
                 constraint2.set_coefficient(
-                    edge_indicators[prev_edge].index,
+                    edge_indicators[prev_edge],
                     1.0)
 
             constraint1.set_relation(pylp.Relation.GreaterEqual)

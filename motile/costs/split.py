@@ -12,5 +12,5 @@ class Split(Costs):
 
         split_indicators = solver.get_variables(NodeSplit)
 
-        for var in split_indicators.values():
-            solver.add_variable_cost(var.index, self.constant)
+        for index in split_indicators.values():
+            solver.add_variable_cost(index, self.constant)
