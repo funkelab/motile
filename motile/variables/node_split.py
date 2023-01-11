@@ -7,15 +7,12 @@ class NodeSplit(Variable):
 
     @staticmethod
     def instantiate(solver):
+        return solver.graph.nodes
 
-        num_nodes = solver.graph.number_of_nodes()
-        indices = solver.allocate_variables(num_nodes)
+    @staticmethod
+    def instantiate_constraints(solver):
 
-        split_indicators = {
-            node: index
-            for node, index in zip(solver.graph.nodes, indices)
-        }
-
+        split_indicators = solver.get_variables(NodeSplit)
         edge_indicators = solver.get_variables(EdgeSelected)
 
         constraints = []
@@ -60,4 +57,4 @@ class NodeSplit(Variable):
             constraints.append(constraint1)
             constraints.append(constraint2)
 
-        return split_indicators, constraints
+        return constraints

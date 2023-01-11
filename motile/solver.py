@@ -76,24 +76,24 @@ class Solver:
     def get_variables(self, cls):
 
         if cls not in self.variables:
-
-            logger.info("Adding %s variables...", cls.__name__)
-
-            result = cls.instantiate(self)
-            try:
-                variables, constraints = result
-            except ValueError:
-                variables = result
-                constraints = []
-
-            self.variables[cls] = variables
-            for constraint in constraints:
-                self.constraints.add(constraint)
+            self._add_variables(cls)
 
         return self.variables[cls]
 
+    def _add_variables(self, cls):
+
+        logger.info("Adding %s variables...", cls.__name__)
+
+        keys = cls.instantiate(self)
+        indices = self._allocate_variables(len(keys))
+        variables = cls(self, {k: i for k, i in zip(keys, indices)})
+        self.variables[cls] = variables
+
+        for constraint in cls.instantiate_constraints(self):
+            self.constraints.add(constraint)
+
     # TODO: add variable_type
-    def allocate_variables(self, num_variables):
+    def _allocate_variables(self, num_variables):
 
         indices = range(
             self.num_variables,
