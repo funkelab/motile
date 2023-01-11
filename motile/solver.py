@@ -31,6 +31,7 @@ class Solver:
 
         self.num_variables = 0
         self.costs = np.zeros((0,), dtype=np.float32)
+        self.solution = None
 
         if not skip_core_constraints:
             self.add_constraints(SelectEdgeNodes())
@@ -67,11 +68,11 @@ class Solver:
         if timeout > 0:
             self.ilp_solver.set_timeout(self.timeout)
 
-        solution, message = self.ilp_solver.solve()
+        self.solution, message = self.ilp_solver.solve()
         if len(message):
             logger.info("ILP solver returned with: %s", message)
 
-        return solution
+        return self.solution
 
     def get_variables(self, cls):
 
