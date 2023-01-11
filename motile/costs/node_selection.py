@@ -22,4 +22,3 @@ class NodeSelection(Costs):
             )
 
             solver.add_variable_cost(index, cost)
-
