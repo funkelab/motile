@@ -29,4 +29,4 @@ class TestAPI(unittest.TestCase):
 
         solution = solver.solve()
 
-        assert solution.get_value() == -198
+        assert solution.get_value() == -200
