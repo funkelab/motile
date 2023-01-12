@@ -30,7 +30,7 @@ class MaxChildren(Constraint):
 
             constraint = pylp.LinearConstraint()
 
-            # all incoming edges
+            # all outgoing edges
             for edge in solver.graph.next_edges(node):
                 constraint.set_coefficient(edge_indicators[edge], 1)
 
