@@ -24,12 +24,13 @@ release = str(motile_version)
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
+        'jupyter_sphinx',
         'sphinx.ext.autodoc',
-        'sphinx.ext.mathjax',
         'sphinx.ext.githubpages',
-        'sphinx_togglebutton',
+        'sphinx.ext.mathjax',
         'sphinx_rtd_theme',
-        'jupyter_sphinx'
+        'sphinx_togglebutton',
+        'sphinxcontrib.jquery'
 ]
 
 templates_path = ['_templates']

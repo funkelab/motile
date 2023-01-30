@@ -6,4 +6,5 @@ pytest-cov
 sphinx
 sphinx-togglebutton
 sphinx_rtd_theme
+sphinxcontrib.jquery
 twine
