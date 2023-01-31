@@ -42,6 +42,10 @@ a:hover {
   background: var(--color-a-light);
 }
 
+button.toggle-button {
+  color: var(--color-a-light);
+}
+
 .rst-content .admonition {
   background: var(--color-a-light);
 }

@@ -42,8 +42,8 @@
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
         <script src="_static/thebelab-helper.js"></script>
-        <script>let toggleHintShow = 'Click to show';</script>
-        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleHintShow = '';</script>
+        <script>let toggleHintHide = '';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
         <script src="_static/togglebutton.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -259,7 +259,12 @@ also means having the ability to move, which is neat.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#adding-costs-for-nodes-and-edges">Adding Costs for Nodes and Edges</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#adding-constraints">Adding Constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#adding-costs-for-starting-a-track">Adding Costs for Starting a Track</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="api.html#track-graph">Track Graph</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#solver">Solver</a></li>

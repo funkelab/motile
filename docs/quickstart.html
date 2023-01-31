@@ -42,8 +42,8 @@
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
         <script src="_static/thebelab-helper.js"></script>
-        <script>let toggleHintShow = 'Click to show';</script>
-        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleHintShow = '';</script>
+        <script>let toggleHintHide = '';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
         <script src="_static/togglebutton.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -107,7 +107,12 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#adding-costs-for-nodes-and-edges">Adding Costs for Nodes and Edges</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-constraints">Adding Constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-costs-for-starting-a-track">Adding Costs for Starting a Track</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
 </ul>
 
@@ -183,6 +188,7 @@
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">motile</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span>  <span class="nn">nx</span>
+<span class="kn">from</span> <span class="nn">motile.variables</span> <span class="kn">import</span> <span class="n">NodeSelected</span><span class="p">,</span> <span class="n">EdgeSelected</span>
 
 <span class="k">def</span> <span class="nf">draw_track_graph</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
@@ -271,15 +277,255 @@
 </div>
 </div>
 </div>
-<div class="jupyter_cell docutils container">
+<div class="hint dropdown admonition">
+<p class="admonition-title">(click here to see how to create the example track graph)</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cells</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">26</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">}</span>
+<span class="p">]</span>
+
+<span class="n">edges</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">}</span>
+<span class="p">]</span>
+
+<span class="n">graph</span> <span class="o">=</span> <span class="n">motile</span><span class="o">.</span><span class="n">TrackGraph</span><span class="p">()</span>
+<span class="n">graph</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">([</span>
+    <span class="p">(</span><span class="n">cell</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">cell</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">cells</span>
+<span class="p">])</span>
+<span class="n">graph</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">([</span>
+    <span class="p">(</span><span class="n">edge</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">],</span> <span class="n">edge</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">],</span> <span class="n">edge</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
 <div class="cell_output docutils container">
 </div>
 </div>
+</div>
+<p>Consider the following example track <code class="docutils literal notranslate"><span class="pre">graph</span></code>, where each node is a potential
+object and each edge a potential link of objects between frames:</p>
 <div class="jupyter_cell docutils container">
 <div class="cell_output docutils container">
 <img alt="_images/quickstart_2_0.png" src="_images/quickstart_2_0.png" />
 </div>
 </div>
+<p>The numbers in nodes show how likely it is that a node represents a true object
+(versus being a false positive). Similarly, for edges the number shows how
+likely the incident nodes represent the same object across time.</p>
+<p>We want to find tracks in this graph that globally maximize the overall score,
+subject to certain constraints.</p>
+<p>We will start with a very simple case:</p>
+<ol class="arabic simple">
+<li><p>nodes and edges should be selected based on their <code class="docutils literal notranslate"><span class="pre">score</span></code></p></li>
+<li><p>objects are not supposed to split or merge</p></li>
+<li><p>there should be a small penalty for starting a new track</p></li>
+</ol>
+<p><code class="docutils literal notranslate"><span class="pre">motile</span></code> comes with costs and constraints that allow us to do exactly that.</p>
+<section id="adding-costs-for-nodes-and-edges">
+<h2>Adding Costs for Nodes and Edges<a class="headerlink" href="#adding-costs-for-nodes-and-edges" title="Permalink to this heading">¶</a></h2>
+<p>First, we have to create a <a class="reference internal" href="api.html#motile.Solver" title="motile.Solver"><code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code></a> for our track graph:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">motile</span>
+
+<span class="c1"># create a motile solver</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">motile</span><span class="o">.</span><span class="n">Solver</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Once a solver is created, we can add costs and constraints to it. We start with
+the most basic ones: the costs for selecting a node or an edge. Both nodes and
+edges in our example graph have an attribute <code class="docutils literal notranslate"><span class="pre">score</span></code>, which indicates how
+likely the node or edge is a true positive and should therefore be selected. A
+higher score is better.</p>
+<p><code class="docutils literal notranslate"><span class="pre">motile</span></code>, however, expects us to give a “cost” for selecting nodes and edges.
+It will then minimize those costs to find the globally optimal solution. Here,
+lower is better. Therefore, we need to invert the scores, which we can easily
+do by giving them a negative weight. We can do this by instantiating the
+classes <a class="reference internal" href="api.html#motile.costs.NodeSelection" title="motile.costs.NodeSelection"><code class="xref py py-class docutils literal notranslate"><span class="pre">costs.NodeSelection</span></code></a> and
+<a class="reference internal" href="api.html#motile.costs.EdgeSelection" title="motile.costs.EdgeSelection"><code class="xref py py-class docutils literal notranslate"><span class="pre">costs.EdgeSelection</span></code></a>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">motile.costs</span> <span class="kn">import</span> <span class="n">NodeSelection</span><span class="p">,</span> <span class="n">EdgeSelection</span>
+
+<span class="n">solver</span><span class="o">.</span><span class="n">add_costs</span><span class="p">(</span>
+    <span class="n">NodeSelection</span><span class="p">(</span>
+        <span class="n">weight</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">attribute</span><span class="o">=</span><span class="s1">&#39;score&#39;</span><span class="p">))</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">add_costs</span><span class="p">(</span>
+    <span class="n">EdgeSelection</span><span class="p">(</span>
+        <span class="n">weight</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">attribute</span><span class="o">=</span><span class="s1">&#39;score&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>After solving the optimization problem…</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">solution</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>…we are ready to inspect the solution. For that, we make use of <code class="docutils literal notranslate"><span class="pre">motile</span></code>’s
+variables. Specifically, we are interested in the assignments of the node and
+edge selection variables:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">motile.variables</span> <span class="kn">import</span> <span class="n">NodeSelected</span><span class="p">,</span> <span class="n">EdgeSelected</span>
+
+<span class="n">node_selected</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">get_variables</span><span class="p">(</span><span class="n">NodeSelected</span><span class="p">)</span>
+<span class="n">edge_selected</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">get_variables</span><span class="p">(</span><span class="n">EdgeSelected</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+  <span class="k">if</span> <span class="n">solution</span><span class="p">[</span><span class="n">node_selected</span><span class="p">[</span><span class="n">node</span><span class="p">]]</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Node </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2"> has been selected&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+  <span class="k">if</span> <span class="n">solution</span><span class="p">[</span><span class="n">edge_selected</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]]</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Edge </span><span class="si">{</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2"> has been selected&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>Node 0 has been selected
+Node 1 has been selected
+Node 2 has been selected
+Node 3 has been selected
+Node 4 has been selected
+Node 5 has been selected
+Node 6 has been selected
+Edge (0, 2) has been selected
+Edge (0, 3) has been selected
+Edge (1, 3) has been selected
+Edge (1, 2) has been selected
+Edge (2, 4) has been selected
+Edge (2, 5) has been selected
+Edge (3, 5) has been selected
+Edge (3, 4) has been selected
+Edge (3, 6) has been selected
+</pre></div>
+</div>
+</div>
+</div>
+<p>Variables are instantiated and managed by the solver. All we have to do is to
+ask the solver for the kind of variables we are interested in via
+<a class="reference internal" href="api.html#motile.Solver.get_variables" title="motile.Solver.get_variables"><code class="xref py py-func docutils literal notranslate"><span class="pre">Solver.get_variables()</span></code></a>. The returned value (e.g., <code class="docutils literal notranslate"><span class="pre">node_selected</span></code>) is a
+dictionary that maps <em>what</em> to <em>where</em>: in the case of node variables, the
+dictionary keys are the nodes themselves (an integer) and the dictionay values
+are the indices in the <code class="docutils literal notranslate"><span class="pre">solution</span></code> vector where we can find the value of the
+variable. Both node and edge indicators are binary variables (one if selected,
+zero otherwise).</p>
+<p>Here is our graph again, showing all the selected nodes and edges:</p>
+<div class="jupyter_cell docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/quickstart_7_0.png" src="_images/quickstart_7_0.png" />
+</div>
+</div>
+<p>All nodes and edges have been selected! This is indeed what we asked for, but
+not what we want. Time to add some constraints.</p>
+</section>
+<section id="adding-constraints">
+<h2>Adding Constraints<a class="headerlink" href="#adding-constraints" title="Permalink to this heading">¶</a></h2>
+<p>With negative costs, the solver is incentivised to pick every node and edge,
+which is not what we want. We will add two constraints to the solver,
+<a class="reference internal" href="api.html#motile.constraints.MaxParents" title="motile.constraints.MaxParents"><code class="xref py py-class docutils literal notranslate"><span class="pre">constraints.MaxParents</span></code></a> and <a class="reference internal" href="api.html#motile.constraints.MaxChildren" title="motile.constraints.MaxChildren"><code class="xref py py-class docutils literal notranslate"><span class="pre">constraints.MaxChildren</span></code></a>, to make
+sure that tracks don’t merge or split:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">motile.constraints</span> <span class="kn">import</span> <span class="n">MaxParents</span><span class="p">,</span> <span class="n">MaxChildren</span>
+
+<span class="n">solver</span><span class="o">.</span><span class="n">add_constraints</span><span class="p">(</span><span class="n">MaxParents</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">add_constraints</span><span class="p">(</span><span class="n">MaxChildren</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>If we solve again, the solution does now look like this:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">solution</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="jupyter_cell docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/quickstart_10_0.png" src="_images/quickstart_10_0.png" />
+</div>
+</div>
+<p>Nodes do now indeed have at most one parent (to the previous time frame) and at
+most on child (to the next time frame). There are multiple possible solutions
+that satisfy those constraints and the solver picked the one that has the least
+total costs.</p>
+<p>This is starting to look good, but we note that a single node was selected in
+the last timeframe, without any link to the past or future. This is in fact a
+track consisting of just one node. To avoid those short tracks, we can add a
+constant cost for the appearance of a track: only tracks that are long enough
+to offset this cost will then be selected.</p>
+</section>
+<section id="adding-costs-for-starting-a-track">
+<h2>Adding Costs for Starting a Track<a class="headerlink" href="#adding-costs-for-starting-a-track" title="Permalink to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">motile</span></code> provides <a class="reference internal" href="api.html#motile.costs.Appear" title="motile.costs.Appear"><code class="xref py py-class docutils literal notranslate"><span class="pre">costs.Appear</span></code></a>, which we can add to our solver to
+discourage selection of short tracks. We add them similarly to how we added the
+node and edge selection costs:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">motile.costs</span> <span class="kn">import</span> <span class="n">Appear</span>
+
+<span class="n">solver</span><span class="o">.</span><span class="n">add_costs</span><span class="p">(</span><span class="n">Appear</span><span class="p">(</span><span class="n">constant</span><span class="o">=</span><span class="mf">1.0</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>And if we solve the tracking problem again with those costs…</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">solution</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>…we see that the orphan node is gone now. Its (negative) cost is not enough
+to justify starting a new track:</p>
+<div class="jupyter_cell docutils container">
+<div class="cell_output docutils container">
+<img alt="_images/quickstart_13_0.png" src="_images/quickstart_13_0.png" />
+</div>
+</div>
+</section>
 </section>
 
 
