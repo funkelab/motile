@@ -4,6 +4,18 @@ import numpy as np
 
 
 class EdgeDistance(Costs):
+    """Costs for :class:`motile.variables.EdgeSelected` variables, based on the
+    spatial distance of the incident nodes.
+
+    Args:
+
+        position_attributes (tuple of string):
+            The names of the node attributes that correspond to their spatial
+            position, e.g., ``('z', 'y', 'x')``.
+
+        weight (float):
+            The weight to apply to the distance to convert it into a cost.
+    """
 
     def __init__(self, position_attributes, weight=1.0):
 

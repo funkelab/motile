@@ -5,8 +5,9 @@ class Costs(ABC):
 
     @abstractmethod
     def apply(self, solver):
-        """Apply costs to the given solver. Use `solver.get_variables` and
-        `solver.add_variable_cost`.
+        """Apply costs to the given solver. Use
+        :func:`motile.Solver.get_variables` and
+        :func:`motile.Solver.add_variable_cost`.
 
         Args:
 

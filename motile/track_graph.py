@@ -5,21 +5,25 @@ logger = logging.getLogger(__name__)
 
 
 class TrackGraph(nx.DiGraph):
-    """A graph of objects with positions in time and space, and inter-frame
-    edges between them.
+    """A :class:`networkx.DiGraph` of objects with positions in time and space,
+    and inter-frame edges between them.
+
+    Provides a few convenience methods for time series graphs in addition to
+    all the methods inherited from :class:`networkx.DiGraph`.
 
     Args:
 
-    graph_data (optional):
+        graph_data (optional):
 
-        Optional graph data to pass to the networkx.Graph constructor as
-        ``incoming_graph_data``. This can be used to populate a track graph
-        with entries from a generic networkx graph.
+            Optional graph data to pass to the :class:`networkx.DiGraph`
+            constructor as ``incoming_graph_data``. This can be used to
+            populate a track graph with entries from a generic
+            ``networkx`` graph.
 
-    frame_attribute (``string``, optional):
+        frame_attribute (``string``, optional):
 
-        The name of the node attribute that corresponds to the frame of the
-        object. Defaults to "t".
+            The name of the node attribute that corresponds to the frame (i.e.,
+            the time dimension) of the object. Defaults to ``'t'``.
     """
 
     def __init__(

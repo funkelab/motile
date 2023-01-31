@@ -7,9 +7,11 @@ class MaxParents(Constraint):
     """Ensures that every selected node has no more than ``max_parents``
     selected edges to the previous frame.
 
-    Adds the following linear constraint for each node::
+    Adds the following linear constraint for each node :math:`v`:
 
-      sum(prev) <= max_parents
+    .. math::
+
+      \sum_{e \in \\text{in_edges}(v)} x_e \leq \\text{max_parents}
 
     Args:
 

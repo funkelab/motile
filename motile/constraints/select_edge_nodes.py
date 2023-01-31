@@ -4,12 +4,14 @@ import pylp
 
 
 class SelectEdgeNodes(Constraint):
-    """Ensures that if an edge (u, v) is selected, u and v have to be selected
-    as well.
+    """Ensures that if an edge :math:`(u, v)` is selected, :math:`u` and
+    :math:`v` have to be selected as well.
 
-    Adds the following linear constraint for each edge::
+    Adds the following linear constraint for each edge :math:`e = (u,v)`:
 
-      2 * edge(u, v) - u - v <= 0
+    .. math::
+
+      2 x_e - x_u - x_v \leq 0
 
     This constraint will be added by default to any :class:`Solver` instance.
     """

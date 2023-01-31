@@ -5,6 +5,25 @@ import pylp
 
 
 class NodeAppear(Variable):
+    """A binary variable for each node that indicates whether the node is the
+    start of a track (i.e., the node is selected and has no selected incoming
+    edges).
+
+    This variable is coupled to the node and edge selection variables through
+    the following linear constraints:
+
+    .. math::
+
+        |\\text{in_edges}(v)|\cdot x_v - &\sum_{e \in \\text{in_edges}(v)} x_e -
+        a_v &\leq&\;\; |\\text{in_edges}(v)| - 1
+
+        |\\text{in_edges}(v)|\cdot x_v - &\sum_{e \in \\text{in_edges}(v)} x_e -
+        a_v\cdot |\\text{in_edges}(v)| &\geq&\;\; 0
+
+    where :math:`x_v` and :math:`x_e` are selection indicators for node
+    :math:`v` and edge :math:`e`, and :math:`a_v` is the appear indicator for
+    node :math:`v`.
+    """
 
     @staticmethod
     def instantiate(solver):

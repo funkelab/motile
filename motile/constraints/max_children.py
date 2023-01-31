@@ -7,9 +7,11 @@ class MaxChildren(Constraint):
     """Ensures that every selected node has no more than ``max_children``
     selected edges to the next frame.
 
-    Adds the following linear constraint for each node::
+    Adds the following linear constraint for each node :math:`v`:
 
-      sum(next) <= max_children
+    .. math::
+
+      \sum_{e \in \\text{out_edges}(v)} x_e \leq \\text{max_children}
 
     Args:
 

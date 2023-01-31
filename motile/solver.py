@@ -37,11 +37,25 @@ class Solver:
             self.add_constraints(SelectEdgeNodes())
 
     def add_costs(self, costs):
+        """Add linear costs to the value of variables in this solver.
+
+        Args:
+
+            costs (:class:`motile.costs.Costs`):
+                The costs to add.
+        """
 
         logger.info("Adding %s costs...", type(costs).__name__)
         costs.apply(self)
 
     def add_constraints(self, constraints):
+        """Add linear constraints to the solver.
+
+        Args:
+
+            constraints (:class:`motile.constraints.Constraint`)
+                The constraints to add.
+        """
 
         logger.info("Adding %s constraints...", type(constraints).__name__)
 
@@ -49,6 +63,24 @@ class Solver:
             self.constraints.add(constraint)
 
     def solve(self, timeout=0.0, num_threads=1):
+        """Solve the global optimization problem.
+
+        Args:
+
+            timeout (float):
+                The timeout for the ILP solver, in seconds. Default (0.0) is no
+                timeout. If the solver times out, the best solution encountered
+                so far is returned (if any has been found at all).
+
+            num_threads (int):
+                The number of threads the ILP solver uses.
+
+        Returns:
+
+            :class:`pylp.Solution`, a vector of variable values. Use
+            :func:`get_variables` to find the indices of variables in this
+            vector.
+        """
 
         self.objective = pylp.LinearObjective(self.num_variables)
         for i, c in enumerate(self.costs):
@@ -75,11 +107,36 @@ class Solver:
         return self.solution
 
     def get_variables(self, cls):
+        """Get variables by their class name.
+
+        If the solver does not yet contain those variables, they will be
+        created.
+
+        Args:
+
+            cls (class name):
+                The name of a class inheriting from
+                :class:`motile.variables.Variable`.
+
+        Returns:
+
+            A singleton instance of :class:`motile.variables.Variable`,
+            mimicking a dictionary that can be used to look up variable indices
+            by their keys. See :class:`motile.variables.Variable` for details.
+        """
 
         if cls not in self.variables:
             self._add_variables(cls)
 
         return self.variables[cls]
+
+    def add_variable_cost(self, index, cost):
+        """Add costs for an individual variable.
+
+        To be used within implementations of :class:`motile.costs.Costs`.
+        """
+
+        self.costs[index] += cost
 
     def _add_variables(self, cls):
 
@@ -105,7 +162,3 @@ class Solver:
         self.costs.resize(self.num_variables, refcheck=False)
 
         return indices
-
-    def add_variable_cost(self, index, cost):
-
-        self.costs[index] += cost
