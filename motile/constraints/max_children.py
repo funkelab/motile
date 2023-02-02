@@ -4,7 +4,7 @@ import pylp
 
 
 class MaxChildren(Constraint):
-    """Ensures that every selected node has no more than ``max_children``
+    r"""Ensures that every selected node has no more than ``max_children``
     selected edges to the next frame.
 
     Adds the following linear constraint for each node :math:`v`:

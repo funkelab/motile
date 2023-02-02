@@ -4,8 +4,8 @@ import pylp
 
 
 class NodeSplit(Variable):
-    """A binary variable for each node that indicates whether the node has more
-    than one children (i.e., the node is selected and has more than one
+    r"""A binary variable for each node that indicates whether the node has
+    more than one children (i.e., the node is selected and has more than one
     selected outgoing edge).
 
     This variable is coupled to the edge selection variables through the
@@ -15,8 +15,8 @@ class NodeSplit(Variable):
 
         2 s_v\; - &\sum_{e\in\\text{out_edges}(v)} x_e &\leq&\;\; 0
 
-        (|\\text{out_edges}(v)| - 1) s_v\; - &\sum_{e\in\\text{out_edges}(v)} x_e
-        &\geq&\;\; -1
+        (|\\text{out_edges}(v)| - 1) s_v\; - &\sum_{e\in\\text{out_edges}(v)}
+        x_e &\geq&\;\; -1
 
     where :math:`x_e` are selection indicators for edge :math:`e`, and
     :math:`s_v` is the split indicator for node :math:`v`.

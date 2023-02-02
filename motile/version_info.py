@@ -1,8 +1,13 @@
-__major__   = 0
-__minor__   = 1
-__patch__   = 1
-__tag__     = ''
-__version__ = '{}.{}.{}{}'.format(__major__, __minor__, __patch__, __tag__).strip('.')
+__major__ = 0
+__minor__ = 1
+__patch__ = 1
+__tag__ = ''
+__version__ = '{}.{}.{}{}'.format(
+    __major__,
+    __minor__,
+    __patch__,
+    __tag__).strip('.')
+
 
 class _Version(object):
 
@@ -23,6 +28,7 @@ class _Version(object):
 
     def __str__(self):
         return self.version()
+
 
 _version = _Version()
 
