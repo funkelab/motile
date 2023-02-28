@@ -16,7 +16,7 @@ motile_version = version_info['_version']
 
 project = 'motile'
 copyright = '2023, Jan Funke'
-author = 'Jan Funke'
+author = 'Jan Funke, Ana Cristina Pascual Ramos'
 version = u'{}.{}'.format(motile_version.major(), motile_version.minor())
 release = str(motile_version)
 
@@ -47,6 +47,7 @@ html_css_files = [
     'css/custom.css'
 ]
 html_show_sourcelink = False
+html_logo = 'motile.svg'
 
 togglebutton_hint = ""
 togglebutton_hint_hide = ""
