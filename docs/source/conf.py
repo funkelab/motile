@@ -15,7 +15,7 @@ with open(os.path.join(here, '..', '..', 'motile', 'version_info.py')) as fp:
 motile_version = version_info['_version']
 
 project = 'motile'
-copyright = '2023, Jan Funke'
+copyright = '2023, Jan Funke, Ana Cristina Pascual Ramos'
 author = 'Jan Funke, Ana Cristina Pascual Ramos'
 version = u'{}.{}'.format(motile_version.major(), motile_version.minor())
 release = str(motile_version)
@@ -42,12 +42,15 @@ exclude_patterns = []
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme'
+html_theme_options = {
+    'logo_only': True
+}
+html_logo = 'motile.svg'
 html_static_path = ['_static']
 html_css_files = [
     'css/custom.css'
 ]
 html_show_sourcelink = False
-html_logo = 'motile.svg'
 
 togglebutton_hint = ""
 togglebutton_hint_hide = ""
