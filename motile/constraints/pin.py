@@ -1,6 +1,6 @@
 from ..variables import NodeSelected, EdgeSelected
 from .constraint import Constraint
-import pylp
+import ilpy
 
 
 class Pin(Constraint):
@@ -51,16 +51,16 @@ class Pin(Constraint):
             if value is False
         ]
 
-        must_select_constraint = pylp.LinearConstraint()
-        must_not_select_constraint = pylp.LinearConstraint()
+        must_select_constraint = ilpy.LinearConstraint()
+        must_not_select_constraint = ilpy.LinearConstraint()
 
         for index in must_select:
             must_select_constraint.set_coefficient(index, 1)
         for index in must_not_select:
             must_not_select_constraint.set_coefficient(index, 1)
 
-        must_select_constraint.set_relation(pylp.Equal)
-        must_not_select_constraint.set_relation(pylp.Equal)
+        must_select_constraint.set_relation(ilpy.Equal)
+        must_not_select_constraint.set_relation(ilpy.Equal)
 
         must_select_constraint.set_value(len(must_select))
         must_not_select_constraint.set_value(0)

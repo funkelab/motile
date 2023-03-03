@@ -1,6 +1,6 @@
 from ..variables import NodeSelected, EdgeSelected
 from .constraint import Constraint
-import pylp
+import ilpy
 
 
 class SelectEdgeNodes(Constraint):
@@ -30,11 +30,11 @@ class SelectEdgeNodes(Constraint):
             ind_u = node_indicators[u]
             ind_v = node_indicators[v]
 
-            constraint = pylp.LinearConstraint()
+            constraint = ilpy.LinearConstraint()
             constraint.set_coefficient(ind_e, 2)
             constraint.set_coefficient(ind_u, -1)
             constraint.set_coefficient(ind_v, -1)
-            constraint.set_relation(pylp.Relation.LessEqual)
+            constraint.set_relation(ilpy.Relation.LessEqual)
             constraint.set_value(0)
             constraints.append(constraint)
 
