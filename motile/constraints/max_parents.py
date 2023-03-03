@@ -1,6 +1,6 @@
 from ..variables import EdgeSelected
 from .constraint import Constraint
-import pylp
+import ilpy
 
 
 class MaxParents(Constraint):
@@ -30,14 +30,14 @@ class MaxParents(Constraint):
         constraints = []
         for node in solver.graph.nodes:
 
-            constraint = pylp.LinearConstraint()
+            constraint = ilpy.LinearConstraint()
 
             # all incoming edges
             for edge in solver.graph.prev_edges(node):
                 constraint.set_coefficient(edge_indicators[edge], 1)
 
             # relation, value
-            constraint.set_relation(pylp.Relation.LessEqual)
+            constraint.set_relation(ilpy.Relation.LessEqual)
 
             constraint.set_value(self.max_parents)
             constraints.append(constraint)

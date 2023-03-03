@@ -1,7 +1,7 @@
 from .edge_selected import EdgeSelected
 from .node_selected import NodeSelected
 from .variable import Variable
-import pylp
+import ilpy
 
 
 class NodeAppear(Variable):
@@ -53,8 +53,8 @@ class NodeAppear(Variable):
             # (1) s - appear <= num_prev - 1
             # (2) s - appear * num_prev >= 0
 
-            constraint1 = pylp.LinearConstraint()
-            constraint2 = pylp.LinearConstraint()
+            constraint1 = ilpy.LinearConstraint()
+            constraint2 = ilpy.LinearConstraint()
 
             # set s for both constraints:
 
@@ -87,8 +87,8 @@ class NodeAppear(Variable):
                 appear_indicators[node],
                 -num_prev_edges)
 
-            constraint1.set_relation(pylp.Relation.LessEqual)
-            constraint2.set_relation(pylp.Relation.GreaterEqual)
+            constraint1.set_relation(ilpy.Relation.LessEqual)
+            constraint2.set_relation(ilpy.Relation.GreaterEqual)
 
             constraint1.set_value(num_prev_edges - 1)
             constraint2.set_value(0)

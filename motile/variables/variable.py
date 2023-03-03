@@ -77,7 +77,7 @@ class Variable(ABC):
 
         Returns:
 
-            A list of :class:`pylp.LinearConstraint`. See
+            A list of :class:`ilpy.LinearConstraint`. See
             :class:`motile.constraints.Constraint` for how to create linear
             constraints.
         """
