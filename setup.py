@@ -23,7 +23,7 @@ setup(
         ],
         install_requires=[
             'networkx',
-            'pylp',
+            'ilpy @ git+https://github.com/funkelab/ilpy',
             'numpy'
         ]
 )

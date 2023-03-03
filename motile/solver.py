@@ -1,7 +1,7 @@
 from .constraints import SelectEdgeNodes
 import logging
 import numpy as np
-import pylp
+import ilpy
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +27,7 @@ class Solver:
 
         self.ilp_solver = None
         self.objective = None
-        self.constraints = pylp.LinearConstraints()
+        self.constraints = ilpy.LinearConstraints()
 
         self.num_variables = 0
         self.costs = np.zeros((0,), dtype=np.float32)
@@ -77,21 +77,21 @@ class Solver:
 
         Returns:
 
-            :class:`pylp.Solution`, a vector of variable values. Use
+            :class:`ilpy.Solution`, a vector of variable values. Use
             :func:`get_variables` to find the indices of variables in this
             vector.
         """
 
-        self.objective = pylp.LinearObjective(self.num_variables)
+        self.objective = ilpy.LinearObjective(self.num_variables)
         for i, c in enumerate(self.costs):
             logger.debug("Setting cost of var %d to %.3f", i, c)
             self.objective.set_coefficient(i, c)
 
         # TODO: support other variable types
-        self.ilp_solver = pylp.LinearSolver(
+        self.ilp_solver = ilpy.LinearSolver(
             self.num_variables,
-            pylp.VariableType.Binary,
-            preference=pylp.Preference.Any)
+            ilpy.VariableType.Binary,
+            preference=ilpy.Preference.Any)
 
         self.ilp_solver.set_objective(self.objective)
         self.ilp_solver.set_constraints(self.constraints)
