@@ -7,7 +7,7 @@ from networkx.classes import DiGraph
 logger = logging.getLogger(__name__)
 
 
-class TrackGraph(DiGraph):
+class TrackGraph(DiGraph):  # type: ignore [misc]
     """A :class:`networkx.DiGraph` of objects with positions in time and space,
     and inter-frame edges between them.
 
