@@ -10,7 +10,10 @@ name = "motile"
 description = "Multi-Object Tracker using Integer Linear Equations"
 readme = "README.md"
 license = { text = "MIT" }
-authors = [{ name = 'Jan Funke', email = 'funkej@janelia.hhmi.org' }]
+authors = [
+    { name = 'Jan Funke', email = 'funkej@janelia.hhmi.org' },
+    { name = 'Talley Lambert', email = 'talley.lambert@gmail.com' },
+]
 dynamic = ["version"]
 dependencies = [
     'networkx',
