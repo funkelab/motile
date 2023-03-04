@@ -33,11 +33,13 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           mamba-version: "*"
+          channels: conda-forge,gurobi,funkelab
+          channel-priority: true
 
       - name: Install dependencies
         shell: bash -el {0}
         run: |
-          mamba install -c conda-forge -c gurobi -c funkelab ilpy
+          mamba install -c gurobi -c funkelab ilpy
           python -m pip install -e .[test]
 
       - name: Test
