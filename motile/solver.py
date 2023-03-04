@@ -16,6 +16,7 @@ if TYPE_CHECKING:
 
     V = TypeVar('V', bound=Variable)
 
+
 class Solver:
     """Create a solver for a given track graph.
 

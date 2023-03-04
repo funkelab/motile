@@ -1,7 +1,6 @@
 from data import create_arlo_graph
 from motile.constraints import MaxParents, MaxChildren
 from motile.costs import NodeSelection, EdgeSelection, Appear, Split
-from motile.variables import NodeSelected, EdgeSelected, NodeSplit, NodeAppear
 import motile
 import unittest
 
