@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies
-        run: pipx pre-commit run --all-files
+        run: pipx run pre-commit run --all-files
 
   test:
     name: ${{ matrix.platform }} py${{ matrix.python-version }}
