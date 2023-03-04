@@ -39,3 +39,10 @@ path = "motile/__init__.py"
 # https://coverage.readthedocs.io/en/6.4/config.html
 [tool.coverage.report]
 exclude_lines = ["pragma: no cover", "pragma: ${PY_MAJOR_VERSION} no cover"]
+
+[tool.mypy]
+files = "motile"
+strict=true
+allow_untyped_defs=true
+allow_subclassing_any=true
+ignore_missing_imports = true

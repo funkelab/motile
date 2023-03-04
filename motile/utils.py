@@ -42,6 +42,6 @@ def get_tracks(graph, require_selected=False, selected_attribute='selected'):
         TrackGraph(
             graph_data=graph.subgraph(g).copy(),
             frame_attribute=graph.frame_attribute,
-            roi=graph.roi)
+        )
         for g in nx.weakly_connected_components(graph)
     ]

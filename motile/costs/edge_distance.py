@@ -1,6 +1,12 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, cast
 from ..variables import EdgeSelected
 from .costs import Costs
 import numpy as np
+
+if TYPE_CHECKING:
+    from motile.solver import Solver
 
 
 class EdgeDistance(Costs):
@@ -22,12 +28,11 @@ class EdgeDistance(Costs):
         self.position_attributes = position_attributes
         self.weight = weight
 
-    def apply(self, solver):
+    def apply(self, solver: Solver) -> None:
 
         edge_variables = solver.get_variables(EdgeSelected)
-
-        for (u, v), index in edge_variables.items():
-
+        for key, index in edge_variables.items():
+            u, v = cast(tuple[int, int], key) 
             pos_u = np.array([
                 solver.graph.nodes[u][p]
                 for p in self.position_attributes
