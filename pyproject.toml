@@ -18,7 +18,8 @@ dynamic = ["version"]
 dependencies = ['networkx', 'ilpy', 'numpy']
 
 [project.optional-dependencies]
-dev = ["ruff", "pre-commit", "black", "pytest", "pytest-cov", "twine", "build"]
+dev = ["pre-commit", "pytest", "pytest-cov", "ruff", "twine", "build"]
+test = ["pytest", "pytest-cov"]
 
 [project.urls]
 homepage = "https://github.com/funkelab/motile"

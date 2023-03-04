@@ -22,11 +22,11 @@ jobs:
     runs-on: ${{ matrix.platform }}
     defaults:
       run:
-        shell: bash -el {0} # needed when using setup-miniconda
+        shell: bash -l {0}
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.9", "3.10", "3.11"]
         platform: [ubuntu-latest, macos-latest]
 
     steps:
@@ -36,13 +36,16 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           mamba-version: "*"
-          channels: conda-forge,gurobi,funkelab
+          channels: conda-forge
           channel-priority: true
 
-      - name: Install dependencies
+      - name: Install package and dependencies
         run: |
-          mamba install ilpy
-          pip install -e .[test]
+          mamba install -c gurobi -c funkelab ilpy
+          python -m pip install -e .[test]
 
       - name: Test
-        run: pytest tests -s -v --color=yes
+        run: pytest tests -v --color=yes --cov=motile --cov-report=xml
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
