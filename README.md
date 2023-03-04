@@ -1,5 +1,7 @@
 # motile: Multi-Object Tracker using Integer Linear Equations
 
+[![codecov](https://codecov.io/gh/funkelab/motile/branch/main/graph/badge.svg)](https://codecov.io/gh/funkelab/motile)
+
 `motile` tracks multiple objects by solving a global optimization problem.
 
 Read all about it in the [documentation](https://funkelab.github.io/motile/).
