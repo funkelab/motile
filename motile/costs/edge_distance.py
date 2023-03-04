@@ -32,7 +32,7 @@ class EdgeDistance(Costs):
 
         edge_variables = solver.get_variables(EdgeSelected)
         for key, index in edge_variables.items():
-            u, v = cast(tuple[int, int], key)
+            u, v = cast('tuple[int, int]', key)
             pos_u = np.array([
                 solver.graph.nodes[u][p]
                 for p in self.position_attributes
