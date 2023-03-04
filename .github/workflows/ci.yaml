@@ -36,11 +36,14 @@ jobs:
           channels: conda-forge
           channel-priority: true
 
-      - name: Install dependencies
+      - name: Install package and dependencies
         shell: bash -el {0}
         run: |
           mamba install -c gurobi -c funkelab ilpy
           python -m pip install -e .[test]
 
       - name: Test
-        run: pytest tests -v --color=yes --cov=motile 
+        run: pytest tests -v --color=yes --cov=motile
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
