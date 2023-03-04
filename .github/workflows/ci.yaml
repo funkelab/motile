@@ -20,10 +20,13 @@ jobs:
   test:
     name: ${{ matrix.platform }} py${{ matrix.python-version }}
     runs-on: ${{ matrix.platform }}
+    defaults:
+      run:
+        shell: bash -l {0}
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.9", "3.10", "3.11"]
         platform: [ubuntu-latest, macos-latest]
 
     steps:
@@ -37,7 +40,6 @@ jobs:
           channel-priority: true
 
       - name: Install package and dependencies
-        shell: bash -el {0}
         run: |
           mamba install -c gurobi -c funkelab ilpy
           python -m pip install -e .[test]
