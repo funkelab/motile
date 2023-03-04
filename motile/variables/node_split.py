@@ -1,6 +1,7 @@
+import ilpy
+
 from .edge_selected import EdgeSelected
 from .variable import Variable
-import ilpy
 
 
 class NodeSplit(Variable):

@@ -1,6 +1,7 @@
+import numpy as np
+
 from ..variables import EdgeSelected
 from .costs import Costs
-import numpy as np
 
 
 class EdgeDistance(Costs):

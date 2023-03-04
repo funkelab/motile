@@ -1,6 +1,7 @@
+import ilpy
+
 from ..variables import EdgeSelected
 from .constraint import Constraint
-import ilpy
 
 
 class MaxChildren(Constraint):

@@ -17,23 +17,27 @@ authors = [
 dynamic = ["version"]
 dependencies = ['networkx', 'ilpy', 'numpy']
 
-
-[tool.hatch.metadata]
-# only need this to depend on ilpy from github
-# (and, we can't point to a conda package in pyproject.toml)
-# note though: ilpy requires scip to build
-allow-direct-references = true
-
 [project.optional-dependencies]
-dev = ["flake8", "pytest", "pytest-cov", "twine", "build"]
+dev = ["ruff", "pre-commit", "black", "pytest", "pytest-cov", "twine", "build"]
 
 [project.urls]
 homepage = "https://github.com/funkelab/motile"
 
-
 # https://hatch.pypa.io/latest/version/
 [tool.hatch.version]
 path = "motile/__init__.py"
+
+# https://beta.ruff.rs/docs
+[tool.ruff]
+target-version = "py38"
+src = ["motile"]
+select = [
+    "F", # pyflakes
+    "E", # pycodestyle
+    "I", # isort
+    "UP", # pyupgrade 
+    "RUF" # ruff specific rules
+]
 
 # https://coverage.readthedocs.io/en/6.4/config.html
 [tool.coverage.report]

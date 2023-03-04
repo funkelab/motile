@@ -1,7 +1,9 @@
-from .constraints import SelectEdgeNodes
 import logging
-import numpy as np
+
 import ilpy
+import numpy as np
+
+from .constraints import SelectEdgeNodes
 
 logger = logging.getLogger(__name__)
 
