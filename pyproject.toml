@@ -15,11 +15,8 @@ authors = [
     { name = 'Talley Lambert', email = 'talley.lambert@gmail.com' },
 ]
 dynamic = ["version"]
-dependencies = [
-    'networkx',
-    'ilpy @ git+https://github.com/funkelab/ilpy',
-    'numpy',
-]
+dependencies = ['networkx', 'ilpy', 'numpy']
+
 
 [tool.hatch.metadata]
 # only need this to depend on ilpy from github
