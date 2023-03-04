@@ -26,6 +26,7 @@ allow-direct-references = true
 
 [project.optional-dependencies]
 dev = ["flake8", "pytest", "pytest-cov", "twine", "build"]
+test = ["pytest", "pytest-cov"]
 
 [project.urls]
 homepage = "https://github.com/funkelab/motile"
