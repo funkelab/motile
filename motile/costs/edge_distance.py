@@ -46,4 +46,4 @@ class EdgeDistance(Costs):
 
             cost = np.linalg.norm(pos_u - pos_v) * self.weight
 
-            solver.add_variable_cost(index, cost)  # type: ignore [arg-type]
+            solver.add_variable_cost(index, cost)
