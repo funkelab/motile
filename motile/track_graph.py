@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import Any
+from typing import Any, Hashable, Sequence
 from networkx.classes import DiGraph
 
 logger = logging.getLogger(__name__)
@@ -34,28 +34,29 @@ class TrackGraph(DiGraph):  # type: ignore [misc]
     """
 
     def __init__(
-            self,
-            graph_data: Any | None = None,
-            frame_attribute: str | None = 't') -> None:
+        self, graph_data: Any | None = None, frame_attribute: str = "t"
+    ) -> None:
 
         super().__init__(incoming_graph_data=graph_data)
 
         self.frame_attribute = frame_attribute
-        self._graph_changed = True
+        self._graph_changed: bool = True
+        self.t_begin: int | None = None
+        self.t_end: int | None = None
 
         self._update_metadata()
 
-    def prev_edges(self, node):
+    def prev_edges(self, node: Hashable) -> Sequence[Hashable]:
         '''Get all edges that point forward into ``node``.'''
 
-        return self.in_edges(node)
+        return self.in_edges(node)  # type: ignore [no-any-return]
 
-    def next_edges(self, node):
+    def next_edges(self, node: Hashable) -> Sequence[Hashable]:
         '''Get all edges that point forward out of ``node``.'''
 
-        return self.out_edges(node)
+        return self.out_edges(node)  # type: ignore [no-any-return]
 
-    def get_frames(self):
+    def get_frames(self) -> tuple[int | None, int | None]:
         '''Get a tuple ``(t_begin, t_end)`` of the first and last frame
         (exclusive) this track graph has nodes for.'''
 
@@ -63,7 +64,7 @@ class TrackGraph(DiGraph):  # type: ignore [misc]
 
         return (self.t_begin, self.t_end)
 
-    def nodes_by_frame(self, t):
+    def nodes_by_frame(self, t: int) -> list[Hashable]:
         '''Get all nodes in frame ``t``.'''
 
         self._update_metadata()
@@ -78,7 +79,7 @@ class TrackGraph(DiGraph):  # type: ignore [misc]
             return
 
         self._graph_changed = False
-        self._nodes_by_frame = {}  # type: ignore  # FIXME
+        self._nodes_by_frame: dict[int, list[Hashable]] = {}
 
         if self.number_of_nodes() == 0:
             self.t_begin = None

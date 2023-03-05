@@ -1,4 +1,10 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING, Hashable, Sequence
+
 from .variable import Variable
+
+if TYPE_CHECKING:
+    from motile.solver import Solver
 
 
 class EdgeSelected(Variable):
@@ -7,5 +13,5 @@ class EdgeSelected(Variable):
     """
 
     @staticmethod
-    def instantiate(solver):
-        return solver.graph.edges
+    def instantiate(solver: Solver) -> Sequence[Hashable]:
+        return solver.graph.edges  # type: ignore

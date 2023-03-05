@@ -23,7 +23,9 @@ class EdgeDistance(Costs):
             The weight to apply to the distance to convert it into a cost.
     """
 
-    def __init__(self, position_attributes, weight=1.0):
+    def __init__(
+        self, position_attributes: tuple[str, ...], weight: float = 1.0
+    ) -> None:
 
         self.position_attributes = position_attributes
         self.weight = weight
@@ -44,4 +46,4 @@ class EdgeDistance(Costs):
 
             cost = np.linalg.norm(pos_u - pos_v) * self.weight
 
-            solver.add_variable_cost(index, cost)
+            solver.add_variable_cost(index, cost)  # type: ignore [arg-type]

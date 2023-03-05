@@ -1,5 +1,11 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
 from ..variables import NodeSelected
 from .costs import Costs
+
+if TYPE_CHECKING:
+    from motile.solver import Solver
 
 
 class NodeSelection(Costs):
@@ -19,13 +25,14 @@ class NodeSelection(Costs):
             A constant cost for each selected node.
     """
 
-    def __init__(self, weight, attribute='costs', constant=0.0):
-
+    def __init__(
+        self, weight: float, attribute: str = "costs", constant: float = 0.0
+    ) -> None:
         self.weight = weight
         self.attribute = attribute
         self.constant = constant
 
-    def apply(self, solver):
+    def apply(self, solver: Solver) -> None:
 
         node_variables = solver.get_variables(NodeSelected)
 

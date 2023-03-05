@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 if TYPE_CHECKING:
     from motile.variables import Variable
     from motile.costs import Costs
+    from motile.track_graph import TrackGraph
 
     V = TypeVar('V', bound=Variable)
 
@@ -31,18 +32,20 @@ class Solver:
             edges are added.
     """
 
-    def __init__(self, track_graph, skip_core_constraints=False):
+    def __init__(
+        self, track_graph: TrackGraph, skip_core_constraints: bool = False
+    ) -> None:
 
         self.graph = track_graph
         self.variables: dict[type[Variable], Variable] = {}
 
-        self.ilp_solver = None
-        self.objective = None
+        self.ilp_solver: ilpy.LinearSolver | None = None
+        self.objective: ilpy.LinearObjective | None = None
         self.constraints = ilpy.LinearConstraints()
 
-        self.num_variables = 0
+        self.num_variables: int = 0
         self.costs = np.zeros((0,), dtype=np.float32)
-        self.solution = None
+        self.solution: ilpy.Solution | None = None
 
         if not skip_core_constraints:
             self.add_constraints(SelectEdgeNodes())
@@ -72,7 +75,9 @@ class Solver:
         for constraint in constraints.instantiate(self):
             self.constraints.add(constraint)
 
-    def solve(self, timeout=0.0, num_threads=1):
+    def solve(
+        self, timeout: float = 0.0, num_threads: int = 1
+    ) -> ilpy.Solution:
         """Solve the global optimization problem.
 
         Args:

@@ -1,6 +1,13 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
+import ilpy
+
 from .edge_selected import EdgeSelected
 from .variable import Variable
-import ilpy
+
+if TYPE_CHECKING:
+    from motile.solver import Solver
 
 
 class NodeSplit(Variable):
@@ -27,7 +34,7 @@ class NodeSplit(Variable):
         return solver.graph.nodes
 
     @staticmethod
-    def instantiate_constraints(solver):
+    def instantiate_constraints(solver: Solver) -> list[ilpy.LinearConstraint]:
 
         split_indicators = solver.get_variables(NodeSplit)
         edge_indicators = solver.get_variables(EdgeSelected)

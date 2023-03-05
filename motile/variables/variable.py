@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Hashable, Iterable
+from typing import TYPE_CHECKING, Hashable, Iterable, Sequence
 
 if TYPE_CHECKING:
     from motile.solver import Solver
@@ -39,7 +39,7 @@ class Variable(ABC):
 
     @staticmethod
     @abstractmethod
-    def instantiate(solver: Solver) -> list[Hashable]:
+    def instantiate(solver: Solver) -> Sequence[Hashable]:
         """Create and return keys for the variables.
 
         For example, to create a variable for each node, this function would
@@ -96,7 +96,7 @@ class Variable(ABC):
         self._solver = solver
         self._index_map = index_map
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         rs = []
         for key, index in self._index_map.items():
             r = f"{type(self).__name__}({key}): "
@@ -108,7 +108,7 @@ class Variable(ABC):
             rs.append(r)
         return "\n".join(rs)
 
-    def __getitem__(self, key: int) -> int:
+    def __getitem__(self, key: Hashable) -> int:
         return self._index_map[key]
 
     def items(self) -> Iterable[tuple[Hashable, int]]:
