@@ -38,6 +38,7 @@ class Variable(ABC):
         For example, to create a variable for each node, this function would
         return a list of all nodes::
 
+            @staticmethod
             def instantiate(solver):
                 return solver.graph.nodes
 
