@@ -1,0 +1,41 @@
+# https://peps.python.org/pep-0517/
+# https://hatch.pypa.io/latest/config/build/
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# https://peps.python.org/pep-0621/
+[project]
+name = "motile"
+description = "Multi-Object Tracker using Integer Linear Equations"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = 'Jan Funke', email = 'funkej@janelia.hhmi.org' },
+    { name = 'Talley Lambert', email = 'talley.lambert@gmail.com' },
+]
+dynamic = ["version"]
+dependencies = ['networkx', 'ilpy', 'numpy']
+
+
+[tool.hatch.metadata]
+# only need this to depend on ilpy from github
+# (and, we can't point to a conda package in pyproject.toml)
+# note though: ilpy requires scip to build
+allow-direct-references = true
+
+[project.optional-dependencies]
+dev = ["flake8", "pytest", "pytest-cov", "twine", "build"]
+test = ["pytest", "pytest-cov"]
+
+[project.urls]
+homepage = "https://github.com/funkelab/motile"
+
+
+# https://hatch.pypa.io/latest/version/
+[tool.hatch.version]
+path = "motile/__init__.py"
+
+# https://coverage.readthedocs.io/en/6.4/config.html
+[tool.coverage.report]
+exclude_lines = ["pragma: no cover", "pragma: ${PY_MAJOR_VERSION} no cover"]

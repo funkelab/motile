@@ -1,11 +1,11 @@
 from .edge_selected import EdgeSelected
 from .variable import Variable
-import pylp
+import ilpy
 
 
 class NodeSplit(Variable):
-    """A binary variable for each node that indicates whether the node has more
-    than one children (i.e., the node is selected and has more than one
+    r"""A binary variable for each node that indicates whether the node has
+    more than one children (i.e., the node is selected and has more than one
     selected outgoing edge).
 
     This variable is coupled to the edge selection variables through the
@@ -15,8 +15,8 @@ class NodeSplit(Variable):
 
         2 s_v\; - &\sum_{e\in\\text{out_edges}(v)} x_e &\leq&\;\; 0
 
-        (|\\text{out_edges}(v)| - 1) s_v\; - &\sum_{e\in\\text{out_edges}(v)} x_e
-        &\geq&\;\; -1
+        (|\\text{out_edges}(v)| - 1) s_v\; - &\sum_{e\in\\text{out_edges}(v)}
+        x_e &\geq&\;\; -1
 
     where :math:`x_e` are selection indicators for edge :math:`e`, and
     :math:`s_v` is the split indicator for node :math:`v`.
@@ -47,8 +47,8 @@ class NodeSplit(Variable):
             # (1) 2 * split - sum(next_selected) <= 0
             # (2) (num_next - 1) * split - sum(next_selected) >= -1
 
-            constraint1 = pylp.LinearConstraint()
-            constraint2 = pylp.LinearConstraint()
+            constraint1 = ilpy.LinearConstraint()
+            constraint2 = ilpy.LinearConstraint()
 
             constraint1.set_coefficient(
                 split_indicators[node],
@@ -65,8 +65,8 @@ class NodeSplit(Variable):
                     edge_indicators[next_edge],
                     -1.0)
 
-            constraint1.set_relation(pylp.Relation.LessEqual)
-            constraint2.set_relation(pylp.Relation.GreaterEqual)
+            constraint1.set_relation(ilpy.Relation.LessEqual)
+            constraint2.set_relation(ilpy.Relation.GreaterEqual)
 
             constraint1.set_value(0.0)
             constraint2.set_value(-1.0)

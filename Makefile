@@ -1,10 +1,8 @@
 default:
-	pip install -r requirements.txt
 	pip install .
 
 install-dev:
-	pip install -r requirements_dev.txt
-	pip install -e .[full]
+	pip install -e .[dev]
 
 .PHONY: tests
 tests:
@@ -13,6 +11,6 @@ tests:
 
 .PHONY: publish
 publish:
-	python setup.py sdist bdist_wheel
+	python -m build
 	twine upload dist/*
 	rm -rf build/ dist/ motile.egg-info/

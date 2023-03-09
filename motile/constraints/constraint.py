@@ -14,6 +14,6 @@ class Constraint(ABC):
 
         Returns:
 
-            A list of :class:`pylp.LinearConstraint`.
+            A list of :class:`ilpy.LinearConstraint`.
         """
         pass

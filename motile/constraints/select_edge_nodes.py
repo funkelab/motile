@@ -1,10 +1,10 @@
 from ..variables import NodeSelected, EdgeSelected
 from .constraint import Constraint
-import pylp
+import ilpy
 
 
 class SelectEdgeNodes(Constraint):
-    """Ensures that if an edge :math:`(u, v)` is selected, :math:`u` and
+    r"""Ensures that if an edge :math:`(u, v)` is selected, :math:`u` and
     :math:`v` have to be selected as well.
 
     Adds the following linear constraint for each edge :math:`e = (u,v)`:
@@ -30,11 +30,11 @@ class SelectEdgeNodes(Constraint):
             ind_u = node_indicators[u]
             ind_v = node_indicators[v]
 
-            constraint = pylp.LinearConstraint()
+            constraint = ilpy.LinearConstraint()
             constraint.set_coefficient(ind_e, 2)
             constraint.set_coefficient(ind_u, -1)
             constraint.set_coefficient(ind_v, -1)
-            constraint.set_relation(pylp.Relation.LessEqual)
+            constraint.set_relation(ilpy.Relation.LessEqual)
             constraint.set_value(0)
             constraints.append(constraint)
 

@@ -1,11 +1,11 @@
 from .edge_selected import EdgeSelected
 from .node_selected import NodeSelected
 from .variable import Variable
-import pylp
+import ilpy
 
 
 class NodeAppear(Variable):
-    """A binary variable for each node that indicates whether the node is the
+    r"""A binary variable for each node that indicates whether the node is the
     start of a track (i.e., the node is selected and has no selected incoming
     edges).
 
@@ -14,11 +14,11 @@ class NodeAppear(Variable):
 
     .. math::
 
-        |\\text{in_edges}(v)|\cdot x_v - &\sum_{e \in \\text{in_edges}(v)} x_e -
-        a_v &\leq&\;\; |\\text{in_edges}(v)| - 1
+        |\\text{in_edges}(v)|\cdot x_v - &\sum_{e \in \\text{in_edges}(v)} x_e
+        - a_v &\leq&\;\; |\\text{in_edges}(v)| - 1
 
-        |\\text{in_edges}(v)|\cdot x_v - &\sum_{e \in \\text{in_edges}(v)} x_e -
-        a_v\cdot |\\text{in_edges}(v)| &\geq&\;\; 0
+        |\\text{in_edges}(v)|\cdot x_v - &\sum_{e \in \\text{in_edges}(v)} x_e
+        - a_v\cdot |\\text{in_edges}(v)| &\geq&\;\; 0
 
     where :math:`x_v` and :math:`x_e` are selection indicators for node
     :math:`v` and edge :math:`e`, and :math:`a_v` is the appear indicator for
@@ -53,8 +53,8 @@ class NodeAppear(Variable):
             # (1) s - appear <= num_prev - 1
             # (2) s - appear * num_prev >= 0
 
-            constraint1 = pylp.LinearConstraint()
-            constraint2 = pylp.LinearConstraint()
+            constraint1 = ilpy.LinearConstraint()
+            constraint2 = ilpy.LinearConstraint()
 
             # set s for both constraints:
 
@@ -87,8 +87,8 @@ class NodeAppear(Variable):
                 appear_indicators[node],
                 -num_prev_edges)
 
-            constraint1.set_relation(pylp.Relation.LessEqual)
-            constraint2.set_relation(pylp.Relation.GreaterEqual)
+            constraint1.set_relation(ilpy.Relation.LessEqual)
+            constraint2.set_relation(ilpy.Relation.GreaterEqual)
 
             constraint1.set_value(num_prev_edges - 1)
             constraint2.set_value(0)
