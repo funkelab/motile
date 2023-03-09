@@ -33,7 +33,7 @@ class MaxChildren(Constraint):
             constraint = ilpy.LinearConstraint()
 
             # all outgoing edges
-            for edge in solver.graph.next_edges(node):
+            for edge in solver.graph.next_edges[node]:
                 constraint.set_coefficient(edge_indicators[edge], 1)
 
             # relation, value

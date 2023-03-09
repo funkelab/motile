@@ -1,4 +1,5 @@
 import motile
+import networkx
 
 
 def create_arlo_graph():
@@ -37,7 +38,7 @@ def create_arlo_graph():
         {'source': 3, 'target': 6, 'prediction_distance': 3.0}
     ]
 
-    graph = motile.TrackGraph()
+    graph = networkx.DiGraph()
     graph.add_nodes_from([
         (cell['id'], cell)
         for cell in cells
@@ -47,4 +48,4 @@ def create_arlo_graph():
         for edge in edges
     ])
 
-    return graph
+    return motile.TrackGraph(graph)
