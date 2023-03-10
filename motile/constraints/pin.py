@@ -66,8 +66,8 @@ class Pin(Constraint):
         for index in must_not_select:
             must_not_select_constraint.set_coefficient(index, 1)
 
-        must_select_constraint.set_relation(ilpy.Equal)
-        must_not_select_constraint.set_relation(ilpy.Equal)
+        must_select_constraint.set_relation(ilpy.Relation.Equal)
+        must_not_select_constraint.set_relation(ilpy.Relation.Equal)
 
         must_select_constraint.set_value(len(must_select))
         must_not_select_constraint.set_value(0)
