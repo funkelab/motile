@@ -1,5 +1,6 @@
 from ..variables import NodeSplit
 from .costs import Costs
+from .weight import Weight
 
 
 class Split(Costs):
@@ -14,11 +15,11 @@ class Split(Costs):
 
     def __init__(self, constant):
 
-        self.constant = constant
+        self.constant = Weight(constant)
 
     def apply(self, solver):
 
         split_indicators = solver.get_variables(NodeSplit)
 
         for index in split_indicators.values():
-            solver.add_variable_cost(index, self.constant)
+            solver.add_variable_cost(index, 1.0, self.constant)
