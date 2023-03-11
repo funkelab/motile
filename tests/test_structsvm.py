@@ -1,6 +1,9 @@
 import motile
 import numpy as np
 import pytest
+
+from ilpy import QuadraticSolver
+
 from data import create_toy_example_graph
 from motile.constraints import MaxChildren, MaxParents
 from motile.costs import Appear, EdgeSelection, NodeSelection
@@ -90,7 +93,6 @@ def test_structsvm():
             raise ValueError(
                 f"Ground truth {gt} for edge ({u},{v}) not valid.")
 
-from ilpy import QuadraticSolver
 try:
     QuadraticSolver(2, 0)
 except RuntimeError:
