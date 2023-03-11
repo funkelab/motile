@@ -1,8 +1,7 @@
 import numpy as np
-import ilpy
 import structsvm as ssvm
 
-from .constraints import Pin
+from .variables import NodeSelected
 
 
 def fit_weights(
@@ -14,26 +13,18 @@ def fit_weights(
 
     features = solver.features.to_ndarray()
 
-    # make a copy of the original constraints
-    constraints = solver.constraints
-    solver.constraints = ilpy.LinearConstraints()
-    solver.constraints.add_all(constraints)
-
-    # pin GT nodes/edges to find solution vector
-    pin_constraints = Pin(attribute=gt_attribute)
-    solver.add_constraints(pin_constraints)
-    solution = solver.solve()
-    ground_truth = np.array([x for x in solution])
-
-    # restore original constraints
-    solver.constraints = constraints
-
-    constraints = solver.constraints
+    mask = np.zeros((solver.num_variables,), dtype=np.float32)
+    ground_truth = np.zeros((solver.num_variables,), dtype=np.float32)
+    for node, index in solver.get_variables(NodeSelected).items():
+        if gt_attribute in solver.graph.nodes[node]:
+            mask[index] = 1.0
+            ground_truth[index] = solver.graph.nodes[node][gt_attribute]
 
     loss = ssvm.SoftMarginLoss(
-        constraints,
+        solver.constraints,
         features.T,  # TODO: fix in ssvm
-        ground_truth)
+        ground_truth,
+        ssvm.HammingCosts(ground_truth, mask))
     bundle_method = ssvm.BundleMethod(
         loss.value_and_gradient,
         dims=features.shape[1],
