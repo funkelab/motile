@@ -15,22 +15,17 @@ authors = [
     { name = 'Talley Lambert', email = 'talley.lambert@gmail.com' },
 ]
 dynamic = ["version"]
-dependencies = [
-    'structsvm @ git+https://github.com/funkelab/structsvm',
-    'networkx',
-    'ilpy',
-    'numpy',
-]
-
-[tool.hatch.metadata]
-allow-direct-references = true
+dependencies = ['structsvm', 'networkx', 'ilpy', 'numpy']
 
 [project.optional-dependencies]
 dev = ["pre-commit", "pytest", "pytest-cov", "ruff", "twine", "build"]
-test = ["pytest", "pytest-cov"]
+test = ["pytest", "pytest-cov", 'structsvm @ git+https://github.com/funkelab/structsvm']
 
 [project.urls]
 homepage = "https://github.com/funkelab/motile"
+
+[tool.hatch.metadata]
+allow-direct-references = true
 
 # https://hatch.pypa.io/latest/version/
 [tool.hatch.version]
@@ -41,11 +36,11 @@ path = "motile/__init__.py"
 target-version = "py38"
 src = ["motile"]
 select = [
-    "F",   # pyflakes
-    "E",   # pycodestyle
-    "I",   # isort
-    "UP",  # pyupgrade 
-    "RUF", # ruff specific rules
+    "F", # pyflakes
+    "E", # pycodestyle
+    "I", # isort
+    "UP", # pyupgrade 
+    "RUF" # ruff specific rules
 ]
 
 # https://coverage.readthedocs.io/en/6.4/config.html
