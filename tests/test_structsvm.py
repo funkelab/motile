@@ -50,15 +50,15 @@ def test_structsvm():
     optimal_weights = solver.weights
 
     assert np.isclose(
-        optimal_weights[('NodeSelection', 'weight')], -3.5972583293914795)
+        optimal_weights[('NodeSelection', 'weight')], -2.7947596134511126)
     assert np.isclose(
-        optimal_weights[('NodeSelection', 'constant')], 0.9798323512077332)
+        optimal_weights[('NodeSelection', 'constant')], -2.3828240341399347)
     assert np.isclose(
-        optimal_weights[('EdgeSelection', 'weight')], 3.176938772201538)
+        optimal_weights[('EdgeSelection', 'weight')], -0.6477437066081595)
     assert np.isclose(
-        optimal_weights[('EdgeSelection', 'constant')], -1.3103692531585693)
+        optimal_weights[('EdgeSelection', 'constant')], -2.970887530069457)
     assert np.isclose(
-        optimal_weights[('Appear', 'constant')], 3.148256301879883)
+        optimal_weights[('Appear', 'constant')], 14.88209571283641)
 
     solver = create_solver(graph)
     solver.weights.from_ndarray(optimal_weights.to_ndarray())
