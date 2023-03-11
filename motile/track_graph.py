@@ -15,7 +15,7 @@ class TrackGraph:
         graph_data (optional):
 
             Optional graph data to pass to the :class:`networkx.DiGraph`
-            constructor as ``incoming_graph_data``. This can be used to
+            constructor as ``graph_data``. This can be used to
             populate a track graph with entries from a generic
             ``networkx`` graph.
 
@@ -23,41 +23,49 @@ class TrackGraph:
 
             The name of the node attribute that corresponds to the frame (i.e.,
             the time dimension) of the object. Defaults to ``'t'``.
+
+        has_hyperedges (``boolean``, optional):
+
+            Indicates if the given ``graph_data`` contains nodes that indicate
+            hyper edges. In the given ``networkx`` graph a hyperedge is represented
+            by a node that does not have the ``frame_attribute`` and is itself
+            connected to all nodes that should form a hyper edge.
     """
 
+    # TODO: make nx_graph truly be optional again...
     def __init__(
             self,
-            graph=None,
+            nx_graph=None,
             frame_attribute='t',
-            is_bipartite=False):
+            has_hyperedges=False):
 
         self.frame_attribute = frame_attribute
-        self.is_bipartite = is_bipartite
+        self.has_hyperedges = has_hyperedges
         self._graph_changed = True
 
-        self.nx_graph = graph
+        self.nx_graph = nx_graph
 
         self.nodes = {
-            node: graph.nodes[node]
-            for node in graph.nodes
-            if frame_attribute in graph.nodes[node]
+            node: nx_graph.nodes[node]
+            for node in nx_graph.nodes
+            if frame_attribute in nx_graph.nodes[node]
         }
 
         self.prev_edges = {node: [] for node in self.nodes}
         self.next_edges = {node: [] for node in self.nodes}
 
-        if is_bipartite:
+        if has_hyperedges:
             self.edges = {
                 self._assignment_node_to_edge_tuple(
-                    graph,
+                    nx_graph,
                     assignment_node):
-                graph.nodes[assignment_node]
-                for assignment_node in graph.nodes
-                if frame_attribute not in graph.nodes[assignment_node]
+                nx_graph.nodes[assignment_node]
+                for assignment_node in nx_graph.nodes
+                if frame_attribute not in nx_graph.nodes[assignment_node]
             }
         else:
-            self.edges = graph.edges
-            for (u, v) in graph.edges:
+            self.edges = nx_graph.edges
+            for (u, v) in nx_graph.edges:
                 self.prev_edges[v].append((u, v))
                 self.next_edges[u].append((u, v))
 
@@ -67,16 +75,16 @@ class TrackGraph:
 
         in_nodes = graph.predecessors(assignment_node)
         out_nodes = graph.successors(assignment_node)
-        nodes = in_nodes + out_nodes
+        nodes = list(in_nodes) + list(out_nodes)
 
-        frames = list(node[self.frame_attribute] for node in nodes)
+        frames = list(graph.nodes[node][self.frame_attribute] for node in nodes)
         frames = sorted(frames)
 
         edge_tuple = tuple(
             tuple(
                 node
                 for node in nodes
-                if node[self.frame_attribute] == frame
+                if graph.nodes[node][self.frame_attribute] == frame
             )
             for frame in frames
         )
@@ -131,7 +139,7 @@ class TrackGraph:
         self.t_end = max(frames) + 1
 
         # ensure edges point forwards in time
-        if not self.is_bipartite:
+        if not self.has_hyperedges:
             for u, v in self.edges:
                 t_u = self.nodes[u][self.frame_attribute]
                 t_v = self.nodes[v][self.frame_attribute]
