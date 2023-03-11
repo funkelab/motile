@@ -1,5 +1,6 @@
-from .track_graph import TrackGraph
 import networkx as nx
+
+from .track_graph import TrackGraph
 
 
 def get_tracks(
@@ -48,7 +49,7 @@ def get_tracks(
 
     return [
         TrackGraph(
-            graph_data=graph.subgraph(g).copy(),
+            graph=graph.subgraph(g).copy(),
             frame_attribute=graph.frame_attribute,
         )
         for g in nx.weakly_connected_components(graph)

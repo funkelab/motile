@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, cast
+
+import numpy as np
+
 from ..variables import EdgeSelected
 from .costs import Costs
-import numpy as np
+from .weight import Weight
 
 if TYPE_CHECKING:
     from motile.solver import Solver
@@ -28,7 +31,7 @@ class EdgeDistance(Costs):
     ) -> None:
 
         self.position_attributes = position_attributes
-        self.weight = weight
+        self.weight = Weight(weight)
 
     def apply(self, solver: Solver) -> None:
 
@@ -44,6 +47,6 @@ class EdgeDistance(Costs):
                 for p in self.position_attributes
             ])
 
-            cost = np.linalg.norm(pos_u - pos_v) * self.weight
+            feature = np.linalg.norm(pos_u - pos_v)
 
-            solver.add_variable_cost(index, cost)
+            solver.add_variable_cost(index, feature, self.weight)

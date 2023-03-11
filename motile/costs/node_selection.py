@@ -1,8 +1,10 @@
 from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 from ..variables import NodeSelected
 from .costs import Costs
+from .weight import Weight
 
 if TYPE_CHECKING:
     from motile.solver import Solver
@@ -28,9 +30,9 @@ class NodeSelection(Costs):
     def __init__(
         self, weight: float, attribute: str = "costs", constant: float = 0.0
     ) -> None:
-        self.weight = weight
+        self.weight = Weight(weight)
+        self.constant = Weight(constant)
         self.attribute = attribute
-        self.constant = constant
 
     def apply(self, solver: Solver) -> None:
 
@@ -38,9 +40,11 @@ class NodeSelection(Costs):
 
         for node, index in node_variables.items():
 
-            cost = (
-                solver.graph.nodes[node][self.attribute] * self.weight +
-                self.constant
-            )
-
-            solver.add_variable_cost(index, cost)
+            solver.add_variable_cost(
+                index,
+                solver.graph.nodes[node][self.attribute],
+                self.weight)
+            solver.add_variable_cost(
+                index,
+                1.0,
+                self.constant)

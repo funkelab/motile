@@ -1,14 +1,14 @@
 from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 import ilpy
 
-from ..variables import NodeSelected, EdgeSelected
+from ..variables import EdgeSelected, NodeSelected
 from .constraint import Constraint
 
 if TYPE_CHECKING:
     from motile.solver import Solver
-
 
 class Pin(Constraint):
     """Enforces the selection of certain nodes and edges based on the value of
@@ -40,22 +40,22 @@ class Pin(Constraint):
 
         must_select = [
             node_indicators[node]
-            for node, value in solver.graph.nodes.data(self.attribute)
-            if value is True
+            for node, attributes in solver.graph.nodes.items()
+            if self.attribute in attributes and attributes[self.attribute]
         ] + [
             edge_indicators[(u, v)]
-            for u, v, value in solver.graph.edges.data(self.attribute)
-            if value is True
+            for (u, v), attributes in solver.graph.edges.items()
+            if self.attribute in attributes and attributes[self.attribute]
         ]
 
         must_not_select = [
             node_indicators[node]
-            for node, value in solver.graph.nodes.data(self.attribute)
-            if value is False
+            for node, attributes in solver.graph.nodes.items()
+            if self.attribute in attributes and not attributes[self.attribute]
         ] + [
             edge_indicators[(u, v)]
-            for u, v, value in solver.graph.edges.data(self.attribute)
-            if value is False
+            for (u, v), attributes in solver.graph.edges.items()
+            if self.attribute in attributes and not attributes[self.attribute]
         ]
 
         must_select_constraint = ilpy.LinearConstraint()

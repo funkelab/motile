@@ -4,8 +4,9 @@ from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Hashable, Iterable, Sequence
 
 if TYPE_CHECKING:
-    from motile.solver import Solver
     import ilpy
+
+    from motile.solver import Solver
 
 
 class Variable(ABC):
@@ -45,6 +46,7 @@ class Variable(ABC):
         For example, to create a variable for each node, this function would
         return a list of all nodes::
 
+            @staticmethod
             def instantiate(solver):
                 return solver.graph.nodes
 
