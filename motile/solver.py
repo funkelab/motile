@@ -1,7 +1,9 @@
 from .constraints import SelectEdgeNodes
+from .costs import Weight, Weights, Features
+from .ssvm import fit_weights
+import ilpy
 import logging
 import numpy as np
-import ilpy
 
 logger = logging.getLogger(__name__)
 
@@ -25,27 +27,59 @@ class Solver:
         self.graph = track_graph
         self.variables = {}
 
+        self.weights = Weights()
+        self.weights.register_modify_callback(self._on_weights_modified)
+        self._weights_changed = True
+        self.features = Features()
+
         self.ilp_solver = None
         self.objective = None
         self.constraints = ilpy.LinearConstraints()
 
         self.num_variables = 0
         self.costs = np.zeros((0,), dtype=np.float32)
+        self._costs_instances = {}
         self.solution = None
 
         if not skip_core_constraints:
             self.add_constraints(SelectEdgeNodes())
 
-    def add_costs(self, costs):
+    # TODO: add getter/setter for costs, to compute when needed
+
+    def add_costs(self, costs, name=None):
         """Add linear costs to the value of variables in this solver.
 
         Args:
 
             costs (:class:`motile.costs.Costs`):
                 The costs to add.
+
+            name (``string``):
+                An optional name of the costs, used to refer to weights of
+                costs in an unambiguous manner. Defaults to the name of the
+                costs class, if not given.
         """
 
-        logger.info("Adding %s costs...", type(costs).__name__)
+        # default name of costs is the class name
+        if name is None:
+            name = type(costs).__name__
+
+        if name in self._costs_instances:
+            raise RuntimeError(
+                f"A cost instance with name '{name}' was already registered. "
+                "Consider passing a different name with the 'name=' argument "
+                "to Solver.add_costs")
+
+        logger.info("Adding %s costs...", name)
+
+        self._costs_instances[name] = costs
+
+        # fish out all weights used in this cost object
+        for var_name, var in costs.__dict__.items():
+            if not isinstance(var, Weight):
+                continue
+            self.weights.add_weight(var, (name, var_name))
+
         costs.apply(self)
 
     def add_constraints(self, constraints):
@@ -81,6 +115,10 @@ class Solver:
             :func:`get_variables` to find the indices of variables in this
             vector.
         """
+
+        if self._weights_changed:
+            self._compute_costs()
+            self._weights_changed = False
 
         self.objective = ilpy.LinearObjective(self.num_variables)
         for i, c in enumerate(self.costs):
@@ -130,13 +168,20 @@ class Solver:
 
         return self.variables[cls]
 
-    def add_variable_cost(self, index, cost):
+    def add_variable_cost(self, index, value, weight):
         """Add costs for an individual variable.
 
         To be used within implementations of :class:`motile.costs.Costs`.
         """
 
-        self.costs[index] += cost
+        variable_index = index
+        feature_index = self.weights.index_of(weight)
+        self.features.add_feature(variable_index, feature_index, value)
+
+    def fit_weights(self, gt_attribute):
+
+        optimal_weights = fit_weights(self, gt_attribute)
+        self.weights.from_ndarray(optimal_weights)
 
     def _add_variables(self, cls):
 
@@ -150,6 +195,14 @@ class Solver:
         for constraint in cls.instantiate_constraints(self):
             self.constraints.add(constraint)
 
+    def _compute_costs(self):
+
+        logger.info("Computing costs...")
+
+        weights = self.weights.to_ndarray()
+        features = self.features.to_ndarray()
+        self.costs = np.dot(features, weights)
+
     # TODO: add variable_type
     def _allocate_variables(self, num_variables):
 
@@ -159,6 +212,15 @@ class Solver:
         )
 
         self.num_variables += num_variables
-        self.costs.resize(self.num_variables, refcheck=False)
+        self.features.resize(num_variables=self.num_variables)
 
         return indices
+
+    def _on_weights_modified(self, old_value, new_value):
+
+        if old_value != new_value:
+
+            if not self._weights_changed:
+                logger.info("Weights have changed")
+
+            self._weights_changed = True

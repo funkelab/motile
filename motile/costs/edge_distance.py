@@ -1,5 +1,6 @@
 from ..variables import EdgeSelected
 from .costs import Costs
+from .weight import Weight
 import numpy as np
 
 
@@ -20,7 +21,7 @@ class EdgeDistance(Costs):
     def __init__(self, position_attributes, weight=1.0):
 
         self.position_attributes = position_attributes
-        self.weight = weight
+        self.weight = Weight(weight)
 
     def apply(self, solver):
 
@@ -37,6 +38,6 @@ class EdgeDistance(Costs):
                 for p in self.position_attributes
             ])
 
-            cost = np.linalg.norm(pos_u - pos_v) * self.weight
+            feature = np.linalg.norm(pos_u - pos_v)
 
-            solver.add_variable_cost(index, cost)
+            solver.add_variable_cost(index, feature, self.weight)
