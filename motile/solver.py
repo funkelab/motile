@@ -1,5 +1,6 @@
 from .constraints import SelectEdgeNodes
 from .costs import Weight, Weights, Features
+from .ssvm import fit_weights
 import ilpy
 import logging
 import numpy as np
@@ -42,6 +43,8 @@ class Solver:
 
         if not skip_core_constraints:
             self.add_constraints(SelectEdgeNodes())
+
+    # TODO: add getter/setter for costs, to compute when needed
 
     def add_costs(self, costs, name=None):
         """Add linear costs to the value of variables in this solver.
@@ -174,6 +177,11 @@ class Solver:
         variable_index = index
         feature_index = self.weights.index_of(weight)
         self.features.add_feature(variable_index, feature_index, value)
+
+    def fit_weights(self, gt_attribute):
+
+        optimal_weights = fit_weights(self, gt_attribute)
+        self.weights.from_ndarray(optimal_weights)
 
     def _add_variables(self, cls):
 
