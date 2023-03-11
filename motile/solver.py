@@ -4,8 +4,7 @@ import ilpy
 import numpy as np
 
 from .constraints import SelectEdgeNodes
-from .costs import Weight, Weights, Features
-from .ssvm import fit_weights
+from .costs import Features, Weight, Weights
 
 logger = logging.getLogger(__name__)
 
@@ -181,6 +180,7 @@ class Solver:
         self.features.add_feature(variable_index, feature_index, value)
 
     def fit_weights(self, gt_attribute):
+        from .ssvm import fit_weights
 
         optimal_weights = fit_weights(self, gt_attribute)
         self.weights.from_ndarray(optimal_weights)

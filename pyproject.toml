@@ -19,10 +19,17 @@ dependencies = ['networkx', 'ilpy', 'numpy']
 
 [project.optional-dependencies]
 dev = ["pre-commit", "pytest", "pytest-cov", "ruff", "twine", "build"]
-test = ["pytest", "pytest-cov"]
+test = [
+    "pytest",
+    "pytest-cov",
+    "structsvm @ git+https://github.com/funkelab/structsvm",
+]
 
 [project.urls]
 homepage = "https://github.com/funkelab/motile"
+
+[tool.hatch.metadata]
+allow-direct-references = true
 
 # https://hatch.pypa.io/latest/version/
 [tool.hatch.version]

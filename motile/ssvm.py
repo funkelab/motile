@@ -1,5 +1,12 @@
+try:
+    import structsvm as ssvm
+except ImportError as e:
+    raise ImportError(
+        "This functionality requires the structsvm package. "
+        "Please install structsvm."
+    ) from e
+
 import numpy as np
-import structsvm as ssvm
 
 from .variables import NodeSelected
 
