@@ -10,8 +10,6 @@ from motile.variables import EdgeSelected
 try:
     import structsvm  # noqa
 except ImportError:
-    import pytest
-
     pytest.skip(
         "Cannot test structsvm stuff without structsvm", allow_module_level=True
     )
