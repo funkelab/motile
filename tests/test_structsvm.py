@@ -1,10 +1,8 @@
-import motile
 import numpy as np
 import pytest
-
 from ilpy import QuadraticSolver
-
 from data import create_toy_example_graph
+import motile
 from motile.constraints import MaxChildren, MaxParents
 from motile.costs import Appear, EdgeSelection, NodeSelection
 from motile.variables import EdgeSelected
