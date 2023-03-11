@@ -1,13 +1,18 @@
-import numpy as np
 import motile
-import networkx
-
-from motile.constraints import MaxParents, MaxChildren
-from motile.costs import NodeSelection, EdgeSelection, Appear
+import numpy as np
+import pytest
+from data import create_toy_example_graph
+from ilpy import QuadraticSolver
+from motile.constraints import MaxChildren, MaxParents
+from motile.costs import Appear, EdgeSelection, NodeSelection
 from motile.variables import EdgeSelected
 
-from data import create_toy_example_graph
-
+try:
+    import structsvm  # noqa
+except ImportError:
+    pytest.skip(
+        "Cannot test structsvm stuff without structsvm", allow_module_level=True
+    )
 
 def create_solver(graph):
     solver = motile.Solver(graph)
@@ -29,7 +34,6 @@ def create_solver(graph):
     print(solver.weights)
 
     return solver
-
 
 def test_structsvm():
 
@@ -84,6 +88,11 @@ def test_structsvm():
         else:
             raise ValueError(
                 f"Ground truth {gt} for edge ({u},{v}) not valid.")
+
+try:
+    QuadraticSolver(2, 0)
+except RuntimeError:
+    test_structsvm = pytest.mark.xfail(test_structsvm)
 
 
 if __name__ == '__main__':
