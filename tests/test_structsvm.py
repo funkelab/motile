@@ -1,12 +1,9 @@
-import numpy as np
 import motile
-import networkx
-
-from motile.constraints import MaxParents, MaxChildren
-from motile.costs import NodeSelection, EdgeSelection, Appear
-from motile.variables import EdgeSelected
-
+import numpy as np
 from data import create_toy_example_graph
+from motile.constraints import MaxChildren, MaxParents
+from motile.costs import Appear, EdgeSelection, NodeSelection
+from motile.variables import EdgeSelected
 
 
 def create_solver(graph):

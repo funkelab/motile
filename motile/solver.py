@@ -4,7 +4,7 @@ import ilpy
 import numpy as np
 
 from .constraints import SelectEdgeNodes
-from .costs import Weight, Weights, Features
+from .costs import Features, Weight, Weights
 from .ssvm import fit_weights
 
 logger = logging.getLogger(__name__)
