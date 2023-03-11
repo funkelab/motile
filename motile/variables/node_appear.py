@@ -1,7 +1,8 @@
+import ilpy
+
 from .edge_selected import EdgeSelected
 from .node_selected import NodeSelected
 from .variable import Variable
-import ilpy
 
 
 class NodeAppear(Variable):

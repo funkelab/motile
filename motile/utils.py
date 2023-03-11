@@ -1,5 +1,6 @@
-from .track_graph import TrackGraph
 import networkx as nx
+
+from .track_graph import TrackGraph
 
 
 def get_tracks(graph, require_selected=False, selected_attribute='selected'):

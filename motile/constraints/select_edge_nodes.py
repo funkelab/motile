@@ -1,6 +1,7 @@
-from ..variables import NodeSelected, EdgeSelected
-from .constraint import Constraint
 import ilpy
+
+from ..variables import EdgeSelected, NodeSelected
+from .constraint import Constraint
 
 
 class SelectEdgeNodes(Constraint):

@@ -1,9 +1,10 @@
-from data import create_arlo_graph
-from motile.constraints import MaxParents, MaxChildren, Pin
-from motile.costs import NodeSelection, EdgeSelection, Appear, Split
-from motile.variables import EdgeSelected
-import motile
 import unittest
+
+import motile
+from data import create_arlo_graph
+from motile.constraints import MaxChildren, MaxParents, Pin
+from motile.costs import Appear, EdgeSelection, NodeSelection, Split
+from motile.variables import EdgeSelected
 
 
 class TestConstraints(unittest.TestCase):

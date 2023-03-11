@@ -1,9 +1,11 @@
+import logging
+
+import ilpy
+import numpy as np
+
 from .constraints import SelectEdgeNodes
 from .costs import Weight, Weights, Features
 from .ssvm import fit_weights
-import ilpy
-import logging
-import numpy as np
 
 logger = logging.getLogger(__name__)
 

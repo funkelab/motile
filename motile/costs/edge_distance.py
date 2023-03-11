@@ -1,3 +1,5 @@
+import numpy as np
+
 from ..variables import EdgeSelected
 from .costs import Costs
 from .weight import Weight
