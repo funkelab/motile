@@ -40,7 +40,7 @@ class NodeAppear(Variable):
         constraints = []
         for node in solver.graph.nodes:
 
-            prev_edges = solver.graph.prev_edges(node)
+            prev_edges = solver.graph.prev_edges[node]
             num_prev_edges = len(prev_edges)
 
             # Ensure that the following holds:

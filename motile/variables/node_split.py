@@ -36,7 +36,7 @@ class NodeSplit(Variable):
         constraints = []
         for node in solver.graph.nodes:
 
-            next_edges = solver.graph.next_edges(node)
+            next_edges = solver.graph.next_edges[node]
 
             # Ensure that the following holds:
             #
