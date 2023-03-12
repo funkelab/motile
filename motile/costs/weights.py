@@ -1,16 +1,16 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Callable, Hashable, Iterable
+from typing import TYPE_CHECKING, Any, Callable, Hashable, Iterable, Optional
 
 import numpy as np
 
 if TYPE_CHECKING:
     from .weight import Weight
 
-Callback = Callable[[float | None, float], Any]
+Callback = Callable[[Optional[float], float], Any]
+
 
 class Weights:
-
     def __init__(self) -> None:
         self._weights: list[Weight] = []
         self._weights_by_name: dict[Hashable, Weight] = {}
@@ -53,7 +53,7 @@ class Weights:
             callback(old_value, new_value)
 
     def __repr__(self) -> str:
-        return ''.join(
-            f'{name} = {weight.value}\n'
+        return "".join(
+            f"{name} = {weight.value}\n"
             for name, weight in self._weights_by_name.items()
         )
