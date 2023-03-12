@@ -76,8 +76,9 @@ class TrackGraph:
 
         self._update_metadata()
 
-    def _assignment_node_to_edge_tuple(self, graph, assignment_node):
-
+    def _assignment_node_to_edge_tuple(
+        self, graph: DiGraph, assignment_node: Hashable
+    ) -> tuple[tuple[Hashable, ...], ...]:
         in_nodes = graph.predecessors(assignment_node)
         out_nodes = graph.successors(assignment_node)
         nodes = in_nodes + out_nodes

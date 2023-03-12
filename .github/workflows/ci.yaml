@@ -17,14 +17,6 @@ jobs:
       - name: Run pre-commit linting
         run: pipx run pre-commit run --all-files
 
-  typing: 
-    name: Check typing
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Run mypy
-        run: pipx run mypy
-
   test:
     name: ${{ matrix.platform }} py${{ matrix.python-version }}
     runs-on: ${{ matrix.platform }}

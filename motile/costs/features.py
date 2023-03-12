@@ -5,7 +5,9 @@ class Features:
     def __init__(self) -> None:
         self._values = np.zeros((0, 0), dtype=np.float32)
 
-    def resize(self, num_variables: int = None, num_features: int = None) -> None:
+    def resize(
+        self, num_variables: int | None = None, num_features: int | None = None
+    ) -> None:
         if num_variables is None:
             num_variables = self._values.shape[0]
         if num_features is None:

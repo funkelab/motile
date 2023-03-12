@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     import ilpy
+
     from motile.solver import Solver
 
 

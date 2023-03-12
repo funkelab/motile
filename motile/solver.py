@@ -47,13 +47,13 @@ class Solver:
         self._weights_changed = True
         self.features = Features()
 
-        self.ilp_solver = None
-        self.objective = None
+        self.ilp_solver: ilpy.LinearSolver | None = None
+        self.objective: ilpy.LinearObjective | None = None
         self.constraints = ilpy.LinearConstraints()
 
         self.num_variables: int = 0
         self.costs = np.zeros((0,), dtype=np.float32)
-        self._costs_instances = {}
+        self._costs_instances: dict[str, Costs] = {}
         self.solution = None
 
         if not skip_core_constraints:
@@ -183,7 +183,7 @@ class Solver:
             self._add_variables(cls)
         return cast('V', self.variables[cls])
 
-    def add_variable_cost(self, index: int, value: float, weight: Weight):
+    def add_variable_cost(self, index: int, value: float, weight: Weight) -> None:
         """Add costs for an individual variable.
 
         To be used within implementations of :class:`motile.costs.Costs`.
@@ -193,7 +193,7 @@ class Solver:
         feature_index = self.weights.index_of(weight)
         self.features.add_feature(variable_index, feature_index, value)
 
-    def fit_weights(self, gt_attribute):
+    def fit_weights(self, gt_attribute: str) -> None:
         from .ssvm import fit_weights
 
         optimal_weights = fit_weights(self, gt_attribute)
@@ -211,7 +211,7 @@ class Solver:
         for constraint in cls.instantiate_constraints(self):
             self.constraints.add(constraint)
 
-    def _compute_costs(self):
+    def _compute_costs(self) -> None:
 
         logger.info("Computing costs...")
 

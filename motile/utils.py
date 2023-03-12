@@ -42,14 +42,14 @@ def get_tracks(
             if (selected_attribute in graph.edges[e]
                 and graph.edges[e][selected_attribute])
         ]
-        graph = graph.edge_subgraph(selected_edges)
+        graph = graph.nx_graph.edge_subgraph(selected_edges)
 
     if len(graph.nodes) == 0:
         return []
 
     return [
         TrackGraph(
-            graph=graph.subgraph(g).copy(),
+            graph=graph.nx_graph.subgraph(g).copy(),
             frame_attribute=graph.frame_attribute,
         )
         for g in nx.weakly_connected_components(graph)
