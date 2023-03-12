@@ -1,6 +1,13 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from ..variables import EdgeSelected
 from .costs import Costs
 from .weight import Weight
+
+if TYPE_CHECKING:
+    from motile.solver import Solver
 
 
 class EdgeSelection(Costs):
@@ -20,13 +27,15 @@ class EdgeSelection(Costs):
             A constant cost for each selected edge.
     """
 
-    def __init__(self, weight, attribute='costs', constant=0.0):
+    def __init__(
+        self, weight: float, attribute: str = "costs", constant: float = 0.0
+    ) -> None:
 
         self.weight = Weight(weight)
         self.constant = Weight(constant)
         self.attribute = attribute
 
-    def apply(self, solver):
+    def apply(self, solver: Solver) -> None:
 
         edge_variables = solver.get_variables(EdgeSelected)
 
@@ -34,7 +43,8 @@ class EdgeSelection(Costs):
 
             solver.add_variable_cost(
                 index,
-                solver.graph.edges[edge][self.attribute],
+                # Not sure about this type ignore
+                solver.graph.edges[edge][self.attribute],  # type: ignore [index]
                 self.weight)
             solver.add_variable_cost(
                 index,

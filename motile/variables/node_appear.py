@@ -1,8 +1,15 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Hashable, Sequence
+
 import ilpy
 
 from .edge_selected import EdgeSelected
 from .node_selected import NodeSelected
 from .variable import Variable
+
+if TYPE_CHECKING:
+    from motile.solver import Solver
 
 
 class NodeAppear(Variable):
@@ -27,11 +34,11 @@ class NodeAppear(Variable):
     """
 
     @staticmethod
-    def instantiate(solver):
-        return solver.graph.nodes
+    def instantiate(solver: Solver) -> Sequence[Hashable]:
+        return solver.graph.nodes  # type: ignore
 
     @staticmethod
-    def instantiate_constraints(solver):
+    def instantiate_constraints(solver: Solver) -> list[ilpy.LinearConstraint]:
 
         appear_indicators = solver.get_variables(NodeAppear)
         node_indicators = solver.get_variables(NodeSelected)

@@ -1,7 +1,14 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import ilpy
 
 from ..variables import EdgeSelected
 from .constraint import Constraint
+
+if TYPE_CHECKING:
+    from motile.solver import Solver
 
 
 class MaxChildren(Constraint):
@@ -20,11 +27,11 @@ class MaxChildren(Constraint):
             The maximum number of children allowed.
     """
 
-    def __init__(self, max_children):
+    def __init__(self, max_children: int) -> None:
 
         self.max_children = max_children
 
-    def instantiate(self, solver):
+    def instantiate(self, solver: Solver) -> list[ilpy.LinearConstraint]:
 
         edge_indicators = solver.get_variables(EdgeSelected)
 

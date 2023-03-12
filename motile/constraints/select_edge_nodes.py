@@ -1,7 +1,14 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import ilpy
 
 from ..variables import EdgeSelected, NodeSelected
 from .constraint import Constraint
+
+if TYPE_CHECKING:
+    from motile.solver import Solver
 
 
 class SelectEdgeNodes(Constraint):
@@ -17,7 +24,7 @@ class SelectEdgeNodes(Constraint):
     This constraint will be added by default to any :class:`Solver` instance.
     """
 
-    def instantiate(self, solver):
+    def instantiate(self, solver: Solver) -> list[ilpy.LinearConstraint]:
 
         node_indicators = solver.get_variables(NodeSelected)
         edge_indicators = solver.get_variables(EdgeSelected)

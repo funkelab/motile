@@ -2,7 +2,7 @@ import motile
 import networkx
 
 
-def create_arlo_graph():
+def create_arlo_graph() -> motile.TrackGraph:
     '''Create the "Arlo graph", a simple toy graph for testing:
 
        x

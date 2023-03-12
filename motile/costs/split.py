@@ -1,6 +1,13 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from ..variables import NodeSplit
 from .costs import Costs
 from .weight import Weight
+
+if TYPE_CHECKING:
+    from motile.solver import Solver
 
 
 class Split(Costs):
@@ -13,11 +20,11 @@ class Split(Costs):
             child.
     """
 
-    def __init__(self, constant):
+    def __init__(self, constant: float) -> None:
 
         self.constant = Weight(constant)
 
-    def apply(self, solver):
+    def apply(self, solver: Solver) -> None:
 
         split_indicators = solver.get_variables(NodeSplit)
 

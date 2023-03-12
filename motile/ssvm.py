@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 try:
     import structsvm as ssvm
 except ImportError as e:
@@ -6,18 +8,23 @@ except ImportError as e:
         "Please install structsvm."
     ) from e
 
+from typing import TYPE_CHECKING
+
 import numpy as np
 
 from .variables import NodeSelected
 
+if TYPE_CHECKING:
+    from motile.solver import Solver
+
 
 def fit_weights(
-        solver,
-        gt_attribute,
-        regularizer_weight=0.1,
-        eps=1e-6,
-        max_iterations=None):
-
+    solver: Solver,
+    gt_attribute: str,
+    regularizer_weight: float = 0.1,
+    eps: float = 1e-6,
+    max_iterations: int | None = None,
+) -> np.ndarray:
     features = solver.features.to_ndarray()
 
     mask = np.zeros((solver.num_variables,), dtype=np.float32)

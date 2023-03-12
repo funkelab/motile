@@ -1,12 +1,24 @@
+from __future__ import annotations
+
 import logging
+from typing import TYPE_CHECKING, TypeVar, cast
 
 import ilpy
 import numpy as np
+
+from motile.constraints.constraint import Constraint
 
 from .constraints import SelectEdgeNodes
 from .costs import Features, Weight, Weights
 
 logger = logging.getLogger(__name__)
+
+if TYPE_CHECKING:
+    from motile.costs import Costs
+    from motile.track_graph import TrackGraph
+    from motile.variables import Variable
+
+    V = TypeVar('V', bound=Variable)
 
 
 class Solver:
@@ -23,23 +35,25 @@ class Solver:
             edges are added.
     """
 
-    def __init__(self, track_graph, skip_core_constraints=False):
+    def __init__(
+        self, track_graph: TrackGraph, skip_core_constraints: bool = False
+    ) -> None:
 
         self.graph = track_graph
-        self.variables = {}
+        self.variables: dict[type[Variable], Variable] = {}
 
         self.weights = Weights()
         self.weights.register_modify_callback(self._on_weights_modified)
         self._weights_changed = True
         self.features = Features()
 
-        self.ilp_solver = None
-        self.objective = None
+        self.ilp_solver: ilpy.LinearSolver | None = None
+        self.objective: ilpy.LinearObjective | None = None
         self.constraints = ilpy.LinearConstraints()
 
-        self.num_variables = 0
+        self.num_variables: int = 0
         self.costs = np.zeros((0,), dtype=np.float32)
-        self._costs_instances = {}
+        self._costs_instances: dict[str, Costs] = {}
         self.solution = None
 
         if not skip_core_constraints:
@@ -47,7 +61,7 @@ class Solver:
 
     # TODO: add getter/setter for costs, to compute when needed
 
-    def add_costs(self, costs, name=None):
+    def add_costs(self, costs: Costs, name: str | None = None) -> None:
         """Add linear costs to the value of variables in this solver.
 
         Args:
@@ -83,7 +97,7 @@ class Solver:
 
         costs.apply(self)
 
-    def add_constraints(self, constraints):
+    def add_constraints(self, constraints: Constraint) -> None:
         """Add linear constraints to the solver.
 
         Args:
@@ -97,7 +111,9 @@ class Solver:
         for constraint in constraints.instantiate(self):
             self.constraints.add(constraint)
 
-    def solve(self, timeout=0.0, num_threads=1):
+    def solve(
+        self, timeout: float = 0.0, num_threads: int = 1
+    ) -> ilpy.Solution:
         """Solve the global optimization problem.
 
         Args:
@@ -137,7 +153,7 @@ class Solver:
 
         self.ilp_solver.set_num_threads(num_threads)
         if timeout > 0:
-            self.ilp_solver.set_timeout(self.timeout)
+            self.ilp_solver.set_timeout(timeout)
 
         self.solution, message = self.ilp_solver.solve()
         if len(message):
@@ -145,7 +161,7 @@ class Solver:
 
         return self.solution
 
-    def get_variables(self, cls):
+    def get_variables(self, cls: type[V]) -> V:
         """Get variables by their class name.
 
         If the solver does not yet contain those variables, they will be
@@ -153,9 +169,8 @@ class Solver:
 
         Args:
 
-            cls (class name):
-                The name of a class inheriting from
-                :class:`motile.variables.Variable`.
+            cls (type of :class:`motile.variables.Variable`):
+                A subclass of :class:`motile.variables.Variable`.
 
         Returns:
 
@@ -166,10 +181,9 @@ class Solver:
 
         if cls not in self.variables:
             self._add_variables(cls)
+        return cast('V', self.variables[cls])
 
-        return self.variables[cls]
-
-    def add_variable_cost(self, index, value, weight):
+    def add_variable_cost(self, index: int, value: float, weight: Weight) -> None:
         """Add costs for an individual variable.
 
         To be used within implementations of :class:`motile.costs.Costs`.
@@ -179,25 +193,25 @@ class Solver:
         feature_index = self.weights.index_of(weight)
         self.features.add_feature(variable_index, feature_index, value)
 
-    def fit_weights(self, gt_attribute):
+    def fit_weights(self, gt_attribute: str) -> None:
         from .ssvm import fit_weights
 
         optimal_weights = fit_weights(self, gt_attribute)
         self.weights.from_ndarray(optimal_weights)
 
-    def _add_variables(self, cls):
+    def _add_variables(self, cls: type[V]) -> None:
 
         logger.info("Adding %s variables...", cls.__name__)
 
         keys = cls.instantiate(self)
         indices = self._allocate_variables(len(keys))
-        variables = cls(self, {k: i for k, i in zip(keys, indices)})
+        variables = cls(self, dict(zip(keys, indices)))
         self.variables[cls] = variables
 
         for constraint in cls.instantiate_constraints(self):
             self.constraints.add(constraint)
 
-    def _compute_costs(self):
+    def _compute_costs(self) -> None:
 
         logger.info("Computing costs...")
 
@@ -206,7 +220,7 @@ class Solver:
         self.costs = np.dot(features, weights)
 
     # TODO: add variable_type
-    def _allocate_variables(self, num_variables):
+    def _allocate_variables(self, num_variables: int) -> range:
 
         indices = range(
             self.num_variables,
@@ -218,7 +232,7 @@ class Solver:
 
         return indices
 
-    def _on_weights_modified(self, old_value, new_value):
+    def _on_weights_modified(self, old_value: float | None, new_value: float) -> None:
 
         if old_value != new_value:
 
