@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Hashable
+from typing import TYPE_CHECKING, Any, Hashable
 
 logger = logging.getLogger(__name__)
 
@@ -46,7 +46,7 @@ class TrackGraph:
 
         self.nx_graph = graph
 
-        self.nodes = {
+        self.nodes: dict[Hashable, Any] = {
             node: graph.nodes[node]
             for node in graph.nodes
             if frame_attribute in graph.nodes[node]

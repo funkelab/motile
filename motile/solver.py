@@ -232,7 +232,7 @@ class Solver:
 
         return indices
 
-    def _on_weights_modified(self, old_value, new_value):
+    def _on_weights_modified(self, old_value: float | None, new_value: float) -> None:
 
         if old_value != new_value:
 

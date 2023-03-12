@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Hashable, Sequence
 
 import ilpy
 
@@ -31,8 +31,8 @@ class NodeSplit(Variable):
     """
 
     @staticmethod
-    def instantiate(solver):
-        return solver.graph.nodes
+    def instantiate(solver: Solver) -> Sequence[Hashable]:
+        return list(solver.graph.nodes)
 
     @staticmethod
     def instantiate_constraints(solver: Solver) -> list[ilpy.LinearConstraint]:

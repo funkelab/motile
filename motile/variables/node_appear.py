@@ -38,7 +38,7 @@ class NodeAppear(Variable):
         return solver.graph.nodes  # type: ignore
 
     @staticmethod
-    def instantiate_constraints(solver):
+    def instantiate_constraints(solver: Solver) -> list[ilpy.LinearConstraint]:
 
         appear_indicators = solver.get_variables(NodeAppear)
         node_indicators = solver.get_variables(NodeSelected)
