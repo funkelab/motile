@@ -10,6 +10,7 @@ from .constraint import Constraint
 if TYPE_CHECKING:
     from motile.solver import Solver
 
+
 class Pin(Constraint):
     """Enforces the selection of certain nodes and edges based on the value of
     a given attribute.
