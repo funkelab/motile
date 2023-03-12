@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy as np
 
 
@@ -27,5 +29,5 @@ class Features:
 
     def to_ndarray(self) -> np.ndarray:
         # _values is already an ndarray, but this might change in the future
-        # Note: consider implementing 
+        # Note: consider implementing
         return self._values
