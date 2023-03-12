@@ -30,23 +30,18 @@ class EdgeSelection(Costs):
     def __init__(
         self, weight: float, attribute: str = "costs", constant: float = 0.0
     ) -> None:
-
         self.weight = Weight(weight)
         self.constant = Weight(constant)
         self.attribute = attribute
 
     def apply(self, solver: Solver) -> None:
-
         edge_variables = solver.get_variables(EdgeSelected)
 
         for edge, index in edge_variables.items():
-
             solver.add_variable_cost(
                 index,
                 # Not sure about this type ignore
                 solver.graph.edges[edge][self.attribute],  # type: ignore [index]
-                self.weight)
-            solver.add_variable_cost(
-                index,
-                1.0,
-                self.constant)
+                self.weight,
+            )
+            solver.add_variable_cost(index, 1.0, self.constant)

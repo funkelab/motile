@@ -8,6 +8,7 @@ logger = logging.getLogger(__name__)
 if TYPE_CHECKING:
     from networkx.classes import DiGraph
 
+
 class TrackGraph:
     """A :class:`networkx.DiGraph` of objects with positions in time and space,
     and inter-frame edges between them.
@@ -62,15 +63,14 @@ class TrackGraph:
         if is_bipartite:
             self.edges = {
                 self._assignment_node_to_edge_tuple(
-                    graph,
-                    assignment_node):
-                graph.nodes[assignment_node]
+                    graph, assignment_node
+                ): graph.nodes[assignment_node]
                 for assignment_node in graph.nodes
                 if frame_attribute not in graph.nodes[assignment_node]
             }
         else:
             self.edges = graph.edges
-            for (u, v) in graph.edges:
+            for u, v in graph.edges:
                 self.prev_edges[v].append((u, v))
                 self.next_edges[u].append((u, v))
 
@@ -86,11 +86,7 @@ class TrackGraph:
         frames = sorted(node[self.frame_attribute] for node in nodes)
 
         edge_tuple = tuple(
-            tuple(
-                node
-                for node in nodes
-                if node[self.frame_attribute] == frame
-            )
+            tuple(node for node in nodes if node[self.frame_attribute] == frame)
             for frame in frames
         )
 
@@ -102,15 +98,15 @@ class TrackGraph:
         return edge_tuple
 
     def get_frames(self) -> tuple[int | None, int | None]:
-        '''Get a tuple ``(t_begin, t_end)`` of the first and last frame
-        (exclusive) this track graph has nodes for.'''
+        """Get a tuple ``(t_begin, t_end)`` of the first and last frame
+        (exclusive) this track graph has nodes for."""
 
         self._update_metadata()
 
         return (self.t_begin, self.t_end)
 
     def nodes_by_frame(self, t: int) -> list[Hashable]:
-        '''Get all nodes in frame ``t``.'''
+        """Get all nodes in frame ``t``."""
 
         self._update_metadata()
 
@@ -119,7 +115,6 @@ class TrackGraph:
         return self._nodes_by_frame[t]
 
     def _update_metadata(self) -> None:
-
         if not self._graph_changed:
             return
 
@@ -127,7 +122,6 @@ class TrackGraph:
         self._nodes_by_frame: dict[int, list[Hashable]] = {}
 
         if not self.nodes:
-
             self._nodes_by_frame = {}
             self.t_begin = None
             self.t_end = None
@@ -148,8 +142,9 @@ class TrackGraph:
             for u, v in self.edges:
                 t_u = self.nodes[u][self.frame_attribute]
                 t_v = self.nodes[v][self.frame_attribute]
-                assert t_u < t_v, \
-                    f"Edge ({u}, {v}) does not point forwards in time, but " \
+                assert t_u < t_v, (
+                    f"Edge ({u}, {v}) does not point forwards in time, but "
                     f"from frame {t_u} to {t_v}"
+                )
 
         self._graph_changed = False

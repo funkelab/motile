@@ -35,16 +35,10 @@ class NodeSelection(Costs):
         self.attribute = attribute
 
     def apply(self, solver: Solver) -> None:
-
         node_variables = solver.get_variables(NodeSelected)
 
         for node, index in node_variables.items():
-
             solver.add_variable_cost(
-                index,
-                solver.graph.nodes[node][self.attribute],
-                self.weight)
-            solver.add_variable_cost(
-                index,
-                1.0,
-                self.constant)
+                index, solver.graph.nodes[node][self.attribute], self.weight
+            )
+            solver.add_variable_cost(index, 1.0, self.constant)

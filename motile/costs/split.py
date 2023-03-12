@@ -21,11 +21,9 @@ class Split(Costs):
     """
 
     def __init__(self, constant: float) -> None:
-
         self.constant = Weight(constant)
 
     def apply(self, solver: Solver) -> None:
-
         split_indicators = solver.get_variables(NodeSplit)
 
         for index in split_indicators.values():

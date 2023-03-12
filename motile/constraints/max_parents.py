@@ -28,16 +28,13 @@ class MaxParents(Constraint):
     """
 
     def __init__(self, max_parents: int) -> None:
-
         self.max_parents = max_parents
 
     def instantiate(self, solver: Solver) -> list[ilpy.LinearConstraint]:
-
         edge_indicators = solver.get_variables(EdgeSelected)
 
         constraints = []
         for node in solver.graph.nodes:
-
             constraint = ilpy.LinearConstraint()
 
             # all incoming edges
