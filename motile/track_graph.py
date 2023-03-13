@@ -35,7 +35,7 @@ class TrackGraph:
     # TODO: make nx_graph truly be optional again...
     def __init__(
             self,
-            nx_graph=None,
+            nx_graph,
             frame_attribute='t',
             has_hyperedges=False):
 
@@ -55,7 +55,13 @@ class TrackGraph:
         self.next_edges = {node: [] for node in self.nodes}
 
         if has_hyperedges:
-            self.edges = {
+            self.edges = {}
+            for edge, data in nx_graph.edges.items():
+                if self._is_simple_edge(edge):
+                    self.edges[edge] = data
+                    self.prev_edges[edge[1]].append(edge)
+                    self.next_edges[edge[0]].append(edge)
+            self.edges |= {
                 self._assignment_node_to_edge_tuple(
                     nx_graph,
                     assignment_node):
@@ -71,14 +77,20 @@ class TrackGraph:
 
         self._update_metadata()
 
+    def _is_simple_edge(self, edge):
+        if isinstance(edge, tuple) and len(edge) == 2:
+            if isinstance(edge[0], int) and isinstance(edge[1], int):
+                return True
+        return False
+
     def _assignment_node_to_edge_tuple(self, graph, assignment_node):
 
-        in_nodes = graph.predecessors(assignment_node)
-        out_nodes = graph.successors(assignment_node)
-        nodes = list(in_nodes) + list(out_nodes)
+        in_nodes = list(graph.predecessors(assignment_node))
+        out_nodes = list(graph.successors(assignment_node))
+        nodes = in_nodes + out_nodes
 
-        frames = list(graph.nodes[node][self.frame_attribute] for node in nodes)
-        frames = sorted(frames)
+        frames = set((graph.nodes[node][self.frame_attribute] for node in nodes))
+        frames = list(sorted(frames))
 
         edge_tuple = tuple(
             tuple(
@@ -90,9 +102,9 @@ class TrackGraph:
         )
 
         for in_node in in_nodes:
-            self.next_edges[in_nodes].append(edge_tuple)
+            self.next_edges[in_node].append(edge_tuple)
         for out_node in out_nodes:
-            self.prev_edges[out_nodes].append(edge_tuple)
+            self.prev_edges[out_node].append(edge_tuple)
 
         return edge_tuple
 
