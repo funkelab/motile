@@ -23,7 +23,9 @@ class Features:
         num_variables, num_features = self._values.shape
 
         if variable_index >= num_variables or feature_index >= num_features:
-            self.resize(variable_index + 1, feature_index + 1)
+            self.resize(
+                max(variable_index + 1, num_variables),
+                max(feature_index + 1, num_features))
 
         self._values[variable_index, feature_index] += value
 
