@@ -39,14 +39,12 @@ class NodeAppear(Variable):
 
     @staticmethod
     def instantiate_constraints(solver: Solver) -> list[ilpy.LinearConstraint]:
-
         appear_indicators = solver.get_variables(NodeAppear)
         node_indicators = solver.get_variables(NodeSelected)
         edge_indicators = solver.get_variables(EdgeSelected)
 
         constraints = []
         for node in solver.graph.nodes:
-
             prev_edges = solver.graph.prev_edges[node]
             num_prev_edges = len(prev_edges)
 
@@ -67,33 +65,21 @@ class NodeAppear(Variable):
             # set s for both constraints:
 
             # num_prev * selected
-            constraint1.set_coefficient(
-                node_indicators[node],
-                num_prev_edges)
-            constraint2.set_coefficient(
-                node_indicators[node],
-                num_prev_edges)
+            constraint1.set_coefficient(node_indicators[node], num_prev_edges)
+            constraint2.set_coefficient(node_indicators[node], num_prev_edges)
 
             # - sum(prev_selected)
             for prev_edge in prev_edges:
-                constraint1.set_coefficient(
-                    edge_indicators[prev_edge],
-                    -1.0)
-                constraint2.set_coefficient(
-                    edge_indicators[prev_edge],
-                    -1.0)
+                constraint1.set_coefficient(edge_indicators[prev_edge], -1.0)
+                constraint2.set_coefficient(edge_indicators[prev_edge], -1.0)
 
             # constraint specific parts:
 
             # - appear
-            constraint1.set_coefficient(
-                appear_indicators[node],
-                -1.0)
+            constraint1.set_coefficient(appear_indicators[node], -1.0)
 
             # - appear * num_prev
-            constraint2.set_coefficient(
-                appear_indicators[node],
-                -num_prev_edges)
+            constraint2.set_coefficient(appear_indicators[node], -num_prev_edges)
 
             constraint1.set_relation(ilpy.Relation.LessEqual)
             constraint2.set_relation(ilpy.Relation.GreaterEqual)

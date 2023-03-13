@@ -18,7 +18,7 @@ if TYPE_CHECKING:
     from motile.track_graph import TrackGraph
     from motile.variables import Variable
 
-    V = TypeVar('V', bound=Variable)
+    V = TypeVar("V", bound=Variable)
 
 
 class Solver:
@@ -38,7 +38,6 @@ class Solver:
     def __init__(
         self, track_graph: TrackGraph, skip_core_constraints: bool = False
     ) -> None:
-
         self.graph = track_graph
         self.variables: dict[type[Variable], Variable] = {}
 
@@ -83,7 +82,8 @@ class Solver:
             raise RuntimeError(
                 f"A cost instance with name '{name}' was already registered. "
                 "Consider passing a different name with the 'name=' argument "
-                "to Solver.add_costs")
+                "to Solver.add_costs"
+            )
 
         logger.info("Adding %s costs...", name)
 
@@ -111,9 +111,7 @@ class Solver:
         for constraint in constraints.instantiate(self):
             self.constraints.add(constraint)
 
-    def solve(
-        self, timeout: float = 0.0, num_threads: int = 1
-    ) -> ilpy.Solution:
+    def solve(self, timeout: float = 0.0, num_threads: int = 1) -> ilpy.Solution:
         """Solve the global optimization problem.
 
         Args:
@@ -144,9 +142,8 @@ class Solver:
 
         # TODO: support other variable types
         self.ilp_solver = ilpy.LinearSolver(
-            self.num_variables,
-            ilpy.VariableType.Binary,
-            preference=ilpy.Preference.Any)
+            self.num_variables, ilpy.VariableType.Binary, preference=ilpy.Preference.Any
+        )
 
         self.ilp_solver.set_objective(self.objective)
         self.ilp_solver.set_constraints(self.constraints)
@@ -181,7 +178,7 @@ class Solver:
 
         if cls not in self.variables:
             self._add_variables(cls)
-        return cast('V', self.variables[cls])
+        return cast("V", self.variables[cls])
 
     def add_variable_cost(self, index: int, value: float, weight: Weight) -> None:
         """Add costs for an individual variable.
@@ -200,7 +197,6 @@ class Solver:
         self.weights.from_ndarray(optimal_weights)
 
     def _add_variables(self, cls: type[V]) -> None:
-
         logger.info("Adding %s variables...", cls.__name__)
 
         keys = cls.instantiate(self)
@@ -212,7 +208,6 @@ class Solver:
             self.constraints.add(constraint)
 
     def _compute_costs(self) -> None:
-
         logger.info("Computing costs...")
 
         weights = self.weights.to_ndarray()
@@ -221,11 +216,7 @@ class Solver:
 
     # TODO: add variable_type
     def _allocate_variables(self, num_variables: int) -> range:
-
-        indices = range(
-            self.num_variables,
-            self.num_variables + num_variables
-        )
+        indices = range(self.num_variables, self.num_variables + num_variables)
 
         self.num_variables += num_variables
         self.features.resize(num_variables=self.num_variables)
@@ -233,9 +224,7 @@ class Solver:
         return indices
 
     def _on_weights_modified(self, old_value: float | None, new_value: float) -> None:
-
         if old_value != new_value:
-
             if not self._weights_changed:
                 logger.info("Weights have changed")
 

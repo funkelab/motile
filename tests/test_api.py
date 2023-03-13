@@ -7,21 +7,12 @@ from motile.costs import Appear, EdgeSelection, NodeSelection, Split
 
 
 class TestAPI(unittest.TestCase):
-
     def test_solver(self):
-
         graph = create_arlo_graph()
 
         solver = motile.Solver(graph)
-        solver.add_costs(
-            NodeSelection(
-                weight=-1.0,
-                attribute='score',
-                constant=-100.0))
-        solver.add_costs(
-            EdgeSelection(
-                weight=1.0,
-                attribute='prediction_distance'))
+        solver.add_costs(NodeSelection(weight=-1.0, attribute="score", constant=-100.0))
+        solver.add_costs(EdgeSelection(weight=1.0, attribute="prediction_distance"))
         solver.add_costs(Appear(constant=200.0))
         solver.add_costs(Split(constant=100.0))
         solver.add_constraints(MaxParents(1))

@@ -29,23 +29,19 @@ class EdgeDistance(Costs):
     def __init__(
         self, position_attributes: tuple[str, ...], weight: float = 1.0
     ) -> None:
-
         self.position_attributes = position_attributes
         self.weight = Weight(weight)
 
     def apply(self, solver: Solver) -> None:
-
         edge_variables = solver.get_variables(EdgeSelected)
         for key, index in edge_variables.items():
-            u, v = cast('tuple[int, int]', key)
-            pos_u = np.array([
-                solver.graph.nodes[u][p]
-                for p in self.position_attributes
-            ])
-            pos_v = np.array([
-                solver.graph.nodes[v][p]
-                for p in self.position_attributes
-            ])
+            u, v = cast("tuple[int, int]", key)
+            pos_u = np.array(
+                [solver.graph.nodes[u][p] for p in self.position_attributes]
+            )
+            pos_v = np.array(
+                [solver.graph.nodes[v][p] for p in self.position_attributes]
+            )
 
             feature = np.linalg.norm(pos_u - pos_v)
 

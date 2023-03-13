@@ -20,11 +20,9 @@ class Appear(Costs):
     """
 
     def __init__(self, constant: float) -> None:
-
         self.constant = Weight(constant)
 
     def apply(self, solver: Solver) -> None:
-
         appear_indicators = solver.get_variables(NodeAppear)
 
         for index in appear_indicators.values():

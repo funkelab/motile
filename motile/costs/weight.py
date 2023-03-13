@@ -4,7 +4,6 @@ Callback = Callable[[float, float], Any]
 
 
 class Weight:
-    
     def __init__(self, initial_value: float) -> None:
         self._value = initial_value
         self._modify_callbacks: List[Callback] = []

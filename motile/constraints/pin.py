@@ -31,11 +31,9 @@ class Pin(Constraint):
     """
 
     def __init__(self, attribute: str) -> None:
-
         self.attribute = attribute
 
     def instantiate(self, solver: Solver) -> list[ilpy.LinearConstraint]:
-
         node_indicators = solver.get_variables(NodeSelected)
         edge_indicators = solver.get_variables(EdgeSelected)
 

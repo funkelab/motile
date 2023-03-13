@@ -25,13 +25,11 @@ class SelectEdgeNodes(Constraint):
     """
 
     def instantiate(self, solver: Solver) -> list[ilpy.LinearConstraint]:
-
         node_indicators = solver.get_variables(NodeSelected)
         edge_indicators = solver.get_variables(EdgeSelected)
 
         constraints = []
         for edge in solver.graph.edges:
-
             u, v = edge
 
             ind_e = edge_indicators[edge]

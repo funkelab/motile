@@ -92,9 +92,7 @@ class Variable(ABC):
         """
         return []
 
-    def __init__(
-        self, solver: Solver, index_map: dict[Hashable, int]
-    ) -> None:
+    def __init__(self, solver: Solver, index_map: dict[Hashable, int]) -> None:
         self._solver = solver
         self._index_map = index_map
 

@@ -8,7 +8,6 @@ if TYPE_CHECKING:
 
 
 class Costs(ABC):
-
     @abstractmethod
     def apply(self, solver: Solver) -> None:
         """Apply costs to the given solver. Use

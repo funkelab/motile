@@ -38,11 +38,13 @@ def fit_weights(
         solver.constraints,
         features.T,  # TODO: fix in ssvm
         ground_truth,
-        ssvm.HammingCosts(ground_truth, mask))
+        ssvm.HammingCosts(ground_truth, mask),
+    )
     bundle_method = ssvm.BundleMethod(
         loss.value_and_gradient,
         dims=features.shape[1],
         regularizer_weight=regularizer_weight,
-        eps=eps)
+        eps=eps,
+    )
 
     return bundle_method.optimize(max_iterations)
