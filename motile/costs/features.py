@@ -24,8 +24,7 @@ class Features:
 
     def _increase_variables(self, num_variables: int) -> None:
         # Increasing size without copying works only in dim 0
-        self._values.resize(
-            (num_variables, self._values.shape[1]), refcheck=False)
+        self._values.resize((num_variables, self._values.shape[1]), refcheck=False)
 
     def _increase_features(self, num_features: int) -> None:
         # Need to copy the array when increasing size of dim 1
@@ -41,7 +40,8 @@ class Features:
         if variable_index >= num_variables or feature_index >= num_features:
             self.resize(
                 max(variable_index + 1, num_variables),
-                max(feature_index + 1, num_features))
+                max(feature_index + 1, num_features),
+            )
 
         self._values[variable_index, feature_index] += value
 

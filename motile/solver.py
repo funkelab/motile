@@ -140,7 +140,7 @@ class Solver:
             self.num_variables,
             ilpy.VariableType.Binary,
             variable_types=self.variable_types,
-            preference=ilpy.Preference.Any
+            preference=ilpy.Preference.Any,
         )
 
         self.ilp_solver.set_objective(self.objective)
@@ -226,7 +226,6 @@ class Solver:
         self._costs = np.dot(features, weights)
 
     def _allocate_variables(self, num_variables: int) -> range:
-
         indices = range(self.num_variables, self.num_variables + num_variables)
 
         self.num_variables += num_variables

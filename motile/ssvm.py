@@ -12,7 +12,7 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
-from .variables import NodeSelected, EdgeSelected
+from .variables import EdgeSelected, NodeSelected
 
 if TYPE_CHECKING:
     from motile.solver import Solver
