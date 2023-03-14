@@ -52,14 +52,12 @@ class Solver:
         self.constraints = ilpy.LinearConstraints()
 
         self.num_variables: int = 0
-        self.costs = np.zeros((0,), dtype=np.float32)
+        self._costs = np.zeros((0,), dtype=np.float32)
         self._costs_instances: dict[str, Costs] = {}
         self.solution = None
 
         if not skip_core_constraints:
             self.add_constraints(SelectEdgeNodes())
-
-    # TODO: add getter/setter for costs, to compute when needed
 
     def add_costs(self, costs: Costs, name: str | None = None) -> None:
         """Add linear costs to the value of variables in this solver.
@@ -132,10 +130,6 @@ class Solver:
             vector.
         """
 
-        if self._weights_changed:
-            self._compute_costs()
-            self._weights_changed = False
-
         self.objective = ilpy.LinearObjective(self.num_variables)
         for i, c in enumerate(self.costs):
             logger.debug("Setting cost of var %d to %.3f", i, c)
@@ -200,6 +194,14 @@ class Solver:
         optimal_weights = fit_weights(self, gt_attribute)
         self.weights.from_ndarray(optimal_weights)
 
+    @property
+    def costs(self):
+        if self._weights_changed:
+            self._compute_costs()
+            self._weights_changed = False
+
+        return self._costs
+
     def _add_variables(self, cls: type[V]) -> None:
         logger.info("Adding %s variables...", cls.__name__)
 
@@ -219,7 +221,7 @@ class Solver:
 
         weights = self.weights.to_ndarray()
         features = self.features.to_ndarray()
-        self.costs = np.dot(features, weights)
+        self._costs = np.dot(features, weights)
 
     def _allocate_variables(self, num_variables: int) -> range:
 
