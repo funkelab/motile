@@ -49,6 +49,19 @@ class NodeAppear(Variable[NodeId]):
             prev_edges = solver.graph.prev_edges[node]
             num_prev_edges = len(prev_edges)
 
+            if num_prev_edges == 0:
+                # special case: no incoming edges, appear indicator is equal to
+                # selection indicator
+                constraint = ilpy.LinearConstraint()
+                constraint.set_coefficient(node_indicators[node], 1.0)
+                constraint.set_coefficient(appear_indicators[node], -1.0)
+                constraint.set_relation(ilpy.Relation.Equal)
+                constraint.set_value(0.0)
+
+                constraints.append(constraint)
+
+                continue
+
             # Ensure that the following holds:
             #
             # appear = 1 <=> sum(prev_selected) = 0 and selected
