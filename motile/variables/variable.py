@@ -3,9 +3,9 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Hashable, Iterable, Sequence
 
-if TYPE_CHECKING:
-    import ilpy
+import ilpy
 
+if TYPE_CHECKING:
     from motile.solver import Solver
 
 
@@ -37,6 +37,9 @@ class Variable(ABC):
     :class:`Constraints<motile.constraints.Constraint>` and
     :class:`motile.costs.Costs` can ask for variables.
     """
+
+    # default variable type, replace in subclasses to override
+    variable_type = ilpy.VariableType.Binary
 
     @staticmethod
     @abstractmethod
