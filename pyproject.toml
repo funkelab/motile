@@ -48,4 +48,5 @@ exclude_lines = ["pragma: no cover", "pragma: ${PY_MAJOR_VERSION} no cover"]
 files = "motile"
 strict = true                 # feel free to relax this if it's annoying
 allow_untyped_defs = true     # TODO: can eventually fill out typing and remove this
+disallow_any_generics = false
 ignore_missing_imports = true
