@@ -216,6 +216,8 @@ class Solver:
         for constraint in cls.instantiate_constraints(self):
             self.constraints.add(constraint)
 
+        self.features.resize(num_variables=self.num_variables)
+
     def _compute_costs(self) -> None:
         logger.info("Computing costs...")
 
