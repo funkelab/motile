@@ -40,6 +40,7 @@ class Solver:
     ) -> None:
         self.graph = track_graph
         self.variables: dict[type[Variable], Variable] = {}
+        self.variable_types: dict[int, ilpy.VariableType] = {}
 
         self.weights = Weights()
         self.weights.register_modify_callback(self._on_weights_modified)
@@ -142,7 +143,10 @@ class Solver:
 
         # TODO: support other variable types
         self.ilp_solver = ilpy.LinearSolver(
-            self.num_variables, ilpy.VariableType.Binary, preference=ilpy.Preference.Any
+            self.num_variables,
+            ilpy.VariableType.Binary,
+            variable_types=self.variable_types,
+            preference=ilpy.Preference.Any
         )
 
         self.ilp_solver.set_objective(self.objective)
@@ -204,6 +208,9 @@ class Solver:
         variables = cls(self, dict(zip(keys, indices)))
         self.variables[cls] = variables
 
+        for index in indices:
+            self.variable_types[index] = cls.variable_type
+
         for constraint in cls.instantiate_constraints(self):
             self.constraints.add(constraint)
 
@@ -214,8 +221,8 @@ class Solver:
         features = self.features.to_ndarray()
         self.costs = np.dot(features, weights)
 
-    # TODO: add variable_type
     def _allocate_variables(self, num_variables: int) -> range:
+
         indices = range(self.num_variables, self.num_variables + num_variables)
 
         self.num_variables += num_variables
