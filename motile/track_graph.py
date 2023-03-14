@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Any, Hashable
+from typing import TYPE_CHECKING, Any, DefaultDict, Hashable
 
 logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
     from networkx.classes import DiGraph
+
+    from motile._types import EdgeId, NodeId
 
 
 class TrackGraph:
@@ -33,7 +35,41 @@ class TrackGraph:
 
             The name of the node attribute that corresponds to the frame (i.e.,
             the time dimension) of the object. Defaults to ``'t'``.
+
+        is_bipartite (``bool``, optional):
+
+            Whether the graph is bipartite. If True, the graph is assumed to
+            be bipartite, and the edges are assumed to be assignment nodes
+            (i.e., nodes with no frame attribute). Defaults to False.
+
+    Attributes:
+
+        nodes (``dict``):
+
+            A dictionary of nodes in the graph, keyed by node ID. Each node
+            is a dictionary of attributes.
+
+        edges (``dict``):
+
+            A dictionary of edges in the graph, keyed by edge ID. Each edge
+            is a dictionary of attributes.
+
+        prev_edges (``dict``):
+
+            A dictionary of edges in the graph, keyed by node ID. Each node
+            is a list of edges that have the node as their target.
+
+        next_edges (``dict``):
+
+            A dictionary of edges in the graph, keyed by node ID. Each node
+            is a list of edges that have the node as their source.
+
     """
+
+    edges: dict[EdgeId, dict[str, Any]]
+    nodes: dict[NodeId, dict[str, Any]]
+    prev_edges: DefaultDict[NodeId, list[EdgeId]]
+    next_edges: DefaultDict[NodeId, list[EdgeId]]
 
     def __init__(
         self,
@@ -47,18 +83,14 @@ class TrackGraph:
 
         self.nx_graph = graph
 
-        self.nodes: dict[Hashable, Any] = {
+        self.nodes = {
             node: graph.nodes[node]
             for node in graph.nodes
             if frame_attribute in graph.nodes[node]
         }
 
-        self.prev_edges: dict[Hashable, list[Hashable]] = {
-            node: [] for node in self.nodes
-        }
-        self.next_edges: dict[Hashable, list[Hashable]] = {
-            node: [] for node in self.nodes
-        }
+        self.prev_edges = DefaultDict(list)
+        self.next_edges = DefaultDict(list)
 
         if is_bipartite:
             self.edges = {
@@ -78,7 +110,7 @@ class TrackGraph:
 
     def _assignment_node_to_edge_tuple(
         self, graph: DiGraph, assignment_node: Hashable
-    ) -> tuple[tuple[Hashable, ...], ...]:
+    ) -> tuple[tuple[NodeId, ...], ...]:
         in_nodes = graph.predecessors(assignment_node)
         out_nodes = graph.successors(assignment_node)
         nodes = in_nodes + out_nodes

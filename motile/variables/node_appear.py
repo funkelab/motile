@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Hashable, Sequence
+from typing import TYPE_CHECKING, Collection
 
 import ilpy
 
@@ -9,10 +9,11 @@ from .node_selected import NodeSelected
 from .variable import Variable
 
 if TYPE_CHECKING:
+    from motile._types import NodeId
     from motile.solver import Solver
 
 
-class NodeAppear(Variable):
+class NodeAppear(Variable[NodeId]):
     r"""A binary variable for each node that indicates whether the node is the
     start of a track (i.e., the node is selected and has no selected incoming
     edges).
@@ -34,8 +35,8 @@ class NodeAppear(Variable):
     """
 
     @staticmethod
-    def instantiate(solver: Solver) -> Sequence[Hashable]:
-        return solver.graph.nodes  # type: ignore
+    def instantiate(solver: Solver) -> Collection[NodeId]:
+        return solver.graph.nodes
 
     @staticmethod
     def instantiate_constraints(solver: Solver) -> list[ilpy.LinearConstraint]:
