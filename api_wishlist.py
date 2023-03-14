@@ -29,7 +29,7 @@ def create_nx_graph():
     graph.add_nodes_from([(cell["id"], cell) for cell in cells])
     graph.add_edges_from([(edge["source"], edge["target"], edge) for edge in edges])
 
-    # this is how to add a hyperedge:
+    # this is how to add a TrackGraph hyperedge into a nx_graph:
     graph.add_node(
         10, {"division_score": 0.1}
     )  # is a hypernode, because no frame attribute
