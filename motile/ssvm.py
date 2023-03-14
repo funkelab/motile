@@ -12,7 +12,7 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
-from .variables import NodeSelected
+from .variables import EdgeSelected, NodeSelected
 
 if TYPE_CHECKING:
     from motile.solver import Solver
@@ -29,10 +29,16 @@ def fit_weights(
 
     mask = np.zeros((solver.num_variables,), dtype=np.float32)
     ground_truth = np.zeros((solver.num_variables,), dtype=np.float32)
+
     for node, index in solver.get_variables(NodeSelected).items():
         if gt_attribute in solver.graph.nodes[node]:
             mask[index] = 1.0
             ground_truth[index] = solver.graph.nodes[node][gt_attribute]
+
+    for edge, index in solver.get_variables(EdgeSelected).items():
+        if gt_attribute in solver.graph.edges[edge]:
+            mask[index] = 1.0
+            ground_truth[index] = solver.graph.edges[edge][gt_attribute]
 
     loss = ssvm.SoftMarginLoss(
         solver.constraints,
