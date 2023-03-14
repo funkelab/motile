@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run pre-commit linting
-        run: pipx run flake8 motile
+        run: pipx run pre-commit run --all-files
 
   test:
     name: ${{ matrix.platform }} py${{ matrix.python-version }}
@@ -28,6 +28,9 @@ jobs:
       matrix:
         python-version: ["3.9", "3.10", "3.11"]
         platform: [ubuntu-latest, macos-latest]
+        include:
+          - platform: windows-latest
+            python-version: "3.10"
 
     steps:
       - uses: actions/checkout@v3

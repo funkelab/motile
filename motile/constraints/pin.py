@@ -1,6 +1,14 @@
-from ..variables import NodeSelected, EdgeSelected
-from .constraint import Constraint
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import ilpy
+
+from ..variables import EdgeSelected, NodeSelected
+from .constraint import Constraint
+
+if TYPE_CHECKING:
+    from motile.solver import Solver
 
 
 class Pin(Constraint):
@@ -22,12 +30,10 @@ class Pin(Constraint):
             The name of the node/edge attribute to use.
     """
 
-    def __init__(self, attribute):
-
+    def __init__(self, attribute: str) -> None:
         self.attribute = attribute
 
-    def instantiate(self, solver):
-
+    def instantiate(self, solver: Solver) -> list[ilpy.LinearConstraint]:
         node_indicators = solver.get_variables(NodeSelected)
         edge_indicators = solver.get_variables(EdgeSelected)
 
@@ -59,8 +65,8 @@ class Pin(Constraint):
         for index in must_not_select:
             must_not_select_constraint.set_coefficient(index, 1)
 
-        must_select_constraint.set_relation(ilpy.Equal)
-        must_not_select_constraint.set_relation(ilpy.Equal)
+        must_select_constraint.set_relation(ilpy.Relation.Equal)
+        must_not_select_constraint.set_relation(ilpy.Relation.Equal)
 
         must_select_constraint.set_value(len(must_select))
         must_not_select_constraint.set_value(0)

@@ -1,6 +1,12 @@
+from __future__ import annotations
+
 import logging
+from typing import TYPE_CHECKING, Any, Hashable
 
 logger = logging.getLogger(__name__)
+
+if TYPE_CHECKING:
+    from networkx.classes import DiGraph
 
 
 class TrackGraph:
@@ -12,12 +18,16 @@ class TrackGraph:
 
     Args:
 
-        graph_data (optional):
+        graph (:class:`networkx.DiGraph`):
 
             Optional graph data to pass to the :class:`networkx.DiGraph`
             constructor as ``graph_data``. This can be used to
             populate a track graph with entries from a generic
-            ``networkx`` graph.
+            ``networkx`` graph. If None (default) an empty
+            graph is created.  The data can be an edge list, or any
+            NetworkX graph object.  If the corresponding optional Python
+            packages are installed the data can also be a 2D NumPy array, a
+            SciPy sparse array, or a PyGraphviz graph.
 
         frame_attribute (``string``, optional):
 
@@ -34,11 +44,11 @@ class TrackGraph:
 
     # TODO: make nx_graph truly be optional again...
     def __init__(
-            self,
-            nx_graph,
-            frame_attribute='t',
-            has_hyperedges=False):
-
+        self,
+        nx_graph: DiGraph,
+        frame_attribute: str = "t",
+        has_hyperedges: bool = False,
+    ):
         self.frame_attribute = frame_attribute
         self.has_hyperedges = has_hyperedges
         self._graph_changed = True
@@ -51,8 +61,12 @@ class TrackGraph:
             if frame_attribute in nx_graph.nodes[node]
         }
 
-        self.prev_edges = {node: [] for node in self.nodes}
-        self.next_edges = {node: [] for node in self.nodes}
+        self.prev_edges: dict[Hashable, list[Hashable]] = {
+            node: [] for node in self.nodes
+        }
+        self.next_edges: dict[Hashable, list[Hashable]] = {
+            node: [] for node in self.nodes
+        }
 
         if has_hyperedges:
             self.edges = {}
@@ -63,34 +77,34 @@ class TrackGraph:
                     self.next_edges[edge[0]].append(edge)
             self.edges |= {
                 self._assignment_node_to_edge_tuple(
-                    nx_graph,
-                    assignment_node):
-                nx_graph.nodes[assignment_node]
+                    nx_graph, assignment_node
+                ): nx_graph.nodes[assignment_node]
                 for assignment_node in nx_graph.nodes
                 if frame_attribute not in nx_graph.nodes[assignment_node]
             }
         else:
             self.edges = nx_graph.edges
-            for (u, v) in nx_graph.edges:
+            for u, v in nx_graph.edges:
                 self.prev_edges[v].append((u, v))
                 self.next_edges[u].append((u, v))
 
         self._update_metadata()
 
-    def _is_simple_edge(self, edge):
+    def _is_simple_edge(self, edge: Any) -> bool:
         if isinstance(edge, tuple) and len(edge) == 2:
             if isinstance(edge[0], int) and isinstance(edge[1], int):
                 return True
         return False
 
-    def _assignment_node_to_edge_tuple(self, graph, assignment_node):
-
+    def _assignment_node_to_edge_tuple(
+        self, graph: DiGraph, assignment_node: Any
+    ) -> tuple[Hashable, ...]:
         in_nodes = list(graph.predecessors(assignment_node))
         out_nodes = list(graph.successors(assignment_node))
         nodes = in_nodes + out_nodes
 
-        frames = set((graph.nodes[node][self.frame_attribute] for node in nodes))
-        frames = list(sorted(frames))
+        frameset = set(graph.nodes[node][self.frame_attribute] for node in nodes)
+        frames = list(sorted(frameset))
 
         edge_tuple = tuple(
             tuple(
@@ -108,16 +122,16 @@ class TrackGraph:
 
         return edge_tuple
 
-    def get_frames(self):
-        '''Get a tuple ``(t_begin, t_end)`` of the first and last frame
-        (exclusive) this track graph has nodes for.'''
+    def get_frames(self) -> tuple[int | None, int | None]:
+        """Get a tuple ``(t_begin, t_end)`` of the first and last frame
+        (exclusive) this track graph has nodes for."""
 
         self._update_metadata()
 
         return (self.t_begin, self.t_end)
 
-    def nodes_by_frame(self, t):
-        '''Get all nodes in frame ``t``.'''
+    def nodes_by_frame(self, t: int) -> list[Hashable]:
+        """Get all nodes in frame ``t``."""
 
         self._update_metadata()
 
@@ -125,15 +139,14 @@ class TrackGraph:
             return []
         return self._nodes_by_frame[t]
 
-    def _update_metadata(self):
-
+    def _update_metadata(self) -> None:
         if not self._graph_changed:
             return
 
         self._graph_changed = False
+        self._nodes_by_frame: dict[int, list[Hashable]] = {}
 
         if not self.nodes:
-
             self._nodes_by_frame = {}
             self.t_begin = None
             self.t_end = None
@@ -149,14 +162,14 @@ class TrackGraph:
         frames = self._nodes_by_frame.keys()
         self.t_begin = min(frames)
         self.t_end = max(frames) + 1
-
         # ensure edges point forwards in time
         if not self.has_hyperedges:
             for u, v in self.edges:
                 t_u = self.nodes[u][self.frame_attribute]
                 t_v = self.nodes[v][self.frame_attribute]
-                assert t_u < t_v, \
-                    f"Edge ({u}, {v}) does not point forwards in time, but " \
+                assert t_u < t_v, (
+                    f"Edge ({u}, {v}) does not point forwards in time, but "
                     f"from frame {t_u} to {t_v}"
+                )
 
         self._graph_changed = False
