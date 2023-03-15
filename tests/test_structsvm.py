@@ -7,13 +7,6 @@ from motile.constraints import MaxChildren, MaxParents
 from motile.costs import Appear, EdgeSelection, NodeSelection
 from motile.variables import EdgeSelected
 
-try:
-    import structsvm  # noqa
-except ImportError:
-    pytest.skip(
-        "Cannot test structsvm stuff without structsvm", allow_module_level=True
-    )
-
 
 def create_solver(graph):
     solver = motile.Solver(graph)
@@ -48,25 +41,18 @@ def test_structsvm():
     optimal_weights = solver.weights
 
     np.testing.assert_allclose(
-        optimal_weights[("NodeSelection", "weight")],
-        -2.17391300201416,
-        rtol=1.0)
+        optimal_weights[("NodeSelection", "weight")], -2.17391300201416, rtol=1.0
+    )
     np.testing.assert_allclose(
-        optimal_weights[("NodeSelection", "constant")],
-        0.8327760696411133,
-        rtol=1.0)
+        optimal_weights[("NodeSelection", "constant")], 0.8327760696411133, rtol=1.0
+    )
     np.testing.assert_allclose(
-        optimal_weights[("EdgeSelection", "weight")],
-        -1.3043482303619385,
-        rtol=1.0)
+        optimal_weights[("EdgeSelection", "weight")], -1.3043482303619385, rtol=1.0
+    )
     np.testing.assert_allclose(
-        optimal_weights[("EdgeSelection", "constant")],
-        0.5551840662956238,
-        rtol=1.0)
-    np.testing.assert_allclose(
-        optimal_weights[("Appear", "constant")],
-        20.0,
-        rtol=1.0)
+        optimal_weights[("EdgeSelection", "constant")], 0.5551840662956238, rtol=1.0
+    )
+    np.testing.assert_allclose(optimal_weights[("Appear", "constant")], 20.0, rtol=1.0)
 
     solver = create_solver(graph)
     solver.weights.from_ndarray(optimal_weights.to_ndarray())
