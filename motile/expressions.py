@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import ast
-from numbers import Number
 from typing import Any, Sequence
 
 from ilpy import LinearConstraint, Relation
@@ -10,7 +9,7 @@ from ilpy import LinearConstraint, Relation
 class Expr(ast.AST):
     def constraint(self) -> LinearConstraint:
         """Return a linear constraint from this expression."""
-        return
+        return to_constraint(self)
 
     # comparisons
     @staticmethod
@@ -123,8 +122,8 @@ class Constant(Expr, ast.Constant):
     types supported: NoneType, str, bytes, bool, int, float
     """
 
-    def __init__(self, value: Number, kind: str | None = None, **kwargs: Any) -> None:
-        if not isinstance(value, Number):
+    def __init__(self, value: float, kind: str | None = None, **kwargs: Any) -> None:
+        if not isinstance(value, (float, int)):
             raise TypeError("Constants must be numbers")
         super().__init__(value, kind, **kwargs)
 
@@ -147,7 +146,7 @@ op_map: dict[type[ast.cmpop], Relation] = {
 }
 
 
-def to_constraint(expr: ast.expr) -> LinearConstraint:
+def to_constraint(expr: Expr) -> LinearConstraint:
     constraint = LinearConstraint()
 
     seen_compare = False
