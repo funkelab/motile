@@ -1,7 +1,15 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Hashable, Sequence
+
+import ilpy
+
 from .edge_selected import EdgeSelected
 from .node_selected import NodeSelected
 from .variable import Variable
-import ilpy
+
+if TYPE_CHECKING:
+    from motile.solver import Solver
 
 
 class NodeAppear(Variable):
@@ -26,21 +34,33 @@ class NodeAppear(Variable):
     """
 
     @staticmethod
-    def instantiate(solver):
-        return solver.graph.nodes
+    def instantiate(solver: Solver) -> Sequence[Hashable]:
+        return solver.graph.nodes  # type: ignore
 
     @staticmethod
-    def instantiate_constraints(solver):
-
+    def instantiate_constraints(solver: Solver) -> list[ilpy.LinearConstraint]:
         appear_indicators = solver.get_variables(NodeAppear)
         node_indicators = solver.get_variables(NodeSelected)
         edge_indicators = solver.get_variables(EdgeSelected)
 
         constraints = []
         for node in solver.graph.nodes:
-
-            prev_edges = solver.graph.prev_edges(node)
+            prev_edges = solver.graph.prev_edges[node]
             num_prev_edges = len(prev_edges)
+
+            if num_prev_edges == 0:
+
+                # special case: no incoming edges, appear indicator is equal to
+                # selection indicator
+                constraint = ilpy.LinearConstraint()
+                constraint.set_coefficient(node_indicators[node], 1.0)
+                constraint.set_coefficient(appear_indicators[node], -1.0)
+                constraint.set_relation(ilpy.Relation.Equal)
+                constraint.set_value(0.0)
+
+                constraints.append(constraint)
+
+                continue
 
             # Ensure that the following holds:
             #
@@ -59,33 +79,21 @@ class NodeAppear(Variable):
             # set s for both constraints:
 
             # num_prev * selected
-            constraint1.set_coefficient(
-                node_indicators[node],
-                num_prev_edges)
-            constraint2.set_coefficient(
-                node_indicators[node],
-                num_prev_edges)
+            constraint1.set_coefficient(node_indicators[node], num_prev_edges)
+            constraint2.set_coefficient(node_indicators[node], num_prev_edges)
 
             # - sum(prev_selected)
             for prev_edge in prev_edges:
-                constraint1.set_coefficient(
-                    edge_indicators[prev_edge],
-                    -1.0)
-                constraint2.set_coefficient(
-                    edge_indicators[prev_edge],
-                    -1.0)
+                constraint1.set_coefficient(edge_indicators[prev_edge], -1.0)
+                constraint2.set_coefficient(edge_indicators[prev_edge], -1.0)
 
             # constraint specific parts:
 
             # - appear
-            constraint1.set_coefficient(
-                appear_indicators[node],
-                -1.0)
+            constraint1.set_coefficient(appear_indicators[node], -1.0)
 
             # - appear * num_prev
-            constraint2.set_coefficient(
-                appear_indicators[node],
-                -num_prev_edges)
+            constraint2.set_coefficient(appear_indicators[node], -num_prev_edges)
 
             constraint1.set_relation(ilpy.Relation.LessEqual)
             constraint2.set_relation(ilpy.Relation.GreaterEqual)

@@ -1,4 +1,11 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Hashable, Sequence
+
 from .variable import Variable
+
+if TYPE_CHECKING:
+    from motile.solver import Solver
 
 
 class NodeSelected(Variable):
@@ -7,5 +14,5 @@ class NodeSelected(Variable):
     """
 
     @staticmethod
-    def instantiate(solver):
-        return solver.graph.nodes
+    def instantiate(solver: Solver) -> Sequence[Hashable]:
+        return solver.graph.nodes  # type: ignore
