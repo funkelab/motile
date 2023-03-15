@@ -49,3 +49,11 @@ class Features:
         # _values is already an ndarray, but this might change in the future
         # Note: consider implementing
         return self._values
+
+    def __repr__(self):
+        r = f"array of shape={self._values.shape}"
+        if self._values.size > 0:
+            r += f", values =\n{self._values}"
+        else:
+            r += " [empty]"
+        return r

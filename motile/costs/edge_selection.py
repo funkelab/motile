@@ -40,7 +40,6 @@ class EdgeSelection(Costs):
         for edge, index in edge_variables.items():
             solver.add_variable_cost(
                 index,
-                # Not sure about this type ignore
                 solver.graph.edges[edge][self.attribute],
                 self.weight,
             )

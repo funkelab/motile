@@ -7,13 +7,6 @@ from motile.constraints import MaxChildren, MaxParents
 from motile.costs import Appear, EdgeSelection, NodeSelection
 from motile.variables import EdgeSelected
 
-try:
-    import structsvm  # noqa
-except ImportError:
-    pytest.skip(
-        "Cannot test structsvm stuff without structsvm", allow_module_level=True
-    )
-
 
 def create_solver(graph):
     solver = motile.Solver(graph)
