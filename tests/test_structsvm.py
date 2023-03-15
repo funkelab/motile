@@ -33,7 +33,9 @@ def test_structsvm():
     print(solver.get_variables(EdgeSelected))
 
     # Structured Learning
-    solver.fit_weights(gt_attribute="gt")
+    solver.fit_weights(
+        gt_attribute="gt", regularizer_weight=0.03, max_iterations=50, eps=1e-6
+    )
 
     print("====== Learnt Weights ======")
     print(solver.weights)
@@ -41,18 +43,20 @@ def test_structsvm():
     optimal_weights = solver.weights
 
     np.testing.assert_allclose(
-        optimal_weights[("NodeSelection", "weight")], -2.17391300201416, rtol=1.0
+        optimal_weights[("NodeSelection", "weight")], -4.9771062468440785, rtol=1.0
     )
     np.testing.assert_allclose(
-        optimal_weights[("NodeSelection", "constant")], 0.8327760696411133, rtol=1.0
+        optimal_weights[("NodeSelection", "constant")], -3.60083857250377, rtol=1.0
     )
     np.testing.assert_allclose(
-        optimal_weights[("EdgeSelection", "weight")], -1.3043482303619385, rtol=1.0
+        optimal_weights[("EdgeSelection", "weight")], -6.209937259450144, rtol=1.0
     )
     np.testing.assert_allclose(
-        optimal_weights[("EdgeSelection", "constant")], 0.5551840662956238, rtol=1.0
+        optimal_weights[("EdgeSelection", "constant")], -2.4005590483600203, rtol=1.0
     )
-    np.testing.assert_allclose(optimal_weights[("Appear", "constant")], 20.0, rtol=1.0)
+    np.testing.assert_allclose(
+        optimal_weights[("Appear", "constant")], 32.13305455424766, rtol=1.0
+    )
 
     solver = create_solver(graph)
     solver.weights.from_ndarray(optimal_weights.to_ndarray())

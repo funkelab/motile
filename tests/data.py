@@ -53,7 +53,7 @@ def create_toy_example_graph():
         {"id": 3, "t": 1, "x": 26, "score": 0.4},
         {"id": 4, "t": 2, "x": 2, "score": 0.6, "gt": 1},
         {"id": 5, "t": 2, "x": 24, "score": 0.3, "gt": 0},
-        {"id": 6, "t": 2, "x": 35, "score": 0.7},
+        {"id": 6, "t": 2, "x": 35, "score": 0.7, "gt": None},
     ]
 
     edges = [
@@ -65,7 +65,7 @@ def create_toy_example_graph():
         {"source": 3, "target": 5, "score": 0.7},
         {"source": 2, "target": 5, "score": 0.3, "gt": 0},
         {"source": 3, "target": 4, "score": 0.3},
-        {"source": 3, "target": 6, "score": 0.8},
+        {"source": 3, "target": 6, "score": 0.8, "gt": None},
     ]
     graph = networkx.DiGraph()
     graph.add_nodes_from([(cell["id"], cell) for cell in cells])
