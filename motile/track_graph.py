@@ -84,9 +84,9 @@ class TrackGraph:
         self.nx_graph = graph
 
         self.nodes = {
-            node: graph.nodes[node]
-            for node in graph.nodes
-            if frame_attribute in graph.nodes[node]
+            node_id: node
+            for node_id, node in graph.nodes.values()
+            if frame_attribute in node
         }
 
         self.prev_edges = DefaultDict(list)
@@ -94,11 +94,9 @@ class TrackGraph:
 
         if is_bipartite:
             self.edges = {
-                self._assignment_node_to_edge_tuple(
-                    graph, assignment_node
-                ): graph.nodes[assignment_node]
-                for assignment_node in graph.nodes
-                if frame_attribute not in graph.nodes[assignment_node]
+                self._assignment_node_to_edge_tuple(graph, node_id): assignment_node
+                for node_id, assignment_node in graph.nodes.values()
+                if frame_attribute not in assignment_node
             }
         else:
             self.edges = graph.edges
@@ -110,7 +108,7 @@ class TrackGraph:
 
     def _assignment_node_to_edge_tuple(
         self, graph: DiGraph, assignment_node: Hashable
-    ) -> tuple[tuple[NodeId, ...], ...]:
+    ) -> tuple[tuple[Any, ...], ...]:
         in_nodes = graph.predecessors(assignment_node)
         out_nodes = graph.successors(assignment_node)
         nodes = in_nodes + out_nodes
