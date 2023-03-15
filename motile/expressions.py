@@ -4,8 +4,14 @@ import ast
 from numbers import Number
 from typing import Any, Sequence
 
+from ilpy import LinearConstraint, Relation
+
 
 class Expr(ast.AST):
+    def constraint(self) -> LinearConstraint:
+        """Return a linear constraint from this expression."""
+        return
+
     # comparisons
     @staticmethod
     def _cast(obj: Any) -> Expr:
@@ -134,30 +140,83 @@ class Index(Expr, ast.Name):
         super().__init__(str(index), ctx=ast.Load())
 
 
-from ilpy import LinearConstraint, Relation
-
-op_map: dict[ast.cmpop, Relation] = {
-    ast.LtE(): Relation.LessEqual,
-    ast.Eq(): Relation.Equal,
-    ast.Gt(): Relation.GreaterEqual,
+op_map: dict[type[ast.cmpop], Relation] = {
+    ast.LtE: Relation.LessEqual,
+    ast.Eq: Relation.Equal,
+    ast.Gt: Relation.GreaterEqual,
 }
 
 
-def to_constraint(expr: Expr) -> LinearConstraint:
+def to_constraint(expr: ast.expr) -> LinearConstraint:
     constraint = LinearConstraint()
+
+    seen_compare = False
+    for sub in ast.walk(expr):
+        if not isinstance(sub, Compare):
+            continue
+        if seen_compare:
+            raise ValueError("Only single comparisons are supported")
+
+        op_type = type(sub.ops[0])
+        try:
+            constraint.set_relation(op_map[op_type])
+        except KeyError as e:
+            raise ValueError(f"Unsupported comparison operator: {op_type}") from e
+
+        seen_compare = True
+
+    for index, coeff in get_coefficients(expr).items():
+        if index is None:
+            constraint.set_value(-coeff)
+        else:
+            constraint.set_coefficient(index, coeff)
+    return constraint
+
+
+def get_coefficients(
+    expr: ast.expr, coeffs: dict[int | None, float] | None = None, scale: int = 1
+) -> dict[int | None, float]:
+    if coeffs is None:
+        coeffs = {}
 
     if isinstance(expr, Compare):
         if len(expr.ops) != 1:
             raise ValueError("Only single comparisons are supported")
+        get_coefficients(expr.left, coeffs)
+        get_coefficients(expr.comparators[0], coeffs, -1)
 
-        try:
-            constraint.set_relation(op_map[expr.ops[0]])
-        except KeyError as e:
-            raise ValueError(f"Unsupported comparison operator: {expr.ops[0]}") from e
+    elif isinstance(expr, BinOp):
+        if isinstance(expr.op, (ast.Mult, ast.Div)):
+            if isinstance(expr.right, Constant):
+                e = expr.left
+                v = expr.right.value
+            elif isinstance(expr.left, Constant):
+                e = expr.right
+                v = expr.left.value
+            else:
+                raise ValueError("Multiplication must be by a constant")
+            assert isinstance(e, Index)
+            scale *= 1 / v if isinstance(expr.op, ast.Div) else v
+            get_coefficients(e, coeffs, scale)
 
-        right = expr.comparators[0]
-        if not isinstance(right, Constant):
-            raise ValueError("Right side of comparison must be a constant")
-        right_value = right.value
+        else:
+            get_coefficients(expr.left, coeffs, scale)
+            if isinstance(expr.op, (ast.USub, ast.Sub)):
+                scale = -scale
+            get_coefficients(expr.right, coeffs, scale)
+    elif isinstance(expr, UnaryOp):
+        if isinstance(expr.op, ast.USub):
+            scale = -scale
+        get_coefficients(expr.operand, coeffs, scale)
+    elif isinstance(expr, Constant):
+        coeffs[None] = expr.value * scale
+    elif isinstance(expr, Index):
+        coeffs.setdefault(expr.index, 0)
+        coeffs[expr.index] += scale
+    else:
+        raise ValueError("Unsupported expression")
 
-        for 
+    return coeffs
+
+
+# -u + 2*e - (v + 4 - u)

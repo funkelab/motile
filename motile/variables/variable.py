@@ -5,6 +5,8 @@ from typing import TYPE_CHECKING, Hashable, Iterable, Sequence
 
 import ilpy
 
+from motile.expressions import Index
+
 if TYPE_CHECKING:
     from motile.solver import Solver
 
@@ -122,3 +124,6 @@ class Variable(ABC):
 
     def values(self) -> Iterable[int]:
         return self._index_map.values()
+
+    def expr(self, key: Hashable) -> Index:
+        return Index(self._index_map[key])
