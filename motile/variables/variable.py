@@ -100,7 +100,7 @@ class Variable(ABC, Mapping[_KT, int]):
 
         Returns:
 
-            A list of :class:`ilpy.LinearConstraint`. See
+            A iterable of :class:`ilpy.LinearConstraint`. See
             :class:`motile.constraints.Constraint` for how to create linear
             constraints.
         """
