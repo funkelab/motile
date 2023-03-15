@@ -45,7 +45,7 @@ def create_arlo_graph() -> motile.TrackGraph:
     return motile.TrackGraph(graph)
 
 
-def create_toy_example_graph():
+def create_toy_example_graph() -> motile.TrackGraph:
     cells = [
         {"id": 0, "t": 0, "x": 1, "score": 0.8, "gt": 1},
         {"id": 1, "t": 0, "x": 25, "score": 0.1},
@@ -70,4 +70,33 @@ def create_toy_example_graph():
     graph = networkx.DiGraph()
     graph.add_nodes_from([(cell["id"], cell) for cell in cells])
     graph.add_edges_from([(edge["source"], edge["target"], edge) for edge in edges])
+    return motile.TrackGraph(graph)
+
+
+def create_ssvm_noise_graph() -> motile.TrackGraph:
+    cells = [
+        {"id": 0, "t": 0, "x": 1, "score": 0.8, "gt": 1, "noise": 0.5},
+        {"id": 1, "t": 0, "x": 25, "score": 0.9, "gt": 1, "noise": -0.5},
+        {"id": 2, "t": 1, "x": 0, "score": 0.9, "gt": 1, "noise": 0.5},
+        {"id": 3, "t": 1, "x": 26, "score": 0.8, "gt": 1, "noise": -0.5},
+        {"id": 4, "t": 2, "x": 2, "score": 0.9, "gt": 1, "noise": 0.5},
+        {"id": 5, "t": 2, "x": 24, "score": 0.1, "gt": 0, "noise": -0.5},
+        {"id": 6, "t": 2, "x": 35, "score": 0.7, "gt": 1, "noise": -0.5},
+    ]
+
+    edges = [
+        {"source": 0, "target": 2, "score": 0.9, "gt": 1, "noise": 0.5},
+        {"source": 1, "target": 3, "score": 0.9, "gt": 1, "noise": -0.5},
+        {"source": 0, "target": 3, "score": 0.2, "gt": 0, "noise": 0.5},
+        {"source": 1, "target": 2, "score": 0.2, "gt": 0, "noise": -0.5},
+        {"source": 2, "target": 4, "score": 0.9, "gt": 1, "noise": 0.5},
+        {"source": 3, "target": 5, "score": 0.1, "gt": 0, "noise": -0.5},
+        {"source": 2, "target": 5, "score": 0.2, "gt": 0, "noise": 0.5},
+        {"source": 3, "target": 4, "score": 0.2, "gt": 0, "noise": -0.5},
+        {"source": 3, "target": 6, "score": 0.8, "gt": 1, "noise": -0.5},
+    ]
+    graph = networkx.DiGraph()
+    graph.add_nodes_from([(cell["id"], cell) for cell in cells])
+    graph.add_edges_from([(edge["source"], edge["target"], edge) for edge in edges])
+
     return motile.TrackGraph(graph)
