@@ -37,6 +37,7 @@ class TrackGraph:
             the time dimension) of the object. Defaults to ``'t'``.
     """
 
+    # Public Attributes that aren't found in __init__
     edges: dict[EdgeId, dict[str, Any]]
     nodes: dict[NodeId, dict[str, Any]]
     prev_edges: DefaultDict[NodeId, list[EdgeId]]
