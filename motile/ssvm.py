@@ -29,9 +29,9 @@ def fit_weights(
             ground_truth[index] = solver.graph.nodes[node][gt_attribute]
 
     for edge, index in solver.get_variables(EdgeSelected).items():
-        if gt_attribute in solver.graph.edges[edge]:
+        if gt_attribute in solver.graph.edges[edge]:  # type: ignore
             mask[index] = 1.0
-            ground_truth[index] = solver.graph.edges[edge][gt_attribute]
+            ground_truth[index] = solver.graph.edges[edge][gt_attribute]  # type: ignore
 
     loss = ssvm.SoftMarginLoss(
         solver.constraints,
