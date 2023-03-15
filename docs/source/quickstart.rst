@@ -6,101 +6,16 @@ Quickstart
 .. automodule:: motile
    :noindex:
 
-.. admonition:: (click here to see the plotting code we use in this tutorial)
-  :class: hint, dropdown
-
-  .. jupyter-execute::
-
-    import matplotlib.pyplot as plt
-    import motile
-    import networkx as  nx
-    from motile.variables import NodeSelected, EdgeSelected
-
-    def draw_track_graph(graph, solver=None):
-
-      num_nodes = graph.number_of_nodes()
-      frames = list(range(*graph.get_frames()))
-
-      positions = {
-        node: (data['t'], data['x'])
-        for node, data in graph.nodes(data=True)
-      }
-
-      colors = ['purple'] * num_nodes
-
-      if solver is not None:
-
-        node_indicators = solver.get_variables(NodeSelected)
-        edge_indicators = solver.get_variables(EdgeSelected)
-
-        for node, index in node_indicators.items():
-          graph.nodes[node]['selected'] = solver.solution[index] > 0.5
-        for edge, index in edge_indicators.items():
-          graph.edges[edge]['selected'] = solver.solution[index] > 0.5
-
-      alpha_attribute = 'score' if solver is None else 'selected'
-      node_alphas = [
-        data[alpha_attribute]
-        for _, data in graph.nodes(data=True)
-      ]
-      edge_alphas = [
-        data[alpha_attribute]
-        for _, _, data in graph.edges(data=True)
-      ]
-
-      node_labels = {
-        node: data['score']
-        for node, data in graph.nodes(data=True)
-      }
-      edge_labels = {
-        (u, v): data['score']
-        for u, v, data in graph.edges(data=True)
-      }
-
-      fig = plt.figure()
-      fig.set_figheight(6)
-      fig.set_figwidth(12)
-
-      nx.draw_networkx_nodes(
-        graph,
-        positions,
-        alpha=node_alphas,
-        node_size=600,
-        linewidths=2.0,
-        node_color=colors)
-      if solver is None:
-        nx.draw_networkx_labels(
-          graph,
-          positions,
-          node_labels)
-      nx.draw_networkx_edges(
-        graph,
-        positions,
-        alpha=edge_alphas,
-        width=3.0,
-        arrowsize=20,
-        node_size=600,
-        min_source_margin=20,
-        min_target_margin=20,
-        edge_color='purple')
-      if solver is None:
-        nx.draw_networkx_edge_labels(
-          graph,
-          positions,
-          edge_labels,
-          label_pos=0.3)
-
-      plt.xlabel("time")
-      plt.ylabel("space")
-      plt.grid(True)
-      plt.xticks(frames, frames)
-
-      plt.show()
+Consider the following example track ``graph``, where each node is a potential
+object and each edge a potential link of objects between frames:
 
 .. admonition:: (click here to see how to create the example track graph)
   :class: hint, dropdown
 
   .. jupyter-execute::
+
+    import motile
+    import networkx as nx
 
     cells = [
             {'id': 0, 't': 0, 'x': 1, 'score': 0.8},
@@ -124,7 +39,7 @@ Quickstart
         {'source': 3, 'target': 6, 'score': 0.8}
     ]
 
-    graph = motile.TrackGraph()
+    graph = nx.DiGraph()
     graph.add_nodes_from([
         (cell['id'], cell)
         for cell in cells
@@ -134,13 +49,14 @@ Quickstart
         for edge in edges
     ])
 
-Consider the following example track ``graph``, where each node is a potential
-object and each edge a potential link of objects between frames:
+    graph = motile.TrackGraph(graph)
 
 .. jupyter-execute::
-  :hide-code:
 
-  draw_track_graph(graph)
+  import motile
+  from motile.plot import draw_track_graph, draw_solution
+
+  draw_track_graph(graph, alpha_attribute='score', label_attribute='score')
 
 The numbers in nodes show how likely it is that a node represents a true object
 (versus being a false positive). Similarly, for edges the number shows how
@@ -234,7 +150,7 @@ Here is our graph again, showing all the selected nodes and edges:
 .. jupyter-execute::
   :hide-code:
 
-  draw_track_graph(graph, solver)
+  draw_solution(graph, solver, label_attribute='score')
 
 All nodes and edges have been selected! This is indeed what we asked for, but
 not what we want. Time to add some constraints.
@@ -264,7 +180,7 @@ If we solve again, the solution does now look like this:
 .. jupyter-execute::
   :hide-code:
 
-  draw_track_graph(graph, solver)
+  draw_solution(graph, solver, label_attribute='score')
 
 Nodes do now indeed have at most one parent (to the previous time frame) and at
 most on child (to the next time frame). There are multiple possible solutions
@@ -303,4 +219,4 @@ to justify starting a new track:
 .. jupyter-execute::
   :hide-code:
 
-  draw_track_graph(graph, solver)
+  draw_solution(graph, solver, label_attribute='score')
