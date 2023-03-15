@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Collection
+from typing import TYPE_CHECKING, Collection, Iterable
 
 import ilpy
 
@@ -36,11 +36,10 @@ class NodeSplit(Variable):
         return solver.graph.nodes
 
     @staticmethod
-    def instantiate_constraints(solver: Solver) -> list[ilpy.LinearConstraint]:
+    def instantiate_constraints(solver: Solver) -> Iterable[ilpy.LinearConstraint]:
         split_indicators = solver.get_variables(NodeSplit)
         edge_indicators = solver.get_variables(EdgeSelected)
 
-        constraints = []
         for node in solver.graph.nodes:
             next_edges = solver.graph.next_edges[node]
 
@@ -70,7 +69,5 @@ class NodeSplit(Variable):
             constraint1.set_value(0.0)
             constraint2.set_value(-1.0)
 
-            constraints.append(constraint1)
-            constraints.append(constraint2)
-
-        return constraints
+            yield constraint1
+            yield constraint2

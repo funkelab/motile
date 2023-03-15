@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Collection
+from typing import TYPE_CHECKING, Collection, Iterable
 
 import ilpy
 
@@ -39,12 +39,11 @@ class NodeAppear(Variable[NodeId]):
         return solver.graph.nodes
 
     @staticmethod
-    def instantiate_constraints(solver: Solver) -> list[ilpy.LinearConstraint]:
+    def instantiate_constraints(solver: Solver) -> Iterable[ilpy.LinearConstraint]:
         appear_indicators = solver.get_variables(NodeAppear)
         node_indicators = solver.get_variables(NodeSelected)
         edge_indicators = solver.get_variables(EdgeSelected)
 
-        constraints = []
         for node in solver.graph.nodes:
             prev_edges = solver.graph.prev_edges[node]
             num_prev_edges = len(prev_edges)
@@ -58,7 +57,7 @@ class NodeAppear(Variable[NodeId]):
                 constraint.set_relation(ilpy.Relation.Equal)
                 constraint.set_value(0.0)
 
-                constraints.append(constraint)
+                yield constraint
 
                 continue
 
@@ -101,7 +100,5 @@ class NodeAppear(Variable[NodeId]):
             constraint1.set_value(num_prev_edges - 1)
             constraint2.set_value(0)
 
-            constraints.append(constraint1)
-            constraints.append(constraint2)
-
-        return constraints
+            yield constraint1
+            yield constraint2

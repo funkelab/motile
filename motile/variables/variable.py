@@ -1,7 +1,16 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Collection, Hashable, Iterator, Mapping, TypeVar
+from typing import (
+    TYPE_CHECKING,
+    ClassVar,
+    Collection,
+    Hashable,
+    Iterable,
+    Iterator,
+    Mapping,
+    TypeVar,
+)
 
 import ilpy
 
@@ -41,7 +50,7 @@ class Variable(ABC, Mapping[_KT, int]):
     """
 
     # default variable type, replace in subclasses to override
-    variable_type = ilpy.VariableType.Binary
+    variable_type: ClassVar[ilpy.VariableType] = ilpy.VariableType.Binary
 
     @staticmethod
     @abstractmethod
@@ -80,7 +89,7 @@ class Variable(ABC, Mapping[_KT, int]):
         pass
 
     @staticmethod
-    def instantiate_constraints(solver: Solver) -> list[ilpy.LinearConstraint]:
+    def instantiate_constraints(solver: Solver) -> Iterable[ilpy.LinearConstraint]:
         """Add linear constraints to the solver to ensure that these variables
         are coupled to other variables of the solver.
 
