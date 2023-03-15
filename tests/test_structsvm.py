@@ -1,9 +1,13 @@
+import logging
+
 import motile
 import numpy as np
 from data import create_ssvm_noise_graph, create_toy_example_graph
 from motile.constraints import MaxChildren, MaxParents
 from motile.costs import Appear, EdgeSelection, NodeSelection
 from motile.variables import EdgeSelected, NodeSelected
+
+logger = logging.getLogger(__name__)
 
 
 def create_toy_solver(graph):
@@ -16,8 +20,8 @@ def create_toy_solver(graph):
     solver.add_costs(EdgeSelection(weight=10.0, attribute="score"))
     solver.add_costs(Appear(constant=10.0))
 
-    print("====== Initial Weights ======")
-    print(solver.weights)
+    logger.debug("====== Initial Weights ======")
+    logger.debug(solver.weights)
 
     return solver
 
@@ -27,18 +31,18 @@ def test_structsvm_common_toy_example():
 
     solver = create_toy_solver(graph)
 
-    print("====== Initial Solution ======")
+    logger.debug("====== Initial Solution ======")
     solver.solve()
-    print(solver.get_variables(EdgeSelected))
+    logger.debug(solver.get_variables(EdgeSelected))
 
     # Structured Learning
     solver.fit_weights(
         gt_attribute="gt", regularizer_weight=0.03, max_iterations=50, eps=1e-6
     )
 
-    print("====== Learnt Weights ======")
-    print(solver.weights)
-    print("====== Final Solution ======")
+    logger.debug("====== Learnt Weights ======")
+    logger.debug(solver.weights)
+    logger.debug("====== Final Solution ======")
     optimal_weights = solver.weights
 
     np.testing.assert_allclose(
@@ -60,10 +64,10 @@ def test_structsvm_common_toy_example():
     solver = create_toy_solver(graph)
     solver.weights.from_ndarray(optimal_weights.to_ndarray())
 
-    print("====== Learnt Weights in new solver ======")
-    print(solver.weights)
+    logger.debug("====== Learnt Weights in new solver ======")
+    logger.debug(solver.weights)
     solution = solver.solve()
-    print(solver.get_variables(EdgeSelected))
+    logger.debug(solver.get_variables(EdgeSelected))
 
     edge_indicators = solver.get_variables(EdgeSelected)
     selected_edges = [
@@ -92,50 +96,49 @@ def create_noise_solver(graph):
 
     solver.add_costs(
         NodeSelection(
-            weight=np.random.randint(-10, 10, 1)[0],
-            constant=np.random.randint(-10, 10, 1)[0],
+            weight=2,
+            constant=4,
             attribute="noise",
         ),
         name="NodeNoise",
     )
     solver.add_costs(
         EdgeSelection(
-            weight=np.random.randint(-10, 10, 1)[0],
-            constant=np.random.randint(-10, 10, 1)[0],
+            weight=6,
+            constant=8,
             attribute="noise",
         ),
         name="EdgeNoise",
     )
 
-    print("====== Initial Weights ======")
-    print(solver.weights)
+    logger.debug("====== Initial Weights ======")
+    logger.debug(solver.weights)
 
     return solver
 
 
 def test_structsvm_noise():
-    np.set_printoptions(precision=2)
     graph = create_ssvm_noise_graph()
     solver = create_noise_solver(graph)
 
-    print("====== Initial Solution ======")
+    logger.debug("====== Initial Solution ======")
     solver.solve()
-    print(solver.get_variables(EdgeSelected))
+    logger.debug(solver.get_variables(EdgeSelected))
 
     # Structured Learning
     solver.fit_weights(
         gt_attribute="gt", regularizer_weight=0.1, max_iterations=100, eps=1e-6
     )
 
-    print("====== Learnt Weights ======")
-    print(solver.weights)
+    logger.debug("====== Learnt Weights ======")
+    logger.debug(solver.weights)
     solution = solver.solve()
 
-    print("====== Final Solution ======")
+    logger.debug("====== Final Solution ======")
     optimal_weights = solver.weights
-    print(solver.get_variables(NodeSelected))
-    print(solver.get_variables(EdgeSelected))
-    print(solver.features.to_ndarray())
+    logger.debug(solver.get_variables(NodeSelected))
+    logger.debug(solver.get_variables(EdgeSelected))
+    logger.debug(solver.features.to_ndarray())
 
     np.testing.assert_allclose(
         optimal_weights[("NodeSelection", "weight")], -2.7777798708004564, rtol=0.01
@@ -173,10 +176,10 @@ def test_structsvm_noise():
     solver = create_noise_solver(graph)
     solver.weights.from_ndarray(optimal_weights.to_ndarray())
 
-    print("====== Learnt Weights in new solver ======")
+    logger.debug("====== Learnt Weights in new solver ======")
     solution = solver.solve()
-    print(solver.get_variables(NodeSelected))
-    print(solver.get_variables(EdgeSelected))
+    logger.debug(solver.get_variables(NodeSelected))
+    logger.debug(solver.get_variables(EdgeSelected))
 
     _assert_edges(solver, solution)
 
