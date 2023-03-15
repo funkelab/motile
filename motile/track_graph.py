@@ -3,6 +3,8 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING, Any, Hashable
 
+from .variables import EdgeSelected, NodeSelected
+
 logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
@@ -113,6 +115,21 @@ class TrackGraph:
         if t not in self._nodes_by_frame:
             return []
         return self._nodes_by_frame[t]
+
+    def mark_solution(self, solver, solution_attribute="selected"):
+        node_selected = solver.get_variables(NodeSelected)
+        for node in self.nodes:
+            if solver.solution[node_selected[node]] > 0.5:
+                self.nodes[node]["selected"] = 1
+            else:
+                self.nodes[node]["selected"] = 0
+
+        edge_selected = solver.get_variables(EdgeSelected)
+        for edge in self.edges:
+            if solver.solution[edge_selected[edge]] > 0.5:
+                self.edges[edge]["selected"] = 1
+            else:
+                self.edges[edge]["selected"] = 0
 
     def _update_metadata(self) -> None:
         if not self._graph_changed:
