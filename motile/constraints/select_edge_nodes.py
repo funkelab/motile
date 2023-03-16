@@ -24,20 +24,13 @@ class SelectEdgeNodes(Constraint):
     This constraint will be added by default to any :class:`Solver` instance.
     """
 
-    def _flatten_node_ids(self, edge: int | tuple[int, ...]) -> Iterator[int]:
-        if isinstance(edge, tuple):
-            for x in edge:
-                yield from self._flatten_node_ids(x)
-        else:
-            yield edge
-
     def instantiate(self, solver: Solver) -> list[ilpy.LinearConstraint]:
         node_indicators = solver.get_variables(NodeSelected)
         edge_indicators = solver.get_variables(EdgeSelected)
 
         constraints = []
         for edge in solver.graph.edges:
-            nodes = self._flatten_node_ids(edge)
+            nodes = solver.graph.nodes_of(edge)
 
             ind_e = edge_indicators[edge]
             nodes_ind = [node_indicators[node] for node in nodes]
