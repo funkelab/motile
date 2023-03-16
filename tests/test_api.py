@@ -1,7 +1,12 @@
 import unittest
 
 import motile
-from data import *
+from data import (
+    create_arlo_nx_graph,
+    create_arlo_trackgraph,
+    create_toy_hyperedge_nx_graph,
+    create_toy_hyperedge_trackgraph,
+)
 from motile.constraints import MaxChildren, MaxParents
 from motile.costs import Appear, EdgeSelection, NodeSelection, Split
 
