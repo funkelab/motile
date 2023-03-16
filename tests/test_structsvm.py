@@ -1,7 +1,7 @@
 import motile
 import numpy as np
 import pytest
-from data import create_toy_example_graph
+from data import create_toy_example_trackgraph
 from ilpy import QuadraticSolver
 from motile.constraints import MaxChildren, MaxParents
 from motile.costs import Appear, EdgeSelection, NodeSelection
@@ -24,7 +24,7 @@ def create_solver(graph):
 
 
 def test_structsvm():
-    graph = create_toy_example_graph()
+    graph = create_toy_example_trackgraph()
 
     solver = create_solver(graph)
 
