@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import ilpy
+from ilpy.expressions import Constant
 
 from ..variables import EdgeSelected
 from .constraint import Constraint
@@ -35,16 +36,11 @@ class MaxParents(Constraint):
 
         constraints = []
         for node in solver.graph.nodes:
-            constraint = ilpy.LinearConstraint()
-
             # all incoming edges
-            for edge in solver.graph.prev_edges[node]:
-                constraint.set_coefficient(edge_indicators[edge], 1)
-
-            # relation, value
-            constraint.set_relation(ilpy.Relation.LessEqual)
-
-            constraint.set_value(self.max_parents)
-            constraints.append(constraint)
+            s = sum(
+                (edge_indicators.expr(e) for e in solver.graph.prev_edges[node]),
+                start=Constant(0),
+            )
+            constraints.append((s <= self.max_parents).constraint())
 
         return constraints
