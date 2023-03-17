@@ -1,16 +1,9 @@
 from __future__ import annotations
 
-try:
-    import structsvm as ssvm
-except ImportError as e:
-    raise ImportError(
-        "This functionality requires the structsvm package. "
-        "Please install structsvm."
-    ) from e
-
 from typing import TYPE_CHECKING
 
 import numpy as np
+import structsvm as ssvm
 
 from .variables import EdgeSelected, NodeSelected
 
@@ -36,9 +29,9 @@ def fit_weights(
             ground_truth[index] = solver.graph.nodes[node][gt_attribute]
 
     for edge, index in solver.get_variables(EdgeSelected).items():
-        if gt_attribute in solver.graph.edges[edge]:
+        if gt_attribute in solver.graph.edges[edge]:  # type: ignore
             mask[index] = 1.0
-            ground_truth[index] = solver.graph.edges[edge][gt_attribute]
+            ground_truth[index] = solver.graph.edges[edge][gt_attribute]  # type: ignore
 
     loss = ssvm.SoftMarginLoss(
         solver.constraints,

@@ -15,11 +15,11 @@ authors = [
     { name = 'Talley Lambert', email = 'talley.lambert@gmail.com' },
 ]
 dynamic = ["version"]
-dependencies = ['networkx', 'ilpy', 'numpy']
+dependencies = ['networkx', 'ilpy', 'numpy', 'structsvm']
 
 [project.optional-dependencies]
 dev = ["pre-commit", "pytest", "pytest-cov", "ruff", "twine", "build"]
-test = ["pytest", "pytest-cov", "structsvm"]
+test = ["pytest", "pytest-cov"]
 
 [project.urls]
 homepage = "https://github.com/funkelab/motile"
