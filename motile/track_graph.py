@@ -1,14 +1,16 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Any, Hashable
+from typing import TYPE_CHECKING, Any, Hashable, Iterator
 
 logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
     from networkx.classes import DiGraph
 
-EdgeTuple = "tuple[int|tuple[int,...],...]"
+EdgeTuple = tuple[int | tuple[int, ...], ...]
+
+
 class TrackGraph:
     """A :class:`networkx.DiGraph` of objects with positions in time and space,
     and inter-frame edges between them.
@@ -21,7 +23,7 @@ class TrackGraph:
         nx_graph (``DiGraph``, optional):
 
             A directed networkx graph representing the TrackGraph to be created.
-            Hyperedges are represented by networkx nodes that do not have the 
+            Hyperedges are represented by networkx nodes that do not have the
             ``frame_attribute`` and are connected to nodes that do have this
             attribute.
 
@@ -62,30 +64,30 @@ class TrackGraph:
         """Adds an edge to this TrackGraph.
 
         Args:
-            edge_tuple (EdgeTuple): and ``EdgeTuple`` defining the edge (or hyperedge) 
+            edge_tuple (EdgeTuple): and ``EdgeTuple`` defining the edge (or hyperedge)
                 to be added.
             data (dict[Hashable, Any]): all properties associated to the added edge.
         """
         self.edges[edge_tuple] = data
 
     def add_from_nx_graph(self, nx_graph):
-        """Adds the TrackGraph represented by the given ``nx_graph`` to the 
+        """Adds the TrackGraph represented by the given ``nx_graph`` to the
         existing TrackGraph.
 
-        Hyperedges are represented by nodes in the ``nx_graph`` that do not have the 
-        ``frame_attribute`` property. All 'regular' nodes connected to such a hyperedge 
+        Hyperedges are represented by nodes in the ``nx_graph`` that do not have the
+        ``frame_attribute`` property. All 'regular' nodes connected to such a hyperedge
         node will be added as a hyperedge.
 
         Args:
-            nx_graph (_type_): 
-            
+            nx_graph (_type_):
+
                 A directed networkx graph representing a TrackGraph to be added.
-                Hyperedges are represented by networkx nodes that do not have the 
+                Hyperedges are represented by networkx nodes that do not have the
                 ``frame_attribute`` and are connected to nodes that do have this
                 attribute.
-                Duplicate nodes and edges will not be added again but new attributes 
-                associated to nodes and edges added. If attributes of existing nodes 
-                or edges do already exist, the values set in the given ``nx_graph`` 
+                Duplicate nodes and edges will not be added again but new attributes
+                associated to nodes and edges added. If attributes of existing nodes
+                or edges do already exist, the values set in the given ``nx_graph``
                 will be updating the previously set values.
         """
         # add all regular nodes (all but ones representing hyperedges)
@@ -97,12 +99,8 @@ class TrackGraph:
                     self.nodes[node] |= data
 
         # for all new nodes, add empty lists of incident edges
-        self.prev_edges |= {
-            node: [] for node in self.nodes
-        }
-        self.next_edges |= {
-            node: [] for node in self.nodes
-        }
+        self.prev_edges |= {node: [] for node in self.nodes}
+        self.next_edges |= {node: [] for node in self.nodes}
 
         # add all edges and hyperedges
         for (u, v), data in nx_graph.edges.items():
@@ -118,13 +116,13 @@ class TrackGraph:
                     out_nodes,
                 ) = self._hyperedge_nx_node_to_edge_tuple_and_neighbors(nx_graph, v)
                 # avoid adding duplicates
-                if edge not in self.edges:  
+                if edge not in self.edges:
                     self.edges[edge] = data
                     for in_node in in_nodes:
                         self.next_edges[in_node].append(edge)
                     for out_node in out_nodes:
                         self.prev_edges[out_node].append(edge)
-                else: # but merge in potentially new or updated attributes
+                else:  # but merge in potentially new or updated attributes
                     self.edges[edge] |= data
             else:  # add a regular edge otherwise
                 self.edges[(u, v)] = data
@@ -156,7 +154,8 @@ class TrackGraph:
             nx_node (Any): a node in the given ``nx_graph``.
 
         Returns:
-            bool: true iff the given ``nx_node`` does not posses the ``frame_attribute``.
+            bool: true iff the given ``nx_node`` does not posses the
+            ``frame_attribute``.
         """
         return self.frame_attribute not in nx_graph.nodes[nx_node]
 
@@ -171,8 +170,8 @@ class TrackGraph:
                 a hyperedge.
 
         Returns:
-            tuple[Hashable, ...]: a tuple representing the hyperedge the given 
-                ``nx_node`` represented. (It will be a tuple with one entry per 
+            tuple[Hashable, ...]: a tuple representing the hyperedge the given
+                ``nx_node`` represented. (It will be a tuple with one entry per
                 involved time point, listing all nodes at that time point.)
         """
         assert self._is_hyperedge_nx_node(nx_graph, hyperedge_node)
