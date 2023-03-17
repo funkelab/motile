@@ -2,13 +2,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Collection, Iterable
 
-import ilpy
-
 from .edge_selected import EdgeSelected
 from .node_selected import NodeSelected
 from .variable import Variable
 
 if TYPE_CHECKING:
+    from ilpy.expressions import Expression
+
     from motile._types import NodeId
     from motile.solver import Solver
 
@@ -39,7 +39,7 @@ class NodeAppear(Variable["NodeId"]):
         return solver.graph.nodes
 
     @staticmethod
-    def instantiate_constraints(solver: Solver) -> Iterable[ilpy.LinearConstraint]:
+    def instantiate_constraints(solver: Solver) -> Iterable[Expression]:
         appear_indicators = solver.get_variables(NodeAppear)
         node_indicators = solver.get_variables(NodeSelected)
         edge_indicators = solver.get_variables(EdgeSelected)
@@ -52,7 +52,7 @@ class NodeAppear(Variable["NodeId"]):
             if not prev_edges:
                 # special case: no incoming edges, appear indicator is equal to
                 # selection indicator
-                yield (selected == appear).constraint()
+                yield selected == appear
                 continue
 
             # Ensure that the following holds:
@@ -65,8 +65,9 @@ class NodeAppear(Variable["NodeId"]):
             # let s = num_prev * selected - sum(prev_selected)
             # (1) s - appear <= num_prev - 1
             # (2) s - appear * num_prev >= 0
+
             num_prev = len(prev_edges)
             s = num_prev * selected - sum(edge_indicators.expr(e) for e in prev_edges)
 
-            yield (s - appear <= num_prev - 1).constraint()
-            yield (s - appear >= 0).constraint()
+            yield s - appear <= num_prev - 1
+            yield s - appear >= 0
