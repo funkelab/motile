@@ -55,20 +55,20 @@ class TrackGraph:
         """Adds a new node to this TrackGraph.
 
         Args:
-            node_id (Hashable): the node to be added.
-            data (GraphObject): all properties associated to the added node.
+            node_id (int | tuple[int, ...]): the node to be added.
+            data (dict[Hashable, Any]): all properties associated to the added node.
         """
         self.nodes[node_id] = data
 
-    def add_edge(self, edge_tuple: EdgeId, data: GraphObject) -> None:
+    def add_edge(self, edge_id: EdgeId, data: GraphObject) -> None:
         """Adds an edge to this TrackGraph.
 
         Args:
-            edge_tuple (EdgeId): an ``EdgeId`` defining the edge (or hyperedge)
-                to be added.
-            data (GraphObject): all properties associated to the added edge.
+            edge_id (EdgeId): an ``EdgeId`` (tuple of NodeIds) defining the edge
+                (or hyperedge) to be added.
+            data (dict[Hashable, Any]): all properties associated to the added edge.
         """
-        self.edges[edge_tuple] = data
+        self.edges[edge_id] = data
 
     def add_from_nx_graph(self, nx_graph: DiGraph) -> None:
         """Adds the TrackGraph represented by the given ``nx_graph`` to the
@@ -79,7 +79,7 @@ class TrackGraph:
         node will be added as a hyperedge.
 
         Args:
-            nx_graph (_type_):
+            nx_graph (networkx.DiGraph):
 
                 A directed networkx graph representing a TrackGraph to be added.
                 Hyperedges are represented by networkx nodes that do not have the
