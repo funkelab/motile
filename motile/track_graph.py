@@ -125,11 +125,11 @@ class TrackGraph:
                 self.prev_edges[v].append((u, v))
                 self.next_edges[u].append((u, v))
 
-    def nodes_of(self, edge: int | tuple[int, ...]) -> Iterator[int]:
+    def nodes_of(self, edge: EdgeId | int) -> Iterator[int]:
         """Returns an ``Iterator`` of node id's that are incident to the given edge.
 
         Args:
-            edge (int | tuple[int, ...]): an edge of this TrackGraph.
+            edge (EdgeId | int): an edge of this TrackGraph.
 
         Yields:
             Iterator[int]: all nodes incident to the given edge.
