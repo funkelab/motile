@@ -1,7 +1,7 @@
 import unittest
 
 import motile
-from data import create_arlo_graph
+from data import create_arlo_trackgraph
 from motile.constraints import MaxChildren, MaxParents, Pin
 from motile.costs import Appear, EdgeSelection, NodeSelection, Split
 from motile.variables import EdgeSelected
@@ -9,7 +9,7 @@ from motile.variables import EdgeSelected
 
 class TestConstraints(unittest.TestCase):
     def test_pin(self):
-        graph = create_arlo_graph()
+        graph = create_arlo_trackgraph()
 
         # pin the value of two edges:
         graph.edges[(0, 2)]["pin_to"] = False
