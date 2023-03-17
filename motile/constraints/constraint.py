@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Iterable
 
 if TYPE_CHECKING:
     import ilpy
@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 class Constraint(ABC):
     @abstractmethod
-    def instantiate(self, solver: Solver) -> list[ilpy.LinearConstraint]:
+    def instantiate(self, solver: Solver) -> Iterable[ilpy.LinearConstraint]:
         """Create and return specific linear constraints for the given solver.
 
         Args:
@@ -21,5 +21,5 @@ class Constraint(ABC):
 
         Returns:
 
-            A list of :class:`ilpy.LinearConstraint`.
+            An iterable of :class:`ilpy.LinearConstraint`.
         """

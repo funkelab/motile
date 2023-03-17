@@ -132,7 +132,7 @@ class Variable(ABC, Mapping[_KT, int]):
     def __len__(self) -> int:
         return len(self._index_map)
 
-    def expr(self, key: Hashable, name: str = "") -> expressions.Variable:
+    def expr(self, key: _KT, name: str = "") -> expressions.Variable:
         if not name:
             name = f"{type(self).__name__}({key})"
         return expressions.Variable(name, index=self._index_map[key])

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Hashable, TypeVar, cast
+from typing import TYPE_CHECKING, TypeVar, cast
 
 import ilpy
 import numpy as np
@@ -155,19 +155,6 @@ class Solver:
             logger.info("ILP solver returned with: %s", message)
 
         return self.solution
-
-    def var(self, cls: type[V], name: str = ""):
-        from ilpy import expressions
-
-        class GlobalVariable:
-            def __init__(self, vars: Variable, name: str = ""):
-                self.vars = vars
-                self.name = name
-
-            def expr(self, key: Hashable, name: str = "") -> expressions.Variable:
-                return expressions.Variable(name or self.name, index=self.vars[key])
-
-        return GlobalVariable(self.get_variables(cls), name or cls.__name__)
 
     def get_variables(self, cls: type[V]) -> V:
         """Get variables by their class name.

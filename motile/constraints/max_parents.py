@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Iterable
 
 import ilpy
 from ilpy.expressions import Constant
@@ -31,16 +31,13 @@ class MaxParents(Constraint):
     def __init__(self, max_parents: int) -> None:
         self.max_parents = max_parents
 
-    def instantiate(self, solver: Solver) -> list[ilpy.LinearConstraint]:
+    def instantiate(self, solver: Solver) -> Iterable[ilpy.LinearConstraint]:
         edge_indicators = solver.get_variables(EdgeSelected)
 
-        constraints = []
         for node in solver.graph.nodes:
             # all incoming edges
             s = sum(
                 (edge_indicators.expr(e) for e in solver.graph.prev_edges[node]),
                 start=Constant(0),
             )
-            constraints.append((s <= self.max_parents).constraint())
-
-        return constraints
+            yield (s <= self.max_parents).constraint()
