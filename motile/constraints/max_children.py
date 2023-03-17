@@ -3,10 +3,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import ilpy
+from ilpy.expressions import Constant
 
 from ..variables import EdgeSelected
 from .constraint import Constraint
-from motile.expressions import Constant, Expr
 
 if TYPE_CHECKING:
     from motile.solver import Solver
@@ -36,9 +36,11 @@ class MaxChildren(Constraint):
 
         constraints = []
         for node in solver.graph.nodes:
-            
-            n_edges = sum(edge_indicators.expr(e) for e in solver.graph.next_edges[node], Constant(0))
-            expr = (n_edges <= self.max_children)
+            n_edges = sum(
+                [edge_indicators.expr(e) for e in solver.graph.next_edges[node]],
+                Constant(0),
+            )
+            expr = n_edges <= self.max_children
             constraints.append(expr.constraint())
 
             # constraint = ilpy.LinearConstraint()

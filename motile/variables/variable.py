@@ -4,8 +4,7 @@ from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Hashable, Iterable, Sequence
 
 import ilpy
-
-from motile.expressions import Index
+from ilpy import expressions
 
 if TYPE_CHECKING:
     from motile.solver import Solver
@@ -125,5 +124,7 @@ class Variable(ABC):
     def values(self) -> Iterable[int]:
         return self._index_map.values()
 
-    def expr(self, key: Hashable) -> Index:
-        return Index(self._index_map[key])
+    def expr(self, key: Hashable, name: str = "") -> expressions.Variable:
+        if not name:
+            name = f"{type(self).__name__}({key})"
+        return expressions.Variable(name, index=self._index_map[key])

@@ -46,20 +46,13 @@ class NodeAppear(Variable):
         constraints = []
         for node in solver.graph.nodes:
             prev_edges = solver.graph.prev_edges[node]
-            num_prev_edges = len(prev_edges)
+            selected = node_indicators.expr(node, "n")
+            appear = appear_indicators.expr(node, "a")
 
-            if num_prev_edges == 0:
-
+            if not prev_edges:
                 # special case: no incoming edges, appear indicator is equal to
                 # selection indicator
-                constraint = ilpy.LinearConstraint()
-                constraint.set_coefficient(node_indicators[node], 1.0)
-                constraint.set_coefficient(appear_indicators[node], -1.0)
-                constraint.set_relation(ilpy.Relation.Equal)
-                constraint.set_value(0.0)
-
-                constraints.append(constraint)
-
+                constraints.append((selected == appear).constraint())
                 continue
 
             # Ensure that the following holds:
@@ -72,36 +65,10 @@ class NodeAppear(Variable):
             # let s = num_prev * selected - sum(prev_selected)
             # (1) s - appear <= num_prev - 1
             # (2) s - appear * num_prev >= 0
-
-            constraint1 = ilpy.LinearConstraint()
-            constraint2 = ilpy.LinearConstraint()
-
-            # set s for both constraints:
-
-            # num_prev * selected
-            constraint1.set_coefficient(node_indicators[node], num_prev_edges)
-            constraint2.set_coefficient(node_indicators[node], num_prev_edges)
-
-            # - sum(prev_selected)
-            for prev_edge in prev_edges:
-                constraint1.set_coefficient(edge_indicators[prev_edge], -1.0)
-                constraint2.set_coefficient(edge_indicators[prev_edge], -1.0)
-
-            # constraint specific parts:
-
-            # - appear
-            constraint1.set_coefficient(appear_indicators[node], -1.0)
-
-            # - appear * num_prev
-            constraint2.set_coefficient(appear_indicators[node], -num_prev_edges)
-
-            constraint1.set_relation(ilpy.Relation.LessEqual)
-            constraint2.set_relation(ilpy.Relation.GreaterEqual)
-
-            constraint1.set_value(num_prev_edges - 1)
-            constraint2.set_value(0)
-
-            constraints.append(constraint1)
-            constraints.append(constraint2)
+            num_prev = len(prev_edges)
+            s = num_prev * selected - sum(edge_indicators.expr(e) for e in prev_edges)
+            expr1 = s - appear <= num_prev - 1
+            expr2 = s - appear >= 0
+            constraints.extend([expr1.constraint(), expr2.constraint()])
 
         return constraints

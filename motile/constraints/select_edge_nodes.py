@@ -29,25 +29,12 @@ class SelectEdgeNodes(Constraint):
         edge_indicators = solver.get_variables(EdgeSelected)
 
         constraints = []
-        for (u, v) in solver.graph.edges:
-            ind_e = edge_indicators.expr((u, v))
-            ind_u = node_indicators.expr(u)
-            ind_u = node_indicators.expr(u)
-            ind_v = node_indicators.expr(v)
+        for u, v in solver.graph.edges:
+            x_e = edge_indicators.expr((u, v), "e")
+            x_u = node_indicators.expr(u, "u")
+            x_v = node_indicators.expr(v, "v")
 
-            # 2 x_e - x_u - x_v \leq 0
-            constraint = ilpy.LinearConstraint()
-            constraint.set_coefficient(ind_e, 2)
-            constraint.set_coefficient(ind_u, -1)
-            constraint.set_coefficient(ind_v, -1)
-            constraint.set_relation(ilpy.Relation.LessEqual)
-            constraint.set_value(0)
-            constraints.append(constraint)
-
-
-            expression = 2 * ind_e - ind_u - ind_v <= 0
+            expression = 2 * x_e - x_u - x_v <= 0
             constraints.append(expression.constraint())
 
-
         return constraints
-
