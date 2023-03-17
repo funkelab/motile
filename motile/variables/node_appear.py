@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from motile.solver import Solver
 
 
-class NodeAppear(Variable[NodeId]):
+class NodeAppear(Variable['NodeId']):
     r"""A binary variable for each node that indicates whether the node is the
     start of a track (i.e., the node is selected and has no selected incoming
     edges).
