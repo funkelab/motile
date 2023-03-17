@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from motile.solver import Solver
 
 
-class NodeSelected(Variable['NodeId']):
+class NodeSelected(Variable["NodeId"]):
     """A binary variable for each node that indicates whether the node is part
     of the solution or not.
     """

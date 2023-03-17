@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from motile.solver import Solver
 
 
-class EdgeSelected(Variable['EdgeId']):
+class EdgeSelected(Variable["EdgeId"]):
     """A binary variable for each edge that indicates whether the edge is part
     of the solution or not.
     """
