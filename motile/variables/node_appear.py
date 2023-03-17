@@ -49,7 +49,6 @@ class NodeAppear(Variable):
             num_prev_edges = len(prev_edges)
 
             if num_prev_edges == 0:
-
                 # special case: no incoming edges, appear indicator is equal to
                 # selection indicator
                 constraint = ilpy.LinearConstraint()

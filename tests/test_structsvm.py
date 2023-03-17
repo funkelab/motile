@@ -2,7 +2,9 @@ import logging
 
 import motile
 import numpy as np
-from data import create_ssvm_noise_graph, create_toy_example_graph
+import pytest
+from data import create_ssvm_noise_trackgraph, create_toy_example_trackgraph
+from ilpy import QuadraticSolver
 from motile.constraints import MaxChildren, MaxParents
 from motile.costs import Appear, EdgeSelection, NodeSelection
 from motile.variables import EdgeSelected, NodeSelected
@@ -27,7 +29,7 @@ def create_toy_solver(graph):
 
 
 def test_structsvm_common_toy_example():
-    graph = create_toy_example_graph()
+    graph = create_toy_example_trackgraph()
 
     solver = create_toy_solver(graph)
 
@@ -118,7 +120,7 @@ def create_noise_solver(graph):
 
 
 def test_structsvm_noise():
-    graph = create_ssvm_noise_graph()
+    graph = create_ssvm_noise_trackgraph()
     solver = create_noise_solver(graph)
 
     logger.debug("====== Initial Solution ======")
