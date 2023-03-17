@@ -43,8 +43,10 @@ def create_arlo_nx_graph() -> networkx.DiGraph:
     nx_graph.add_edges_from([(edge["source"], edge["target"], edge) for edge in edges])
     return nx_graph
 
+
 def create_arlo_trackgraph() -> motile.TrackGraph:
     return motile.TrackGraph(create_arlo_nx_graph())
+
 
 def create_toy_example_nx_graph() -> networkx.DiGraph:
     cells = [
@@ -72,17 +74,19 @@ def create_toy_example_nx_graph() -> networkx.DiGraph:
     nx_graph.add_edges_from([(edge["source"], edge["target"], edge) for edge in edges])
     return nx_graph
 
+
 def create_toy_example_trackgraph() -> motile.TrackGraph:
     return motile.TrackGraph(create_toy_example_nx_graph())
 
+
 def create_toy_hyperedge_nx_graph() -> networkx.DiGraph:
-    """Create variation of the "Arlo graph", with one simple 
+    """Create variation of the "Arlo graph", with one simple
     edge modified and one hyperedge added.
 
        x
        |
        |       --- 6
-       |     /   / 
+       |     /   /
        |   1---3---5
        |     /   x
        |   0---2---4  Hyperedge: (0,(2,3))
@@ -117,16 +121,17 @@ def create_toy_hyperedge_nx_graph() -> networkx.DiGraph:
 
     # this is how to add a TrackGraph hyperedge into a nx_graph:
     nx_graph.add_node(
-        10, 
-        division_score=0.1
+        10, division_score=0.1
     )  # is a hypernode, because it has no frame attribute
     nx_graph.add_edge(0, 10)
     nx_graph.add_edge(10, 2)
     nx_graph.add_edge(10, 3)
     return nx_graph
 
+
 def create_toy_hyperedge_trackgraph() -> motile.TrackGraph:
     return motile.TrackGraph(create_toy_hyperedge_nx_graph())
+
 
 def create_ssvm_noise_trackgraph() -> motile.TrackGraph:
     cells = [

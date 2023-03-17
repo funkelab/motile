@@ -2,9 +2,7 @@ import logging
 
 import motile
 import numpy as np
-import pytest
 from data import create_ssvm_noise_trackgraph, create_toy_example_trackgraph
-from ilpy import QuadraticSolver
 from motile.constraints import MaxChildren, MaxParents
 from motile.costs import Appear, EdgeSelection, NodeSelection
 from motile.variables import EdgeSelected, NodeSelected
@@ -75,7 +73,8 @@ def test_structsvm_common_toy_example():
     selected_edges = [
         edge for edge, index in edge_indicators.items() if solution[index] > 0.5
     ]
-    for u, v, gt in graph.edges(data="gt"):
+    for (u, v), attrs in graph.edges.items():
+        gt = attrs.get("gt", None)
         if gt == 1:
             assert (u, v) in selected_edges
         elif gt == 0:
@@ -163,7 +162,8 @@ def test_structsvm_noise():
         selected_edges = [
             edge for edge, index in edge_indicators.items() if solution[index] > 0.5
         ]
-        for u, v, gt in solver.graph.edges(data="gt"):
+        for (u, v), attrs in graph.edges.items():
+            gt = attrs.get("gt", None)
             if gt == 1:
                 assert (u, v) in selected_edges
             elif gt == 0:
