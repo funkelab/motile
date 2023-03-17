@@ -2,8 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Iterable
 
-import ilpy
-from ilpy.expressions import Constant
+from ilpy.expressions import Constant, Expression
 
 from ..variables import EdgeSelected
 from .constraint import Constraint
@@ -31,7 +30,7 @@ class MaxChildren(Constraint):
     def __init__(self, max_children: int) -> None:
         self.max_children = max_children
 
-    def instantiate(self, solver: Solver) -> Iterable[ilpy.LinearConstraint]:
+    def instantiate(self, solver: Solver) -> Iterable[Expression]:
         edge_indicators = solver.get_variables(EdgeSelected)
 
         for node in solver.graph.nodes:
@@ -39,5 +38,5 @@ class MaxChildren(Constraint):
                 (edge_indicators.expr(e) for e in solver.graph.next_edges[node]),
                 Constant(0),
             )
-            expr = n_edges <= self.max_children
-            yield expr.constraint()
+
+            yield n_edges <= self.max_children

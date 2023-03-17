@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, TypeVar, cast
 
 import ilpy
 import numpy as np
+from ilpy.expressions import Expression
 
 from .constraints import SelectEdgeNodes
 from .constraints.constraint import Constraint
@@ -108,6 +109,8 @@ class Solver:
         logger.info("Adding %s constraints...", type(constraints).__name__)
 
         for constraint in constraints.instantiate(self):
+            if isinstance(constraint, Expression):
+                constraint = constraint.constraint()
             self.constraints.add(constraint)
 
     def solve(self, timeout: float = 0.0, num_threads: int = 1) -> ilpy.Solution:
@@ -248,6 +251,8 @@ class Solver:
             self.variable_types[index] = cls.variable_type
 
         for constraint in cls.instantiate_constraints(self):
+            if isinstance(constraint, Expression):
+                constraint = constraint.constraint()
             self.constraints.add(constraint)
 
         self.features.resize(num_variables=self.num_variables)
