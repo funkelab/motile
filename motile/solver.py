@@ -6,10 +6,10 @@ from typing import TYPE_CHECKING, Hashable, TypeVar, cast
 import ilpy
 import numpy as np
 
-from motile.constraints.constraint import Constraint
-
 from .constraints import SelectEdgeNodes
+from .constraints.constraint import Constraint
 from .costs import Features, Weight, Weights
+from .ssvm import fit_weights
 
 logger = logging.getLogger(__name__)
 
@@ -201,10 +201,44 @@ class Solver:
         feature_index = self.weights.index_of(weight)
         self.features.add_feature(variable_index, feature_index, value)
 
-    def fit_weights(self, gt_attribute: str) -> None:
-        from .ssvm import fit_weights
+    def fit_weights(
+        self,
+        gt_attribute: str,
+        regularizer_weight: float = 0.1,
+        max_iterations: int = 1000,
+        eps: float = 1e-6,
+    ) -> None:
+        """Fit weights of ILP costs to ground truth with structured SVM.
 
-        optimal_weights = fit_weights(self, gt_attribute)
+        Updates the weights in the solver object to the found solution.
+
+        Args:
+
+            gt_attribute:
+
+                Node/edge attribute that marks the ground truth for fitting.
+                `gt_attribute` is expected to be set to
+
+                    - `1` for objects labaled as ground truth.
+                    - `0` for objects explicitly labeled as not part of the
+                        ground truth.
+                    - `None` or not set for unlabeled objects.
+
+            regularizer_weight:
+
+                The weight of the quadratic regularizer.
+
+            max_iterations:
+
+                Maximum number of gradient steps in the structured SVM.
+
+            eps:
+
+                Convergence threshold.
+        """
+        optimal_weights = fit_weights(
+            self, gt_attribute, regularizer_weight, max_iterations, eps
+        )
         self.weights.from_ndarray(optimal_weights)
 
     @property

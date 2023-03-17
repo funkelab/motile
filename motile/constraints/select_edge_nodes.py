@@ -28,13 +28,9 @@ class SelectEdgeNodes(Constraint):
         node_indicators = solver.get_variables(NodeSelected)
         edge_indicators = solver.get_variables(EdgeSelected)
 
-        constraints = []
-        for u, v in solver.graph.edges:
-            x_e = edge_indicators.expr((u, v), "e")
-            x_u = node_indicators.expr(u, "u")
-            x_v = node_indicators.expr(v, "v")
+        for edge in solver.graph.edges:
+            nodes = solver.graph.nodes_of(edge)
+            x_e = edge_indicators.expr(edge, "e")
 
-            expression = 2 * x_e - x_u - x_v <= 0
-            constraints.append(expression.constraint())
-
-        return constraints
+            expr = len(nodes) * x_e - sum(node_indicators.expr(n) for n in nodes) <= 0
+            yield expr.constraint()

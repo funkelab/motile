@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Hashable, Sequence
+from typing import TYPE_CHECKING, Collection, Iterable
 
 import ilpy
 
@@ -9,10 +9,11 @@ from .node_selected import NodeSelected
 from .variable import Variable
 
 if TYPE_CHECKING:
+    from motile._types import NodeId
     from motile.solver import Solver
 
 
-class NodeAppear(Variable):
+class NodeAppear(Variable["NodeId"]):
     r"""A binary variable for each node that indicates whether the node is the
     start of a track (i.e., the node is selected and has no selected incoming
     edges).
@@ -34,16 +35,15 @@ class NodeAppear(Variable):
     """
 
     @staticmethod
-    def instantiate(solver: Solver) -> Sequence[Hashable]:
-        return solver.graph.nodes  # type: ignore
+    def instantiate(solver: Solver) -> Collection[NodeId]:
+        return solver.graph.nodes
 
     @staticmethod
-    def instantiate_constraints(solver: Solver) -> list[ilpy.LinearConstraint]:
+    def instantiate_constraints(solver: Solver) -> Iterable[ilpy.LinearConstraint]:
         appear_indicators = solver.get_variables(NodeAppear)
         node_indicators = solver.get_variables(NodeSelected)
         edge_indicators = solver.get_variables(EdgeSelected)
 
-        constraints = []
         for node in solver.graph.nodes:
             prev_edges = solver.graph.prev_edges[node]
             selected = node_indicators.expr(node, "n")
@@ -52,7 +52,7 @@ class NodeAppear(Variable):
             if not prev_edges:
                 # special case: no incoming edges, appear indicator is equal to
                 # selection indicator
-                constraints.append((selected == appear).constraint())
+                yield (selected == appear).constraint()
                 continue
 
             # Ensure that the following holds:
@@ -67,8 +67,6 @@ class NodeAppear(Variable):
             # (2) s - appear * num_prev >= 0
             num_prev = len(prev_edges)
             s = num_prev * selected - sum(edge_indicators.expr(e) for e in prev_edges)
-            expr1 = s - appear <= num_prev - 1
-            expr2 = s - appear >= 0
-            constraints.extend([expr1.constraint(), expr2.constraint()])
 
-        return constraints
+            yield (s - appear <= num_prev - 1).constraint()
+            yield (s - appear >= 0).constraint()

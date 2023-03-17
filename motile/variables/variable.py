@@ -1,7 +1,16 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Hashable, Iterable, Sequence
+from typing import (
+    TYPE_CHECKING,
+    ClassVar,
+    Collection,
+    Hashable,
+    Iterable,
+    Iterator,
+    Mapping,
+    TypeVar,
+)
 
 import ilpy
 from ilpy import expressions
@@ -9,8 +18,10 @@ from ilpy import expressions
 if TYPE_CHECKING:
     from motile.solver import Solver
 
+_KT = TypeVar("_KT", bound=Hashable)
 
-class Variable(ABC):
+
+class Variable(ABC, Mapping[_KT, int]):
     """Base class for solver variables.
 
     New variables can be introduced by inheriting from this base class and
@@ -40,11 +51,11 @@ class Variable(ABC):
     """
 
     # default variable type, replace in subclasses to override
-    variable_type = ilpy.VariableType.Binary
+    variable_type: ClassVar[ilpy.VariableType] = ilpy.VariableType.Binary
 
     @staticmethod
     @abstractmethod
-    def instantiate(solver: Solver) -> Sequence[Hashable]:
+    def instantiate(solver: Solver) -> Collection[_KT]:
         """Create and return keys for the variables.
 
         For example, to create a variable for each node, this function would
@@ -79,7 +90,7 @@ class Variable(ABC):
         pass
 
     @staticmethod
-    def instantiate_constraints(solver: Solver) -> list[ilpy.LinearConstraint]:
+    def instantiate_constraints(solver: Solver) -> Iterable[ilpy.LinearConstraint]:
         """Add linear constraints to the solver to ensure that these variables
         are coupled to other variables of the solver.
 
@@ -90,13 +101,13 @@ class Variable(ABC):
 
         Returns:
 
-            A list of :class:`ilpy.LinearConstraint`. See
+            A iterable of :class:`ilpy.LinearConstraint`. See
             :class:`motile.constraints.Constraint` for how to create linear
             constraints.
         """
         return []
 
-    def __init__(self, solver: Solver, index_map: dict[Hashable, int]) -> None:
+    def __init__(self, solver: Solver, index_map: dict[_KT, int]) -> None:
         self._solver = solver
         self._index_map = index_map
 
@@ -112,19 +123,25 @@ class Variable(ABC):
             rs.append(r)
         return "\n".join(rs)
 
-    def __getitem__(self, key: Hashable) -> int:
+    def __getitem__(self, key: _KT) -> int:
         return self._index_map[key]
 
-    def items(self) -> Iterable[tuple[Hashable, int]]:
-        return self._index_map.items()
+    def __iter__(self) -> Iterator[_KT]:
+        return iter(self._index_map)
 
-    def keys(self) -> Iterable[Hashable]:
-        return self._index_map.keys()
-
-    def values(self) -> Iterable[int]:
-        return self._index_map.values()
+    def __len__(self) -> int:
+        return len(self._index_map)
 
     def expr(self, key: Hashable, name: str = "") -> expressions.Variable:
         if not name:
             name = f"{type(self).__name__}({key})"
         return expressions.Variable(name, index=self._index_map[key])
+
+    # All of these methods are provided by subclassing typing.Mapping
+    # __contains__
+    # keys
+    # items
+    # values
+    # get
+    # __eq__
+    # __ne__
