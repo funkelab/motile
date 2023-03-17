@@ -14,9 +14,9 @@ if TYPE_CHECKING:
 def fit_weights(
     solver: Solver,
     gt_attribute: str,
-    regularizer_weight: float = 0.1,
-    eps: float = 1e-6,
-    max_iterations: int | None = None,
+    regularizer_weight: float,
+    max_iterations: int | None,
+    eps: float,
 ) -> np.ndarray:
     features = solver.features.to_ndarray()
 
@@ -24,14 +24,16 @@ def fit_weights(
     ground_truth = np.zeros((solver.num_variables,), dtype=np.float32)
 
     for node, index in solver.get_variables(NodeSelected).items():
-        if gt_attribute in solver.graph.nodes[node]:
+        gt = solver.graph.nodes[node].get(gt_attribute, None)
+        if gt is not None:
             mask[index] = 1.0
-            ground_truth[index] = solver.graph.nodes[node][gt_attribute]
+            ground_truth[index] = gt
 
     for edge, index in solver.get_variables(EdgeSelected).items():
-        if gt_attribute in solver.graph.edges[edge]:
+        gt = solver.graph.edges[edge].get(gt_attribute, None)
+        if gt is not None:
             mask[index] = 1.0
-            ground_truth[index] = solver.graph.edges[edge][gt_attribute]
+            ground_truth[index] = gt
 
     loss = ssvm.SoftMarginLoss(
         solver.constraints,
