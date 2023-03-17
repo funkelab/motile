@@ -150,7 +150,8 @@ class TrackGraph:
             nx_node (Any): a node in the given ``nx_graph``.
 
         Returns:
-            bool: true iff the given ``nx_node`` does not posses the ``frame_attribute``.
+            bool: true iff the given ``nx_node`` does not posses the
+            ``frame_attribute``.
         """
         return self.frame_attribute not in nx_graph.nodes[nx_node]
 
