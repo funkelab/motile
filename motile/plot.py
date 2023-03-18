@@ -260,9 +260,8 @@ def draw_solution(graph, solver, *args, **kwargs):
     def edge_alpha_func(edge):
         return solution[edge_indicators[edge]]
 
-    return draw_track_graph(
-        graph, alpha_func=(node_alpha_func, edge_alpha_func), *args, **kwargs
-    )
+    kwargs["alpha_func"] = (node_alpha_func, edge_alpha_func)
+    return draw_track_graph(graph, *args, **kwargs)
 
 
 def to_rgba(color, alpha=1.0):

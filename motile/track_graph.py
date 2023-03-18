@@ -1,14 +1,14 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Any, Hashable, Iterator
+from typing import TYPE_CHECKING, Any, DefaultDict, Hashable, Iterator
 
 logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
     from networkx.classes import DiGraph
 
-EdgeTuple = tuple[int | tuple[int, ...], ...]
+    from motile._types import EdgeId, GraphObject, NodeId
 
 
 class TrackGraph:
@@ -41,36 +41,36 @@ class TrackGraph:
         self.frame_attribute = frame_attribute
         self._graph_changed = True
 
-        self.nodes: dict[Hashable, dict[Hashable, Any]] = {}
-        self.edges: dict[EdgeTuple, dict[Hashable, Any]] = {}
-        self.prev_edges: dict[Hashable, list[Hashable]] = {}
-        self.next_edges: dict[Hashable, list[Hashable]] = {}
+        self.nodes: dict[NodeId, GraphObject] = {}
+        self.edges: dict[EdgeId, GraphObject] = {}
+        self.prev_edges: DefaultDict[NodeId, list[EdgeId]] = DefaultDict(list)
+        self.next_edges: DefaultDict[NodeId, list[EdgeId]] = DefaultDict(list)
 
         if nx_graph:
             self.add_from_nx_graph(nx_graph)
 
         self._update_metadata()
 
-    def add_node(self, node_id: Hashable, data: dict[Hashable, Any]):
+    def add_node(self, node_id: NodeId, data: GraphObject) -> None:
         """Adds a new node to this TrackGraph.
 
         Args:
-            node_id (Hashable): the node to be added.
+            node_id (int | tuple[int, ...]): the node to be added.
             data (dict[Hashable, Any]): all properties associated to the added node.
         """
         self.nodes[node_id] = data
 
-    def add_edge(self, edge_tuple: EdgeTuple, data: dict[Hashable, Any]):
+    def add_edge(self, edge_id: EdgeId, data: GraphObject) -> None:
         """Adds an edge to this TrackGraph.
 
         Args:
-            edge_tuple (EdgeTuple): and ``EdgeTuple`` defining the edge (or hyperedge)
-                to be added.
+            edge_id (EdgeId): an ``EdgeId`` (tuple of NodeIds) defining the edge
+                (or hyperedge) to be added.
             data (dict[Hashable, Any]): all properties associated to the added edge.
         """
-        self.edges[edge_tuple] = data
+        self.edges[edge_id] = data
 
-    def add_from_nx_graph(self, nx_graph):
+    def add_from_nx_graph(self, nx_graph: DiGraph) -> None:
         """Adds the TrackGraph represented by the given ``nx_graph`` to the
         existing TrackGraph.
 
@@ -79,7 +79,7 @@ class TrackGraph:
         node will be added as a hyperedge.
 
         Args:
-            nx_graph (_type_):
+            nx_graph (networkx.DiGraph):
 
                 A directed networkx graph representing a TrackGraph to be added.
                 Hyperedges are represented by networkx nodes that do not have the
@@ -97,10 +97,6 @@ class TrackGraph:
                     self.nodes[node] = data
                 else:
                     self.nodes[node] |= data
-
-        # for all new nodes, add empty lists of incident edges
-        self.prev_edges |= {node: [] for node in self.nodes}
-        self.next_edges |= {node: [] for node in self.nodes}
 
         # add all edges and hyperedges
         for (u, v), data in nx_graph.edges.items():
@@ -129,11 +125,11 @@ class TrackGraph:
                 self.prev_edges[v].append((u, v))
                 self.next_edges[u].append((u, v))
 
-    def nodes_of(self, edge: int | tuple[int, ...]) -> Iterator[int]:
+    def nodes_of(self, edge: EdgeId | int) -> Iterator[int]:
         """Returns an ``Iterator`` of node id's that are incident to the given edge.
 
         Args:
-            edge (int | tuple[int, ...]): an edge of this TrackGraph.
+            edge (EdgeId | int): an edge of this TrackGraph.
 
         Yields:
             Iterator[int]: all nodes incident to the given edge.
@@ -161,7 +157,7 @@ class TrackGraph:
 
     def _hyperedge_nx_node_to_edge_tuple_and_neighbors(
         self, nx_graph: DiGraph, hyperedge_node: Any
-    ) -> tuple[Hashable, ...]:
+    ) -> tuple[tuple[NodeId, ...], list[NodeId], list[NodeId]]:
         """Creates a hyperedge tuple for hyperedge node in a given networkx ``DiGraph``.
 
         Args:
@@ -180,9 +176,9 @@ class TrackGraph:
         out_nodes = list(nx_graph.successors(hyperedge_node))
         nx_nodes = in_nodes + out_nodes
 
-        frameset = set(
+        frameset = {
             nx_graph.nodes[nx_node][self.frame_attribute] for nx_node in nx_nodes
-        )
+        }
         frames = list(sorted(frameset))
 
         edge_tuple = tuple(
