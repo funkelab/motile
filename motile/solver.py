@@ -55,7 +55,7 @@ class Solver:
         self.num_variables: int = 0
         self._costs = np.zeros((0,), dtype=np.float32)
         self._costs_instances: dict[str, Costs] = {}
-        self.solution = None
+        self.solution: ilpy.Solution | None = None
 
         if not skip_core_constraints:
             self.add_constraints(SelectEdgeNodes())
@@ -154,7 +154,7 @@ class Solver:
             self.ilp_solver.set_timeout(timeout)
 
         self.solution, message = self.ilp_solver.solve()
-        if len(message):
+        if message:
             logger.info("ILP solver returned with: %s", message)
 
         return self.solution
