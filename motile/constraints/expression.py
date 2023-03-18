@@ -23,6 +23,10 @@ class ExpressionConstraint(Constraint):
             An expression to evaluate for each node/edge. The expression must
             evaluate to a boolean value. The expression can use any names of
             node/edge attributes as variables.
+        eval_nodes (bool):
+            Whether to evaluate the expression for nodes. By default, True.
+        eval_edges (bool):
+            Whether to evaluate the expression for edges. By default, True.
 
     Example:
 
