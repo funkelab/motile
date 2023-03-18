@@ -1,27 +1,45 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any, Callable, overload
+
 import numpy as np
 
 try:
     import plotly.graph_objects as go
-except ImportError as e:
+except ImportError as e:  # pragma: no cover
     raise ImportError(
         "This functionality requires the plotly package. Please install plotly."
     ) from e
 
 from .variables import EdgeSelected, NodeSelected
 
+if TYPE_CHECKING:
+    from motile import Solver, TrackGraph
+    from motile._types import EdgeId, NodeId
+
+    Color = tuple[int, int, int]
+    ReturnsFloat = Callable[[Any], float]
+    ReturnsStr = Callable[[Any], str]
+
+PURPLE = (127, 30, 121)
+
+
+def _attr_hover_text(attrs: dict) -> str:
+    return "<br>".join([f"{name}: {value}" for name, value in attrs.items()])
+
 
 def draw_track_graph(
-    graph,
-    position_attribute=None,
-    position_func=None,
-    alpha_attribute=None,
-    alpha_func=None,
-    label_attribute=None,
-    label_func=None,
-    node_size=20,
-    node_color=(127, 30, 121),
-    edge_color=(127, 30, 121),
-):
+    graph: TrackGraph,
+    position_attribute: str | None = None,
+    position_func: ReturnsFloat | None = None,
+    alpha_attribute: str | None = None,
+    alpha_func: ReturnsFloat | tuple[ReturnsFloat, ReturnsFloat] | None = None,
+    label_attribute: str | None = None,
+    label_func: ReturnsStr | tuple[ReturnsStr, ReturnsStr] | None = None,
+    node_size: float = 20,
+    node_color: Color = PURPLE,
+    edge_color: Color = PURPLE,
+) -> go.Figure:
     """Create a plotly figure showing the given graph, with time on the x-axis
     and node positions on the y-axis.
 
@@ -65,17 +83,23 @@ def draw_track_graph(
         raise RuntimeError(
             "Only one of position_attribute and position_func can be given"
         )
+    if alpha_attribute is not None and alpha_func is not None:
+        raise RuntimeError("Only one of alpha_attribute and alpha_func can be given")
+    if label_attribute is not None and label_func is not None:
+        raise RuntimeError("Only one of label_attribute and label_func can be given")
 
     if position_attribute is None:
         position_attribute = "x"
 
     if position_func is None:
 
-        def position_func(node):
-            return graph.nodes[node][position_attribute]
+        def position_func(node: NodeId) -> float:
+            return float(graph.nodes[node][position_attribute])
 
-    if alpha_attribute is not None and alpha_func is not None:
-        raise RuntimeError("Only one of alpha_attribute and alpha_func can be given")
+    alpha_node_func: ReturnsFloat
+    alpha_edge_func: ReturnsFloat
+    label_node_func: ReturnsStr
+    label_edge_func: ReturnsStr
 
     if alpha_attribute is not None:
 
@@ -93,15 +117,11 @@ def draw_track_graph(
         def alpha_edge_func(_):
             return 1.0
 
+    elif isinstance(alpha_func, tuple):
+        alpha_node_func, alpha_edge_func = alpha_func
     else:
-        try:
-            alpha_node_func, alpha_edge_func = alpha_func
-        except TypeError:
-            alpha_node_func = alpha_func
-            alpha_edge_func = alpha_func
-
-    if label_attribute is not None and label_func is not None:
-        raise RuntimeError("Only one of label_attribute and label_func can be given")
+        alpha_node_func = alpha_func
+        alpha_edge_func = alpha_func
 
     if label_attribute is not None:
 
@@ -119,15 +139,15 @@ def draw_track_graph(
         def label_edge_func(edge):
             return str(edge)
 
+    elif isinstance(label_func, tuple):
+        label_node_func, label_edge_func = label_func
     else:
-        try:
-            label_node_func, label_edge_func = label_func
-        except TypeError:
-            label_node_func = label_func
-            label_edge_func = label_func
+        label_node_func = label_func
+        label_edge_func = label_func
 
     frame_attribute = graph.frame_attribute
-    frames = list(range(*graph.get_frames()))
+    # (get_frames() will return a tuple including None if the graph has no nodes)
+    frames = list(range(*graph.get_frames()))  # type: ignore
 
     node_positions = np.asarray(
         [
@@ -135,17 +155,14 @@ def draw_track_graph(
             for node, attrs in graph.nodes.items()
         ]
     )
-    node_alphas = [alpha_node_func(node) for node in graph.nodes]
-    edge_alphas = [alpha_edge_func(edge) for edge in graph.edges]
+    node_alphas: list[float] = [alpha_node_func(node) for node in graph.nodes]
+    edge_alphas: list[float] = [alpha_edge_func(edge) for edge in graph.edges]
     # can be a list for different colors per node/edge
     node_colors = to_rgba(node_color, node_alphas)
     edge_colors = to_rgba(edge_color, edge_alphas)
 
     node_labels = [str(label_node_func(node)) for node in graph.nodes]
     edge_labels = [str(label_edge_func(edge)) for edge in graph.edges]
-
-    def attr_hover_text(attrs):
-        return "<br>".join([f"{name}: {value}" for name, value in attrs.items()])
 
     fig = go.Figure()
 
@@ -157,7 +174,7 @@ def draw_track_graph(
         text=node_labels,
         textfont={"color": "white"},
         hoverinfo="text",
-        hovertext=[attr_hover_text(attrs) for attrs in graph.nodes.values()],
+        hovertext=[_attr_hover_text(attrs) for attrs in graph.nodes.values()],
     )
 
     fig.add_trace(node_trace)
@@ -209,7 +226,7 @@ def draw_track_graph(
                 yref="y",
                 text=label,
                 font={"color": "white"},
-                hovertext=attr_hover_text(attrs),
+                hovertext=_attr_hover_text(attrs),
                 bgcolor=color,
                 showarrow=True,
                 standoff=node_size * 0.8,
@@ -230,7 +247,9 @@ def draw_track_graph(
     return fig
 
 
-def draw_solution(graph, solver, *args, **kwargs):
+def draw_solution(
+    graph: TrackGraph, solver: Solver, *args: Any, **kwargs: Any
+) -> go.Figure:
     """Wrapper around :func:`draw_track_graph` highlighting the solution found
     by the given solver.
 
@@ -251,20 +270,35 @@ def draw_solution(graph, solver, *args, **kwargs):
     """
 
     solution = solver.solution
+    if solution is None:
+        raise RuntimeError("Solver has no solution. Call solve() first.")
+
     node_indicators = solver.get_variables(NodeSelected)
     edge_indicators = solver.get_variables(EdgeSelected)
 
-    def node_alpha_func(node):
-        return solution[node_indicators[node]]
+    def node_alpha_func(node: NodeId) -> float:
+        return solution[node_indicators[node]]  # type: ignore
 
-    def edge_alpha_func(edge):
-        return solution[edge_indicators[edge]]
+    def edge_alpha_func(edge: EdgeId) -> float:
+        return solution[edge_indicators[edge]]  # type: ignore
 
     kwargs["alpha_func"] = (node_alpha_func, edge_alpha_func)
     return draw_track_graph(graph, *args, **kwargs)
 
 
-def to_rgba(color, alpha=1.0):
+@overload
+def to_rgba(color: list[Color], alpha: float | list[float] = 1.0) -> list[str]:
+    ...
+
+
+@overload
+def to_rgba(color: Color, alpha: float | list[float] = 1.0) -> str:
+    ...
+
+
+def to_rgba(
+    color: Color | list[Color], alpha: float | list[float] = 1.0
+) -> str | list[str]:
     if isinstance(color, list):
         if isinstance(alpha, list):
             return [to_rgba(c, a) for c, a in zip(color, alpha)]
@@ -275,5 +309,5 @@ def to_rgba(color, alpha=1.0):
 
     # we fake alpha by mixing with white(ish)
     # transparancy is tricky...
-    color = tuple(int(c * alpha + 220 * (1.0 - alpha)) for c in color)
-    return f"rgb({color[0]},{color[1]},{color[2]})"
+    r, g, b = tuple(int(c * alpha + 220 * (1.0 - alpha)) for c in color)
+    return f"rgb({r},{g},{b})"
