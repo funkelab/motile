@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Iterable
 
 import ilpy
 
@@ -24,24 +24,20 @@ class SelectEdgeNodes(Constraint):
     This constraint will be added by default to any :class:`Solver` instance.
     """
 
-    def instantiate(self, solver: Solver) -> list[ilpy.LinearConstraint]:
+    def instantiate(self, solver: Solver) -> Iterable[ilpy.LinearConstraint]:
         node_indicators = solver.get_variables(NodeSelected)
         edge_indicators = solver.get_variables(EdgeSelected)
 
-        constraints = []
         for edge in solver.graph.edges:
-            u, v = edge
+            nodes = solver.graph.nodes_of(edge)
 
             ind_e = edge_indicators[edge]
-            ind_u = node_indicators[u]
-            ind_v = node_indicators[v]
+            nodes_ind = [node_indicators[node] for node in nodes]
 
             constraint = ilpy.LinearConstraint()
-            constraint.set_coefficient(ind_e, 2)
-            constraint.set_coefficient(ind_u, -1)
-            constraint.set_coefficient(ind_v, -1)
+            constraint.set_coefficient(ind_e, len(nodes_ind))
+            for node_ind in nodes_ind:
+                constraint.set_coefficient(node_ind, -1)
             constraint.set_relation(ilpy.Relation.LessEqual)
             constraint.set_value(0)
-            constraints.append(constraint)
-
-        return constraints
+            yield constraint

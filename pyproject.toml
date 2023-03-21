@@ -13,6 +13,8 @@ license = { text = "MIT" }
 authors = [
     { name = 'Jan Funke', email = 'funkej@janelia.hhmi.org' },
     { name = 'Talley Lambert', email = 'talley.lambert@gmail.com' },
+    { name = 'Benjamin Gallusser', email = 'bgallusser@googlemail.com' },
+    { name = 'Florian Jug', email = 'florian.jug@fht.org' },
 ]
 dynamic = ["version"]
 dependencies = ['networkx', 'ilpy', 'numpy', 'structsvm']
@@ -48,4 +50,6 @@ exclude_lines = ["pragma: no cover", "pragma: ${PY_MAJOR_VERSION} no cover"]
 files = "motile"
 strict = true                 # feel free to relax this if it's annoying
 allow_untyped_defs = true     # TODO: can eventually fill out typing and remove this
+allow_untyped_calls = true    # TODO: can eventually fill out typing and remove this
+disallow_any_generics = false
 ignore_missing_imports = true
