@@ -50,6 +50,10 @@ button.toggle-button {
   background: var(--color-a-light);
 }
 
+.rst-content .admonition-title::before {
+  content: "";
+}
+
 .rst-content code.literal {
   color: var(--color-a);
 }
