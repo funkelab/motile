@@ -6,11 +6,20 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+from pyproject_parser import PyProject
 import motile
 
+pyproject = PyProject.load("../../pyproject.toml")
+author_list = ", ".join(
+    [
+        author['name']
+        for author in pyproject.project['authors']
+    ]
+)
+
 project = "motile"
-copyright = "2023, Jan Funke, Ana Cristina Pascual Ramos"
-author = "Jan Funke, Ana Cristina Pascual Ramos"
+copyright = "2023, " + author_list + ", Ana Cristina Pascual Ramos"
+author = author_list
 version = motile.__version__
 release = motile.__version__
 
