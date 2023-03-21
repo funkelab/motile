@@ -21,7 +21,7 @@ for two discrete optimizers:
    <https://www.gurobi.com/academia/academic-program-and-licenses/>`_ for how
    to obtain one.
 
-2. The `SCIP Optimizer <https://www.scipopt.org/>`_, an free and open source
+2. The `SCIP Optimizer <https://www.scipopt.org/>`_, a free and open source
    solver. If ``motile`` does not find a valid Gurobi license, it will fall
    back to using SCIP.
 
