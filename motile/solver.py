@@ -150,6 +150,8 @@ class Solver:
         if timeout > 0:
             self.ilp_solver.set_timeout(timeout)
 
+        self.ilp_solver.set_verbose(False)
+
         self.solution, message = self.ilp_solver.solve()
         if message:
             logger.info("ILP solver returned with: %s", message)
