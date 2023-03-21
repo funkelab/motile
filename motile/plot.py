@@ -21,6 +21,8 @@ def draw_track_graph(
     node_size=20,
     node_color=(127, 30, 121),
     edge_color=(127, 30, 121),
+    width=700,
+    height=400,
 ):
     """Create a plotly figure showing the given graph, with time on the x-axis
     and node positions on the y-axis.
@@ -55,6 +57,9 @@ def draw_track_graph(
 
         node_color, edge_color (``tuple`` of ``int``):
             The RGB color to use for nodes and edges.
+
+        width, height (``int``):
+            The width and height of the plot, in pixels. Default: 700 x 400.
 
     Returns:
 
@@ -173,6 +178,25 @@ def draw_track_graph(
             "title": "space",
         },
         showlegend=False,
+        margin={
+            "t": 0,
+            "b": 0,
+            "l": 0,
+            "r": 0,
+        },
+        modebar={
+            "remove": [
+                "lasso",
+                "pan",
+                "select",
+                "autoscale",
+                "zoomin",
+                "zoomout",
+                "resetscale",
+            ]
+        },
+        width=width,
+        height=height,
     )
 
     arrows = []
