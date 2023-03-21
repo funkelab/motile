@@ -21,7 +21,7 @@ def draw_track_graph(
     node_size=20,
     node_color=(127, 30, 121),
     edge_color=(127, 30, 121),
-    width=700,
+    width=660,
     height=400,
 ):
     """Create a plotly figure showing the given graph, with time on the x-axis
