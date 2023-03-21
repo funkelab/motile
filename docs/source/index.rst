@@ -136,4 +136,5 @@ Full Documentation:
 
   install
   quickstart
+  learning
   api
