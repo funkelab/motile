@@ -10,7 +10,7 @@ Track Graph
 -----------
 
 .. autoclass:: TrackGraph
-  :members: prev_edges, next_edges, get_frames, nodes_by_frame
+  :members: get_frames, nodes_by_frame
 
 Solver
 ------
