@@ -122,6 +122,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#motile.Solver.add_constraints"><code class="docutils literal notranslate"><span class="pre">Solver.add_constraints()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#motile.Solver.add_costs"><code class="docutils literal notranslate"><span class="pre">Solver.add_costs()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#motile.Solver.add_variable_cost"><code class="docutils literal notranslate"><span class="pre">Solver.add_variable_cost()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.Solver.fit_weights"><code class="docutils literal notranslate"><span class="pre">Solver.fit_weights()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#motile.Solver.get_variables"><code class="docutils literal notranslate"><span class="pre">Solver.get_variables()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#motile.Solver.solve"><code class="docutils literal notranslate"><span class="pre">Solver.solve()</span></code></a></li>
 </ul>
@@ -275,23 +276,19 @@
 <h2>Track Graph<a class="headerlink" href="#track-graph" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="motile.TrackGraph">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.</span></span><span class="sig-name descname"><span class="pre">TrackGraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DiGraph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_attribute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'t'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_bipartite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.TrackGraph" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.</span></span><span class="sig-name descname"><span class="pre">TrackGraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx_graph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DiGraph</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_attribute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'t'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.TrackGraph" title="Permalink to this definition">¶</a></dt>
 <dd><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code> of objects with positions in time and space,
 and inter-frame edges between them.</p>
 <p>Provides a few convenience methods for time series graphs in addition to
 all the methods inherited from <code class="xref py py-class docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code>.</p>
 <p>Args:</p>
 <blockquote>
-<div><p>graph (<code class="xref py py-class docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code>):</p>
+<div><p>nx_graph (<code class="docutils literal notranslate"><span class="pre">DiGraph</span></code>, optional):</p>
 <blockquote>
-<div><p>Optional graph data to pass to the <code class="xref py py-class docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code>
-constructor as <code class="docutils literal notranslate"><span class="pre">incoming_graph_data</span></code>. This can be used to
-populate a track graph with entries from a generic
-<code class="docutils literal notranslate"><span class="pre">networkx</span></code> graph. If None (default) an empty
-graph is created.  The data can be an edge list, or any
-NetworkX graph object.  If the corresponding optional Python
-packages are installed the data can also be a 2D NumPy array, a
-SciPy sparse array, or a PyGraphviz graph.</p>
+<div><p>A directed networkx graph representing the TrackGraph to be created.
+Hyperedges are represented by networkx nodes that do not have the
+<code class="docutils literal notranslate"><span class="pre">frame_attribute</span></code> and are connected to nodes that do have this
+attribute.</p>
 </div></blockquote>
 <p>frame_attribute (<code class="docutils literal notranslate"><span class="pre">string</span></code>, optional):</p>
 <blockquote>
@@ -370,6 +367,44 @@ costs class, if not given.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="motile.Solver.fit_weights">
+<span class="sig-name descname"><span class="pre">fit_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gt_attribute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regularizer_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iterations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#motile.Solver.fit_weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit weights of ILP costs to ground truth with structured SVM.</p>
+<p>Updates the weights in the solver object to the found solution.</p>
+<p>Args:</p>
+<blockquote>
+<div><p>gt_attribute:</p>
+<blockquote>
+<div><p>Node/edge attribute that marks the ground truth for fitting.
+<cite>gt_attribute</cite> is expected to be set to</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>1</cite> for objects labaled as ground truth.</p></li>
+<li><dl class="simple">
+<dt><cite>0</cite> for objects explicitly labeled as not part of the</dt><dd><p>ground truth.</p>
+</dd>
+</dl>
+</li>
+<li><p><cite>None</cite> or not set for unlabeled objects.</p></li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<p>regularizer_weight:</p>
+<blockquote>
+<div><p>The weight of the quadratic regularizer.</p>
+</div></blockquote>
+<p>max_iterations:</p>
+<blockquote>
+<div><p>Maximum number of gradient steps in the structured SVM.</p>
+</div></blockquote>
+<p>eps:</p>
+<blockquote>
+<div><p>Convergence threshold.</p>
+</div></blockquote>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="motile.Solver.get_variables">
 <span class="sig-name descname"><span class="pre">get_variables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">type</span><span class="p"><span class="pre">[</span></span><span class="pre">V</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">V</span></span></span><a class="headerlink" href="#motile.Solver.get_variables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get variables by their class name.</p>
@@ -421,7 +456,7 @@ vector.</p>
 <p>Solver variables are introduced by inheriting from the following abstract base class:</p>
 <span class="target" id="module-motile.variables"></span><dl class="py class">
 <dt class="sig sig-object py" id="motile.variables.Variable">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">Variable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.Solver" title="motile.Solver"><span class="pre">Solver</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.Variable" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">Variable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.Solver" title="motile.Solver"><span class="pre">Solver</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">_KT</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.Variable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for solver variables.</p>
 <p>New variables can be introduced by inheriting from this base class and
 overwriting <a class="reference internal" href="#motile.variables.Variable.instantiate" title="motile.variables.Variable.instantiate"><code class="xref py py-func docutils literal notranslate"><span class="pre">instantiate()</span></code></a> and optionally
@@ -448,7 +483,7 @@ optimization:</p>
 <a class="reference internal" href="#motile.costs.Costs" title="motile.costs.Costs"><code class="xref py py-class docutils literal notranslate"><span class="pre">motile.costs.Costs</span></code></a> can ask for variables.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="motile.variables.Variable.instantiate">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">instantiate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.Solver" title="motile.Solver"><span class="pre">Solver</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#motile.variables.Variable.instantiate" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">instantiate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.Solver" title="motile.Solver"><span class="pre">Solver</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">_KT</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#motile.variables.Variable.instantiate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create and return keys for the variables.</p>
 <p>For example, to create a variable for each node, this function would
 return a list of all nodes:</p>
@@ -485,7 +520,7 @@ one for each variable to create.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="motile.variables.Variable.instantiate_constraints">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">instantiate_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.Solver" title="motile.Solver"><span class="pre">Solver</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">ilpy.LinearConstraint</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#motile.variables.Variable.instantiate_constraints" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">instantiate_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.Solver" title="motile.Solver"><span class="pre">Solver</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">ilpy.LinearConstraint</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#motile.variables.Variable.instantiate_constraints" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add linear constraints to the solver to ensure that these variables
 are coupled to other variables of the solver.</p>
 <p>Args:</p>
@@ -497,7 +532,7 @@ are coupled to other variables of the solver.</p>
 </div></blockquote>
 <p>Returns:</p>
 <blockquote>
-<div><p>A list of <code class="xref py py-class docutils literal notranslate"><span class="pre">ilpy.LinearConstraint</span></code>. See
+<div><p>A iterable of <code class="xref py py-class docutils literal notranslate"><span class="pre">ilpy.LinearConstraint</span></code>. See
 <a class="reference internal" href="#motile.constraints.Constraint" title="motile.constraints.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">motile.constraints.Constraint</span></code></a> for how to create linear
 constraints.</p>
 </div></blockquote>
@@ -511,7 +546,7 @@ constraints.</p>
 <blockquote>
 <div><dl class="py class">
 <dt class="sig sig-object py" id="motile.variables.NodeSelected">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">NodeSelected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.Solver" title="motile.Solver"><span class="pre">Solver</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.NodeSelected" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">NodeSelected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.Solver" title="motile.Solver"><span class="pre">Solver</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">_KT</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.NodeSelected" title="Permalink to this definition">¶</a></dt>
 <dd><p>A binary variable for each node that indicates whether the node is part
 of the solution or not.</p>
 </dd></dl>
@@ -523,7 +558,7 @@ of the solution or not.</p>
 <blockquote>
 <div><dl class="py class">
 <dt class="sig sig-object py" id="motile.variables.EdgeSelected">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">EdgeSelected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.Solver" title="motile.Solver"><span class="pre">Solver</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.EdgeSelected" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">EdgeSelected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.Solver" title="motile.Solver"><span class="pre">Solver</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">_KT</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.EdgeSelected" title="Permalink to this definition">¶</a></dt>
 <dd><p>A binary variable for each edge that indicates whether the edge is part
 of the solution or not.</p>
 </dd></dl>
@@ -535,7 +570,7 @@ of the solution or not.</p>
 <blockquote>
 <div><dl class="py class">
 <dt class="sig sig-object py" id="motile.variables.NodeAppear">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">NodeAppear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.Solver" title="motile.Solver"><span class="pre">Solver</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.NodeAppear" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">NodeAppear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.Solver" title="motile.Solver"><span class="pre">Solver</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">_KT</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.NodeAppear" title="Permalink to this definition">¶</a></dt>
 <dd><p>A binary variable for each node that indicates whether the node is the
 start of a track (i.e., the node is selected and has no selected incoming
 edges).</p>
@@ -557,7 +592,7 @@ node <span class="math notranslate nohighlight">\(v\)</span>.</p>
 <blockquote>
 <div><dl class="py class">
 <dt class="sig sig-object py" id="motile.variables.NodeSplit">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">NodeSplit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.Solver" title="motile.Solver"><span class="pre">Solver</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.NodeSplit" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">NodeSplit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.Solver" title="motile.Solver"><span class="pre">Solver</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">_KT</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.NodeSplit" title="Permalink to this definition">¶</a></dt>
 <dd><p>A binary variable for each node that indicates whether the node has
 more than one children (i.e., the node is selected and has more than one
 selected outgoing edge).</p>
@@ -713,7 +748,7 @@ position, e.g., <code class="docutils literal notranslate"><span class="pre">('z
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.constraints.</span></span><span class="sig-name descname"><span class="pre">Constraint</span></span><a class="headerlink" href="#motile.constraints.Constraint" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="motile.constraints.Constraint.instantiate">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">instantiate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.Solver" title="motile.Solver"><span class="pre">Solver</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">ilpy.LinearConstraint</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#motile.constraints.Constraint.instantiate" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">instantiate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.Solver" title="motile.Solver"><span class="pre">Solver</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">ilpy.LinearConstraint</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#motile.constraints.Constraint.instantiate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create and return specific linear constraints for the given solver.</p>
 <p>Args:</p>
 <blockquote>
@@ -724,7 +759,7 @@ position, e.g., <code class="docutils literal notranslate"><span class="pre">('z
 </div></blockquote>
 <p>Returns:</p>
 <blockquote>
-<div><p>A list of <code class="xref py py-class docutils literal notranslate"><span class="pre">ilpy.LinearConstraint</span></code>.</p>
+<div><p>An iterable of <code class="xref py py-class docutils literal notranslate"><span class="pre">ilpy.LinearConstraint</span></code>.</p>
 </div></blockquote>
 </dd></dl>
 
@@ -833,7 +868,7 @@ edges.</p>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2023, Jan Funke, Ana Cristina Pascual Ramos.
+        &#169; Copyright 2023, Jan Funke, Talley Lambert, Benjamin Gallusser, Florian Jug, Ana Cristina Pascual Ramos.
 
     </p>
   </div>

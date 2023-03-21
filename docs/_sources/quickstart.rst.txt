@@ -6,6 +6,8 @@ Quickstart
 .. automodule:: motile
    :noindex:
 
+:jupyter-download-notebook:`Download this page as a Jupyter notebook<quickstart>`
+
 Consider the following example track ``graph``, where each node is a potential
 object and each edge a potential link of objects between frames:
 
@@ -220,3 +222,5 @@ to justify starting a new track:
   :hide-code:
 
   draw_solution(graph, solver, label_attribute='score')
+
+:jupyter-download-notebook:`Download this page as a Jupyter notebook<quickstart>`
