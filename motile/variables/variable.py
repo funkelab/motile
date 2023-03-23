@@ -114,8 +114,11 @@ class Variable(ABC, Mapping[_KT, int]):
         rs = []
         for key, index in self._index_map.items():
             r = f"{type(self).__name__}({key}): "
-            r += f"cost={self._solver.costs[index]} "
-            if self._solver.solution is not None:
+            if index < len(self._solver.costs):
+                r += f"cost={self._solver.costs[index]} "
+            else:
+                r += f"cost=None "
+            if self._solver.solution is not None and index < len(self._solver.solution):
                 r += f"value={self._solver.solution[index]}"
             else:
                 r += "value=None"
