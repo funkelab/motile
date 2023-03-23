@@ -118,8 +118,12 @@ selected:
   draw_solution(graph, solver, label_attribute='score')
 
 This is just a simple example of what can be done with ``motile``. See the
-:ref:`sec_quickstart` for a tour of features, and the :ref:`sec_api` for a full
-list of costs, constraints, and variables that are shipped with ``motile``.
+:ref:`sec_quickstart` for a quick tour of what can be done with it, and the
+:ref:`sec_api` for a full list of costs, constraints, and variables that are
+shipped with ``motile``.
+
+``motile`` can also be extended to fit your own needs. See :ref:`sec_extending`
+for a tutorial on how to write your own variable, constraints, and costs.
 
 Why is it called ``motile``?
 ----------------------------
@@ -136,5 +140,6 @@ Full Documentation:
 
   install
   quickstart
+  extending
   learning
   api
