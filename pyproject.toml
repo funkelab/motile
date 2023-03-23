@@ -13,6 +13,8 @@ license = { text = "MIT" }
 authors = [
     { name = 'Jan Funke', email = 'funkej@janelia.hhmi.org' },
     { name = 'Talley Lambert', email = 'talley.lambert@gmail.com' },
+    { name = 'Benjamin Gallusser', email = 'bgallusser@googlemail.com' },
+    { name = 'Florian Jug', email = 'florian.jug@fht.org' },
 ]
 dynamic = ["version"]
 dependencies = ['networkx', 'ilpy', 'numpy', 'structsvm']
