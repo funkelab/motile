@@ -95,7 +95,7 @@ model is:
   solver.add_costs(EdgeSelection(weight=-2, attribute="score", constant=1))
   solver.add_costs(Appear(constant=1))
 
-Each of those costs is calculated as the product of `weights` and `features`:
+Each of those costs is calculated as the product of `features` and `weights`:
 
 :class:`motile.costs.NodeSelection` and :class:`motile.costs.EdgeSelection`
 each have a weight (given as argument ``weight``) by which to scale a node or
@@ -108,7 +108,7 @@ More generally, the cost :math:`c_y` of a variable :math:`y` is
 .. math::
 
   \def\vct#1{\mathbf{#1}}
-  c_y = \vct{w}^\intercal\vct{f}_y
+  c_y = \vct{f}_y^\intercal\vct{w}
   \text{.}
 
 The variable :math:`y` can be an indicator for the selection of a node, the
@@ -117,17 +117,17 @@ to the solver.
 
 In the example above, the :class:`motile.variables.EdgeSelected` variable
 (which is the target of the cost :class:`motile.costs.EdgeSelection`), has the
-follwing weights and features:
+following features and weights:
 
 .. math::
-  \vct{w}
-    = \begin{pmatrix} w_\text{attr} \\ w_\text{const} \end{pmatrix}
-    = \begin{pmatrix} -2 \\ 1 \end{pmatrix}
+  \vct{f}_e
+    = \begin{pmatrix}\text{attr} \\ 1.0 \end{pmatrix}
   \;\;\;
   \text{and}
   \;\;\;
-  \vct{f}_e
-    = \begin{pmatrix}\text{attr} \\ 1.0 \end{pmatrix}
+  \vct{w}
+    = \begin{pmatrix} w_\text{attr} \\ w_\text{const} \end{pmatrix}
+    = \begin{pmatrix} -2 \\ 1 \end{pmatrix}
   \text{,}
 
 where :math:`\text{attr}` is the value of the attribute ``score`` of edge :math:`e`.
