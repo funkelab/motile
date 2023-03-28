@@ -60,3 +60,13 @@ This will trigger the `deploy.yaml` workflow to upload to PyPI
 git tag -a vX.Y.Z -m vX.Y.Z
 git push upstream --follow-tags
 ```
+
+### Building Documentation
+
+```sh
+pip install -e .[docs]
+make docs && open docs/_build/html/index.html
+
+# or to start a live-reloading server
+make docs-watch
+```

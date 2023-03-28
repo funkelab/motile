@@ -6,19 +6,18 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-from pyproject_parser import PyProject
-import motile
+from datetime import datetime
 
-pyproject = PyProject.load("../../pyproject.toml")
-author_list = ", ".join(
-    [
-        author['name']
-        for author in pyproject.project['authors']
-    ]
-)
+import motile
+import tomli
+
+with open("../../pyproject.toml", "rb") as fh:
+    project = tomli.load(fh)["project"]
+
+author_list = ", ".join([author["name"] for author in project["authors"]])
 
 project = "motile"
-copyright = "2023, " + author_list + ", Ana Cristina Pascual Ramos"
+copyright = f"{datetime.now().year}, {author_list}, Ana Cristina Pascual Ramos"
 author = author_list
 version = motile.__version__
 release = motile.__version__
@@ -44,7 +43,7 @@ exclude_patterns = []
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = "sphinx_rtd_theme"
-html_logo = "motile.svg"
+html_logo = "img/motile.svg"
 html_static_path = ["_static"]
 html_css_files = ["css/custom.css"]
 html_show_sourcelink = False
