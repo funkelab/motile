@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  lint: 
+  lint:
     name: Lint
     runs-on: ubuntu-latest
     steps:
@@ -49,6 +49,27 @@ jobs:
 
       - name: Test
         run: pytest tests -v --color=yes --cov=motile --cov-report=xml
-      
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
+
+  benchmarks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          python-version: "3.11"
+          mamba-version: "*"
+          channels: conda-forge
+          channel-priority: true
+
+      - name: Install package and dependencies
+        run: |
+          mamba install -c gurobi -c funkelab ilpy
+          python -m pip install -e .[test]
+
+      - name: Run benchmarks
+        uses: CodSpeedHQ/action@v1
+        with:
+          run: pytest --codspeed -v --color=yes
