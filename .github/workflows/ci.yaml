@@ -75,4 +75,4 @@ jobs:
       - name: Run benchmarks
         uses: CodSpeedHQ/action@v1
         with:
-          run: python -m pytest --codspeed -v --color=yes
+          run: bash -el -c "python -m pytest --codspeed -v --color=yes"
