@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Reference &mdash; motile 0.1.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/jupyter-sphinx.css" type="text/css" />
+      <link rel="stylesheet" href="_static/thebelab.css" type="text/css" />
+      <link rel="stylesheet" href="_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/thebelab-helper.js"></script>
+        <script>let toggleHintShow = '';</script>
+        <script>let toggleHintHide = '';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="_static/togglebutton.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Learning of Cost Weights" href="learning.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            motile
+              <img src="_static/motile.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.1.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extending.html">Extending <code class="docutils literal notranslate"><span class="pre">motile</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="learning.html">Learning of Cost Weights</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#track-graph">Track Graph</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#motile.TrackGraph"><code class="docutils literal notranslate"><span class="pre">TrackGraph</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.TrackGraph.get_frames"><code class="docutils literal notranslate"><span class="pre">TrackGraph.get_frames()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.TrackGraph.nodes_by_frame"><code class="docutils literal notranslate"><span class="pre">TrackGraph.nodes_by_frame()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#solver">Solver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#motile.Solver"><code class="docutils literal notranslate"><span class="pre">Solver</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.Solver.add_constraints"><code class="docutils literal notranslate"><span class="pre">Solver.add_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.Solver.add_costs"><code class="docutils literal notranslate"><span class="pre">Solver.add_costs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.Solver.add_variable_cost"><code class="docutils literal notranslate"><span class="pre">Solver.add_variable_cost()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.Solver.fit_weights"><code class="docutils literal notranslate"><span class="pre">Solver.fit_weights()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.Solver.get_variables"><code class="docutils literal notranslate"><span class="pre">Solver.get_variables()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.Solver.solve"><code class="docutils literal notranslate"><span class="pre">Solver.solve()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#variables">Variables</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#motile.variables.Variable"><code class="docutils literal notranslate"><span class="pre">Variable</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.variables.Variable.instantiate"><code class="docutils literal notranslate"><span class="pre">Variable.instantiate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.variables.Variable.instantiate_constraints"><code class="docutils literal notranslate"><span class="pre">Variable.instantiate_constraints()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#nodeselected">NodeSelected</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.variables.NodeSelected"><code class="docutils literal notranslate"><span class="pre">NodeSelected</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#edgeselected">EdgeSelected</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.variables.EdgeSelected"><code class="docutils literal notranslate"><span class="pre">EdgeSelected</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#nodeappear">NodeAppear</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.variables.NodeAppear"><code class="docutils literal notranslate"><span class="pre">NodeAppear</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#nodesplit">NodeSplit</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.variables.NodeSplit"><code class="docutils literal notranslate"><span class="pre">NodeSplit</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#costs">Costs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#motile.costs.Costs"><code class="docutils literal notranslate"><span class="pre">Costs</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.Costs.apply"><code class="docutils literal notranslate"><span class="pre">Costs.apply()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#appear">Appear</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.Appear"><code class="docutils literal notranslate"><span class="pre">Appear</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#edgeselection">EdgeSelection</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.EdgeSelection"><code class="docutils literal notranslate"><span class="pre">EdgeSelection</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#nodeselection">NodeSelection</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.NodeSelection"><code class="docutils literal notranslate"><span class="pre">NodeSelection</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#split">Split</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.Split"><code class="docutils literal notranslate"><span class="pre">Split</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#edgedistance">EdgeDistance</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.EdgeDistance"><code class="docutils literal notranslate"><span class="pre">EdgeDistance</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#constraints">Constraints</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#motile.constraints.Constraint"><code class="docutils literal notranslate"><span class="pre">Constraint</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.constraints.Constraint.instantiate"><code class="docutils literal notranslate"><span class="pre">Constraint.instantiate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#maxchildren">MaxChildren</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.constraints.MaxChildren"><code class="docutils literal notranslate"><span class="pre">MaxChildren</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#maxparents">MaxParents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.constraints.MaxParents"><code class="docutils literal notranslate"><span class="pre">MaxParents</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pin">Pin</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.constraints.Pin"><code class="docutils literal notranslate"><span class="pre">Pin</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#selectedgenodes-internal-use">SelectEdgeNodes (internal use)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.constraints.SelectEdgeNodes"><code class="docutils literal notranslate"><span class="pre">SelectEdgeNodes</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">motile</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API Reference</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api-reference">
+<span id="sec-api"></span><h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this heading"></a></h1>
+<section id="track-graph">
+<h2>Track Graph<a class="headerlink" href="#track-graph" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="motile.TrackGraph">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.</span></span><span class="sig-name descname"><span class="pre">TrackGraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx_graph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DiGraph</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_attribute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'t'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.TrackGraph" title="Permalink to this definition"></a></dt>
+<dd><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code> of objects with positions in time and space,
+and inter-frame edges between them.</p>
+<p>Provides a few convenience methods for time series graphs in addition to
+all the methods inherited from <code class="xref py py-class docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code>.</p>
+<p>Args:</p>
+<blockquote>
+<div><p>nx_graph (<code class="docutils literal notranslate"><span class="pre">DiGraph</span></code>, optional):</p>
+<blockquote>
+<div><p>A directed networkx graph representing the TrackGraph to be created.
+Hyperedges are represented by networkx nodes that do not have the
+<code class="docutils literal notranslate"><span class="pre">frame_attribute</span></code> and are connected to nodes that do have this
+attribute.</p>
+</div></blockquote>
+<p>frame_attribute (<code class="docutils literal notranslate"><span class="pre">string</span></code>, optional):</p>
+<blockquote>
+<div><p>The name of the node attribute that corresponds to the frame (i.e.,
+the time dimension) of the object. Defaults to <code class="docutils literal notranslate"><span class="pre">'t'</span></code>.</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.TrackGraph.get_frames">
+<span class="sig-name descname"><span class="pre">get_frames</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#motile.TrackGraph.get_frames" title="Permalink to this definition"></a></dt>
+<dd><p>Get a tuple <code class="docutils literal notranslate"><span class="pre">(t_begin,</span> <span class="pre">t_end)</span></code> of the first and last frame
+(exclusive) this track graph has nodes for.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.TrackGraph.nodes_by_frame">
+<span class="sig-name descname"><span class="pre">nodes_by_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Hashable</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#motile.TrackGraph.nodes_by_frame" title="Permalink to this definition"></a></dt>
+<dd><p>Get all nodes in frame <code class="docutils literal notranslate"><span class="pre">t</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="solver">
+<h2>Solver<a class="headerlink" href="#solver" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="motile.Solver">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.</span></span><span class="sig-name descname"><span class="pre">Solver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track_graph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.TrackGraph" title="motile.TrackGraph"><span class="pre">TrackGraph</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_core_constraints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.Solver" title="Permalink to this definition"></a></dt>
+<dd><p>Create a solver for a given track graph.</p>
+<p>Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>track_graph (<a class="reference internal" href="#motile.TrackGraph" title="motile.TrackGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrackGraph</span></code></a>):</dt><dd><p>The graph of objects to track over time.</p>
+</dd>
+<dt>skip_core_constraints (bool, default=False):</dt><dd><p>If true, add no constraints to the solver at all. Otherwise, core
+constraints that ensure consistencies between selected nodes and
+edges are added.</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.Solver.add_constraints">
+<span class="sig-name descname"><span class="pre">add_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">constraints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.constraints.Constraint" title="motile.constraints.constraint.Constraint"><span class="pre">Constraint</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#motile.Solver.add_constraints" title="Permalink to this definition"></a></dt>
+<dd><p>Add linear constraints to the solver.</p>
+<p>Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>constraints (<a class="reference internal" href="#motile.constraints.Constraint" title="motile.constraints.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">motile.constraints.Constraint</span></code></a>)</dt><dd><p>The constraints to add.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.Solver.add_costs">
+<span class="sig-name descname"><span class="pre">add_costs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">costs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.costs.Costs" title="motile.costs.Costs"><span class="pre">Costs</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#motile.Solver.add_costs" title="Permalink to this definition"></a></dt>
+<dd><p>Add linear costs to the value of variables in this solver.</p>
+<p>Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>costs (<a class="reference internal" href="#motile.costs.Costs" title="motile.costs.Costs"><code class="xref py py-class docutils literal notranslate"><span class="pre">motile.costs.Costs</span></code></a>):</dt><dd><p>The costs to add.</p>
+</dd>
+<dt>name (<code class="docutils literal notranslate"><span class="pre">string</span></code>):</dt><dd><p>An optional name of the costs, used to refer to weights of
+costs in an unambiguous manner. Defaults to the name of the
+costs class, if not given.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.Solver.add_variable_cost">
+<span class="sig-name descname"><span class="pre">add_variable_cost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Weight</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#motile.Solver.add_variable_cost" title="Permalink to this definition"></a></dt>
+<dd><p>Add costs for an individual variable.</p>
+<p>To be used within implementations of <a class="reference internal" href="#motile.costs.Costs" title="motile.costs.Costs"><code class="xref py py-class docutils literal notranslate"><span class="pre">motile.costs.Costs</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.Solver.fit_weights">
+<span class="sig-name descname"><span class="pre">fit_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gt_attribute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regularizer_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iterations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#motile.Solver.fit_weights" title="Permalink to this definition"></a></dt>
+<dd><p>Fit weights of ILP costs to ground truth with structured SVM.</p>
+<p>Updates the weights in the solver object to the found solution.</p>
+<p>Args:</p>
+<blockquote>
+<div><p>gt_attribute:</p>
+<blockquote>
+<div><p>Node/edge attribute that marks the ground truth for fitting.
+<cite>gt_attribute</cite> is expected to be set to</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>1</cite> for objects labaled as ground truth.</p></li>
+<li><dl class="simple">
+<dt><cite>0</cite> for objects explicitly labeled as not part of the</dt><dd><p>ground truth.</p>
+</dd>
+</dl>
+</li>
+<li><p><cite>None</cite> or not set for unlabeled objects.</p></li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<p>regularizer_weight:</p>
+<blockquote>
+<div><p>The weight of the quadratic regularizer.</p>
+</div></blockquote>
+<p>max_iterations:</p>
+<blockquote>
+<div><p>Maximum number of gradient steps in the structured SVM.</p>
+</div></blockquote>
+<p>eps:</p>
+<blockquote>
+<div><p>Convergence threshold.</p>
+</div></blockquote>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.Solver.get_variables">
+<span class="sig-name descname"><span class="pre">get_variables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">type</span><span class="p"><span class="pre">[</span></span><span class="pre">V</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">V</span></span></span><a class="headerlink" href="#motile.Solver.get_variables" title="Permalink to this definition"></a></dt>
+<dd><p>Get variables by their class name.</p>
+<p>If the solver does not yet contain those variables, they will be
+created.</p>
+<p>Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>cls (type of <a class="reference internal" href="#motile.variables.Variable" title="motile.variables.Variable"><code class="xref py py-class docutils literal notranslate"><span class="pre">motile.variables.Variable</span></code></a>):</dt><dd><p>A subclass of <a class="reference internal" href="#motile.variables.Variable" title="motile.variables.Variable"><code class="xref py py-class docutils literal notranslate"><span class="pre">motile.variables.Variable</span></code></a>.</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Returns:</p>
+<blockquote>
+<div><p>A singleton instance of <a class="reference internal" href="#motile.variables.Variable" title="motile.variables.Variable"><code class="xref py py-class docutils literal notranslate"><span class="pre">motile.variables.Variable</span></code></a>,
+mimicking a dictionary that can be used to look up variable indices
+by their keys. See <a class="reference internal" href="#motile.variables.Variable" title="motile.variables.Variable"><code class="xref py py-class docutils literal notranslate"><span class="pre">motile.variables.Variable</span></code></a> for details.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.Solver.solve">
+<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_threads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Solution</span></span></span><a class="headerlink" href="#motile.Solver.solve" title="Permalink to this definition"></a></dt>
+<dd><p>Solve the global optimization problem.</p>
+<p>Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>timeout (float):</dt><dd><p>The timeout for the ILP solver, in seconds. Default (0.0) is no
+timeout. If the solver times out, the best solution encountered
+so far is returned (if any has been found at all).</p>
+</dd>
+<dt>num_threads (int):</dt><dd><p>The number of threads the ILP solver uses.</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Returns:</p>
+<blockquote>
+<div><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ilpy.Solution</span></code>, a vector of variable values. Use
+<a class="reference internal" href="#motile.Solver.get_variables" title="motile.Solver.get_variables"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_variables()</span></code></a> to find the indices of variables in this
+vector.</p>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="variables">
+<h2>Variables<a class="headerlink" href="#variables" title="Permalink to this heading"></a></h2>
+<p>Solver variables are introduced by inheriting from the following abstract base class:</p>
+<span class="target" id="module-motile.variables"></span><dl class="py class">
+<dt class="sig sig-object py" id="motile.variables.Variable">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">Variable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.Solver" title="motile.Solver"><span class="pre">Solver</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">_KT</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.Variable" title="Permalink to this definition"></a></dt>
+<dd><p>Base class for solver variables.</p>
+<p>New variables can be introduced by inheriting from this base class and
+overwriting <a class="reference internal" href="#motile.variables.Variable.instantiate" title="motile.variables.Variable.instantiate"><code class="xref py py-func docutils literal notranslate"><span class="pre">instantiate()</span></code></a> and optionally
+<a class="reference internal" href="#motile.variables.Variable.instantiate_constraints" title="motile.variables.Variable.instantiate_constraints"><code class="xref py py-func docutils literal notranslate"><span class="pre">instantiate_constraints()</span></code></a>.</p>
+<p>Variable classes should not be instantiated by a user. Instead, the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code> provides access to concrete variables through the class
+name. The following example shows how to obtain the variable values after
+optimization:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">solver</span> <span class="o">=</span> <span class="n">Solver</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+
+<span class="c1"># add costs, constraints...</span>
+
+<span class="n">solution</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+
+<span class="n">node_selected</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">get_variables</span><span class="p">(</span><span class="n">NodeSelected</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">solution</span><span class="p">[</span><span class="n">node_selected</span><span class="p">[</span><span class="n">node</span><span class="p">]]</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Node </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2"> was selected&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This allows variables to be added lazily to the solver.
+<a class="reference internal" href="#motile.constraints.Constraint" title="motile.constraints.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Constraints</span></code></a> and
+<a class="reference internal" href="#motile.costs.Costs" title="motile.costs.Costs"><code class="xref py py-class docutils literal notranslate"><span class="pre">motile.costs.Costs</span></code></a> can ask for variables.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.variables.Variable.instantiate">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">instantiate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.Solver" title="motile.Solver"><span class="pre">Solver</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">_KT</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#motile.variables.Variable.instantiate" title="Permalink to this definition"></a></dt>
+<dd><p>Create and return keys for the variables.</p>
+<p>For example, to create a variable for each node, this function would
+return a list of all nodes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">instantiate</span><span class="p">(</span><span class="n">solver</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">solver</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span>
+</pre></div>
+</div>
+<p>The solver will create one variable for each key. The index of that
+variable can be accessed through a dictionary returned by
+<code class="xref py py-func docutils literal notranslate"><span class="pre">Solver.get_variables()</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">solver</span> <span class="o">=</span> <span class="n">Solver</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+
+<span class="n">node_selected</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">get_variables</span><span class="p">(</span><span class="n">NodeSelected</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">node_selected</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Selection indicator of node </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2"> has index </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>solver (<code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code>):</dt><dd><p>The solver instance to create variables for.</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Returns:</p>
+<blockquote>
+<div><p>A list of keys (anything that is hashable, e.g., nodes of a graph),
+one for each variable to create.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.variables.Variable.instantiate_constraints">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">instantiate_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.Solver" title="motile.Solver"><span class="pre">Solver</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">ilpy.LinearConstraint</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#motile.variables.Variable.instantiate_constraints" title="Permalink to this definition"></a></dt>
+<dd><p>Add linear constraints to the solver to ensure that these variables
+are coupled to other variables of the solver.</p>
+<p>Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>solver (<code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code>):</dt><dd><p>The solver instance to create variable constraints for.</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Returns:</p>
+<blockquote>
+<div><p>A iterable of <code class="xref py py-class docutils literal notranslate"><span class="pre">ilpy.LinearConstraint</span></code>. See
+<a class="reference internal" href="#motile.constraints.Constraint" title="motile.constraints.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">motile.constraints.Constraint</span></code></a> for how to create linear
+constraints.</p>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<p>The following lists all variables that are already implemented in <code class="docutils literal notranslate"><span class="pre">motile</span></code>.</p>
+<section id="nodeselected">
+<h3>NodeSelected<a class="headerlink" href="#nodeselected" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.variables.NodeSelected">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">NodeSelected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.Solver" title="motile.Solver"><span class="pre">Solver</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">_KT</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.NodeSelected" title="Permalink to this definition"></a></dt>
+<dd><p>A binary variable for each node that indicates whether the node is part
+of the solution or not.</p>
+</dd></dl>
+
+</div></blockquote>
+</section>
+<section id="edgeselected">
+<h3>EdgeSelected<a class="headerlink" href="#edgeselected" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.variables.EdgeSelected">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">EdgeSelected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.Solver" title="motile.Solver"><span class="pre">Solver</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">_KT</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.EdgeSelected" title="Permalink to this definition"></a></dt>
+<dd><p>A binary variable for each edge that indicates whether the edge is part
+of the solution or not.</p>
+</dd></dl>
+
+</div></blockquote>
+</section>
+<section id="nodeappear">
+<h3>NodeAppear<a class="headerlink" href="#nodeappear" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.variables.NodeAppear">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">NodeAppear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.Solver" title="motile.Solver"><span class="pre">Solver</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">_KT</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.NodeAppear" title="Permalink to this definition"></a></dt>
+<dd><p>A binary variable for each node that indicates whether the node is the
+start of a track (i.e., the node is selected and has no selected incoming
+edges).</p>
+<p>This variable is coupled to the node and edge selection variables through
+the following linear constraints:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}|\\text{in_edges}(v)|\cdot x_v - &amp;\sum_{e \in \\text{in_edges}(v)} x_e
+- a_v &amp;\leq&amp;\;\; |\\text{in_edges}(v)| - 1\end{split}\\\begin{split}|\\text{in_edges}(v)|\cdot x_v - &amp;\sum_{e \in \\text{in_edges}(v)} x_e
+- a_v\cdot |\\text{in_edges}(v)| &amp;\geq&amp;\;\; 0\end{split}\end{aligned}\end{align} \]</div>
+<p>where <span class="math notranslate nohighlight">\(x_v\)</span> and <span class="math notranslate nohighlight">\(x_e\)</span> are selection indicators for node
+<span class="math notranslate nohighlight">\(v\)</span> and edge <span class="math notranslate nohighlight">\(e\)</span>, and <span class="math notranslate nohighlight">\(a_v\)</span> is the appear indicator for
+node <span class="math notranslate nohighlight">\(v\)</span>.</p>
+</dd></dl>
+
+</div></blockquote>
+</section>
+<section id="nodesplit">
+<h3>NodeSplit<a class="headerlink" href="#nodesplit" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.variables.NodeSplit">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">NodeSplit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.Solver" title="motile.Solver"><span class="pre">Solver</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">_KT</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.NodeSplit" title="Permalink to this definition"></a></dt>
+<dd><p>A binary variable for each node that indicates whether the node has
+more than one children (i.e., the node is selected and has more than one
+selected outgoing edge).</p>
+<p>This variable is coupled to the edge selection variables through the
+following linear constraints:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}2 s_v\; - &amp;\sum_{e\in\\text{out_edges}(v)} x_e &amp;\leq&amp;\;\; 0\end{split}\\\begin{split}(|\\text{out_edges}(v)| - 1) s_v\; - &amp;\sum_{e\in\\text{out_edges}(v)}
+x_e &amp;\geq&amp;\;\; -1\end{split}\end{aligned}\end{align} \]</div>
+<p>where <span class="math notranslate nohighlight">\(x_e\)</span> are selection indicators for edge <span class="math notranslate nohighlight">\(e\)</span>, and
+<span class="math notranslate nohighlight">\(s_v\)</span> is the split indicator for node <span class="math notranslate nohighlight">\(v\)</span>.</p>
+</dd></dl>
+
+</div></blockquote>
+</section>
+</section>
+<section id="costs">
+<h2>Costs<a class="headerlink" href="#costs" title="Permalink to this heading"></a></h2>
+<p>All costs inherit from the following base class:</p>
+<span class="target" id="module-motile.costs"></span><dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.Costs">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">Costs</span></span><a class="headerlink" href="#motile.costs.Costs" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="motile.costs.Costs.apply">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.Solver" title="motile.Solver"><span class="pre">Solver</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#motile.costs.Costs.apply" title="Permalink to this definition"></a></dt>
+<dd><p>Apply costs to the given solver. Use
+<a class="reference internal" href="#motile.Solver.get_variables" title="motile.Solver.get_variables"><code class="xref py py-func docutils literal notranslate"><span class="pre">motile.Solver.get_variables()</span></code></a> and
+<a class="reference internal" href="#motile.Solver.add_variable_cost" title="motile.Solver.add_variable_cost"><code class="xref py py-func docutils literal notranslate"><span class="pre">motile.Solver.add_variable_cost()</span></code></a>.</p>
+<p>Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>solver (<code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code>):</dt><dd><p>The solver to create costs for.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<p>The following lists all costs that are already implemented in <code class="docutils literal notranslate"><span class="pre">motile</span></code>.</p>
+<section id="appear">
+<h3>Appear<a class="headerlink" href="#appear" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.Appear">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">Appear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.Appear" title="Permalink to this definition"></a></dt>
+<dd><p>Costs for <a class="reference internal" href="#motile.variables.NodeAppear" title="motile.variables.NodeAppear"><code class="xref py py-class docutils literal notranslate"><span class="pre">motile.variables.NodeAppear</span></code></a> variables.</p>
+<p>Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>constant (float):</dt><dd><p>A constant cost for each node that starts a track.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</div></blockquote>
+</section>
+<section id="edgeselection">
+<h3>EdgeSelection<a class="headerlink" href="#edgeselection" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.EdgeSelection">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">EdgeSelection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'costs'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.EdgeSelection" title="Permalink to this definition"></a></dt>
+<dd><p>Costs for <a class="reference internal" href="#motile.variables.EdgeSelected" title="motile.variables.EdgeSelected"><code class="xref py py-class docutils literal notranslate"><span class="pre">motile.variables.EdgeSelected</span></code></a> variables.</p>
+<p>Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>weight (float):</dt><dd><p>The weight to apply to the cost given by the <code class="docutils literal notranslate"><span class="pre">costs</span></code> attribute of
+each edge.</p>
+</dd>
+<dt>attribute (string):</dt><dd><p>The name of the edge attribute to use to look up costs. Default is
+<code class="docutils literal notranslate"><span class="pre">costs</span></code>.</p>
+</dd>
+<dt>constant (float):</dt><dd><p>A constant cost for each selected edge.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</div></blockquote>
+</section>
+<section id="nodeselection">
+<h3>NodeSelection<a class="headerlink" href="#nodeselection" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.NodeSelection">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">NodeSelection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'costs'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.NodeSelection" title="Permalink to this definition"></a></dt>
+<dd><p>Costs for <a class="reference internal" href="#motile.variables.NodeSelected" title="motile.variables.NodeSelected"><code class="xref py py-class docutils literal notranslate"><span class="pre">motile.variables.NodeSelected</span></code></a> variables.</p>
+<p>Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>weight (float):</dt><dd><p>The weight to apply to the cost given by the <code class="docutils literal notranslate"><span class="pre">costs</span></code> attribute of
+each node.</p>
+</dd>
+<dt>attribute (string):</dt><dd><p>The name of the node attribute to use to look up costs. Default is
+<code class="docutils literal notranslate"><span class="pre">costs</span></code>.</p>
+</dd>
+<dt>constant (float):</dt><dd><p>A constant cost for each selected node.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</div></blockquote>
+</section>
+<section id="split">
+<h3>Split<a class="headerlink" href="#split" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.Split">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">Split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.Split" title="Permalink to this definition"></a></dt>
+<dd><p>Costs for <a class="reference internal" href="#motile.variables.NodeSplit" title="motile.variables.NodeSplit"><code class="xref py py-class docutils literal notranslate"><span class="pre">motile.variables.NodeSplit</span></code></a> variables.</p>
+<p>Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>constant (float):</dt><dd><p>A constant cost for each node that has more than one selected
+child.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</div></blockquote>
+</section>
+<section id="edgedistance">
+<h3>EdgeDistance<a class="headerlink" href="#edgedistance" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.EdgeDistance">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">EdgeDistance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position_attributes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.EdgeDistance" title="Permalink to this definition"></a></dt>
+<dd><p>Costs for <a class="reference internal" href="#motile.variables.EdgeSelected" title="motile.variables.EdgeSelected"><code class="xref py py-class docutils literal notranslate"><span class="pre">motile.variables.EdgeSelected</span></code></a> variables, based on the
+spatial distance of the incident nodes.</p>
+<p>Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>position_attributes (tuple of string):</dt><dd><p>The names of the node attributes that correspond to their spatial
+position, e.g., <code class="docutils literal notranslate"><span class="pre">('z',</span> <span class="pre">'y',</span> <span class="pre">'x')</span></code>.</p>
+</dd>
+<dt>weight (float):</dt><dd><p>The weight to apply to the distance to convert it into a cost.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</div></blockquote>
+</section>
+</section>
+<section id="constraints">
+<h2>Constraints<a class="headerlink" href="#constraints" title="Permalink to this heading"></a></h2>
+<p>All constraints inherit from the following base class:</p>
+<span class="target" id="module-motile.constraints"></span><dl class="py class">
+<dt class="sig sig-object py" id="motile.constraints.Constraint">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.constraints.</span></span><span class="sig-name descname"><span class="pre">Constraint</span></span><a class="headerlink" href="#motile.constraints.Constraint" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="motile.constraints.Constraint.instantiate">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">instantiate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#motile.Solver" title="motile.Solver"><span class="pre">Solver</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">ilpy.LinearConstraint</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#motile.constraints.Constraint.instantiate" title="Permalink to this definition"></a></dt>
+<dd><p>Create and return specific linear constraints for the given solver.</p>
+<p>Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>solver (<code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code>):</dt><dd><p>The solver instance to create linear constraints for.</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Returns:</p>
+<blockquote>
+<div><p>An iterable of <code class="xref py py-class docutils literal notranslate"><span class="pre">ilpy.LinearConstraint</span></code>.</p>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<p>The following lists all constraints that are already implemented in <code class="docutils literal notranslate"><span class="pre">motile</span></code>.</p>
+<section id="maxchildren">
+<h3>MaxChildren<a class="headerlink" href="#maxchildren" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.constraints.MaxChildren">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.constraints.</span></span><span class="sig-name descname"><span class="pre">MaxChildren</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_children</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.constraints.MaxChildren" title="Permalink to this definition"></a></dt>
+<dd><p>Ensures that every selected node has no more than <code class="docutils literal notranslate"><span class="pre">max_children</span></code>
+selected edges to the next frame.</p>
+<p>Adds the following linear constraint for each node <span class="math notranslate nohighlight">\(v\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\sum_{e \in \\text{out_edges}(v)} x_e \leq \\text{max_children}\end{split}\]</div>
+<p>Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>max_children (int):</dt><dd><p>The maximum number of children allowed.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</div></blockquote>
+</section>
+<section id="maxparents">
+<h3>MaxParents<a class="headerlink" href="#maxparents" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.constraints.MaxParents">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.constraints.</span></span><span class="sig-name descname"><span class="pre">MaxParents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_parents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.constraints.MaxParents" title="Permalink to this definition"></a></dt>
+<dd><p>Ensures that every selected node has no more than <code class="docutils literal notranslate"><span class="pre">max_parents</span></code>
+selected edges to the previous frame.</p>
+<p>Adds the following linear constraint for each node <span class="math notranslate nohighlight">\(v\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\sum_{e \in \\text{in_edges}(v)} x_e \leq \\text{max_parents}\end{split}\]</div>
+<p>Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>max_parents (int):</dt><dd><p>The maximum number of parents allowed.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</div></blockquote>
+</section>
+<section id="pin">
+<h3>Pin<a class="headerlink" href="#pin" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.constraints.Pin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.constraints.</span></span><span class="sig-name descname"><span class="pre">Pin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.constraints.Pin" title="Permalink to this definition"></a></dt>
+<dd><p>Enforces the selection of certain nodes and edges based on the value of
+a given attribute.</p>
+<p>Every node or edge that has the given attribute will be selected if the
+attribute value is <code class="docutils literal notranslate"><span class="pre">True</span></code> (and not selected if the attribute value is
+<code class="docutils literal notranslate"><span class="pre">False</span></code>). The solver will only determine the selection of nodes and edges
+that do not have this attribute.</p>
+<p>This constraint is useful to complete partial tracking solutions, e.g.,
+when users have already manually selected (or unselected) certain nodes or
+edges.</p>
+<p>Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>attribute (string):</dt><dd><p>The name of the node/edge attribute to use.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</div></blockquote>
+</section>
+<section id="selectedgenodes-internal-use">
+<h3>SelectEdgeNodes (internal use)<a class="headerlink" href="#selectedgenodes-internal-use" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.constraints.SelectEdgeNodes">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">motile.constraints.</span></span><span class="sig-name descname"><span class="pre">SelectEdgeNodes</span></span><a class="headerlink" href="#motile.constraints.SelectEdgeNodes" title="Permalink to this definition"></a></dt>
+<dd><p>Ensures that if an edge <span class="math notranslate nohighlight">\((u, v)\)</span> is selected, <span class="math notranslate nohighlight">\(u\)</span> and
+<span class="math notranslate nohighlight">\(v\)</span> have to be selected as well.</p>
+<p>Adds the following linear constraint for each edge <span class="math notranslate nohighlight">\(e = (u,v)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[2 x_e - x_u - x_v \leq 0\]</div>
+<p>This constraint will be added by default to any <code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code> instance.</p>
+</dd></dl>
+
+</div></blockquote>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="learning.html" class="btn btn-neutral float-left" title="Learning of Cost Weights" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Jan Funke, Talley Lambert, Benjamin Gallusser, Florian Jug, Ana Cristina Pascual Ramos.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
