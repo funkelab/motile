@@ -117,7 +117,7 @@ class Variable(ABC, Mapping[_KT, int]):
             if index < len(self._solver.costs):
                 r += f"cost={self._solver.costs[index]} "
             else:
-                r += f"cost=None "
+                r += "cost=None "
             if self._solver.solution is not None and index < len(self._solver.solution):
                 r += f"value={self._solver.solution[index]}"
             else:
