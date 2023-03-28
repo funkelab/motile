@@ -54,7 +54,7 @@ jobs:
         uses: codecov/codecov-action@v3
 
   benchmarks:
-    runs-on: 
+    runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash -l {0}
