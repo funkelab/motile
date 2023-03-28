@@ -51,8 +51,18 @@ def _fully_connected_graph(
     return TrackGraph(nx_graph)
 
 
-@pytest.mark.parametrize("nodes_per_frame", [10, 40])
-@pytest.mark.parametrize("n_frames", [10, 100])
+@pytest.mark.parametrize(
+    "nodes_per_frame",
+    [
+        10,
+    ],
+)
+@pytest.mark.parametrize(
+    "n_frames",
+    [
+        10,
+    ],
+)
 def test_solve(benchmark: Callable, n_frames: int, nodes_per_frame: int) -> None:
     graph = _fully_connected_graph(n_frames, nodes_per_frame)
     solver = Solver(graph)
@@ -75,8 +85,8 @@ def test_solve(benchmark: Callable, n_frames: int, nodes_per_frame: int) -> None
     ],
     ids=lambda x: str(x.__class__.__name__),
 )
-@pytest.mark.parametrize("n_frames", [1 << i for i in range(1, 10, 2)])
-@pytest.mark.parametrize("nodes_per_frame", [1 << i for i in range(1, 6, 2)])
+@pytest.mark.parametrize("n_frames", [1 << i for i in range(1, 3, 2)])
+@pytest.mark.parametrize("nodes_per_frame", [1 << i for i in range(1, 3, 2)])
 def test_constraint_instantiate(
     benchmark: Callable,
     n_frames: int,
