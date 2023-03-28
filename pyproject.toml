@@ -21,7 +21,7 @@ dependencies = ['networkx', 'ilpy', 'numpy', 'structsvm']
 
 [project.optional-dependencies]
 dev = ["pre-commit", "pytest", "pytest-cov", "ruff", "twine", "build"]
-test = ["pytest", "pytest-cov"]
+test = ["pytest", "pytest-cov", "pytest-codspeed"]
 
 [project.urls]
 homepage = "https://github.com/funkelab/motile"
