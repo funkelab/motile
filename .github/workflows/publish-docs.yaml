@@ -5,7 +5,7 @@ on:
     branches: [main]
   workflow_dispatch:
   pull_request:
-    types: [ labeled ]
+    types: [labeled]
 
 # Allow this job to clone the repo and create a page deployment
 permissions:
@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   build:
-    if: contains(github.event.pull_request.labels.*.name, 'docs') || github.event_name != 'pull_request'
+    if: contains(github.event.pull_request.labels.*.name, 'documentation') || github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     defaults:
       run:
