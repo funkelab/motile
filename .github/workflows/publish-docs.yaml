@@ -5,6 +5,8 @@ on:
     branches: [main]
   workflow_dispatch:
   pull_request:
+    # you can trigger the docs build on a PR by adding the label 'documentation'
+    # it will still only deploy on the main branch
     types: [labeled]
 
 # Allow this job to clone the repo and create a page deployment
