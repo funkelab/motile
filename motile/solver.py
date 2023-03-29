@@ -231,7 +231,7 @@ class Solver:
         self.weights.from_ndarray(optimal_weights)
 
     @property
-    def costs(self):
+    def costs(self) -> np.ndarray:
         if self._weights_changed:
             self._compute_costs()
             self._weights_changed = False
