@@ -14,3 +14,12 @@ publish:
 	python -m build
 	twine upload dist/*
 	rm -rf build/ dist/ motile.egg-info/
+
+.PHONY: docs
+docs:
+	make -C docs html
+
+.PHONY: docs-watch
+docs-watch:
+	pip install sphinx-autobuild
+	sphinx-autobuild docs/source docs/_build/html

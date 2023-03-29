@@ -22,6 +22,14 @@ dependencies = ['networkx', 'ilpy', 'numpy', 'structsvm']
 [project.optional-dependencies]
 dev = ["pre-commit", "pytest", "pytest-cov", "ruff", "twine", "build"]
 test = ["pytest", "pytest-cov"]
+docs = [
+    "sphinx",
+    "sphinx_rtd_theme",
+    "sphinx_togglebutton",
+    "tomli",
+    "jupyter_sphinx",
+    "plotly",
+]
 
 [project.urls]
 homepage = "https://github.com/funkelab/motile"
