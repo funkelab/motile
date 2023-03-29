@@ -1,13 +1,43 @@
 import logging
 
-import motile
 import numpy as np
-from data import create_ssvm_noise_trackgraph, create_toy_example_trackgraph
+import networkx
+import motile
+from motile.data import toy_graph
 from motile.constraints import MaxChildren, MaxParents
 from motile.costs import Appear, EdgeSelection, NodeSelection
 from motile.variables import EdgeSelected, NodeSelected
 
 logger = logging.getLogger(__name__)
+
+
+def create_ssvm_noise_trackgraph() -> motile.TrackGraph:
+    cells = [
+        {"id": 0, "t": 0, "x": 1, "score": 0.8, "gt": 1, "noise": 0.5},
+        {"id": 1, "t": 0, "x": 25, "score": 0.9, "gt": 1, "noise": -0.5},
+        {"id": 2, "t": 1, "x": 0, "score": 0.9, "gt": 1, "noise": 0.5},
+        {"id": 3, "t": 1, "x": 26, "score": 0.8, "gt": 1, "noise": -0.5},
+        {"id": 4, "t": 2, "x": 2, "score": 0.9, "gt": 1, "noise": 0.5},
+        {"id": 5, "t": 2, "x": 24, "score": 0.1, "gt": 0, "noise": -0.5},
+        {"id": 6, "t": 2, "x": 35, "score": 0.7, "gt": 1, "noise": -0.5},
+    ]
+
+    edges = [
+        {"source": 0, "target": 2, "score": 0.9, "gt": 1, "noise": 0.5},
+        {"source": 1, "target": 3, "score": 0.9, "gt": 1, "noise": -0.5},
+        {"source": 0, "target": 3, "score": 0.2, "gt": 0, "noise": 0.5},
+        {"source": 1, "target": 2, "score": 0.2, "gt": 0, "noise": -0.5},
+        {"source": 2, "target": 4, "score": 0.9, "gt": 1, "noise": 0.5},
+        {"source": 3, "target": 5, "score": 0.1, "gt": 0, "noise": -0.5},
+        {"source": 2, "target": 5, "score": 0.2, "gt": 0, "noise": 0.5},
+        {"source": 3, "target": 4, "score": 0.2, "gt": 0, "noise": -0.5},
+        {"source": 3, "target": 6, "score": 0.8, "gt": 1, "noise": -0.5},
+    ]
+    graph = networkx.DiGraph()
+    graph.add_nodes_from([(cell["id"], cell) for cell in cells])
+    graph.add_edges_from([(edge["source"], edge["target"], edge) for edge in edges])
+
+    return motile.TrackGraph(graph)
 
 
 def create_toy_solver(graph):
@@ -27,7 +57,7 @@ def create_toy_solver(graph):
 
 
 def test_structsvm_common_toy_example():
-    graph = create_toy_example_trackgraph()
+    graph = toy_graph()
 
     solver = create_toy_solver(graph)
 
