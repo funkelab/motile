@@ -110,7 +110,7 @@ class Solver:
 
         for constraint in constraints.instantiate(self):
             if isinstance(constraint, Expression):
-                constraint = constraint.constraint()
+                constraint = constraint.as_constraint()
             self.constraints.add(constraint)
 
     def solve(self, timeout: float = 0.0, num_threads: int = 1) -> ilpy.Solution:
@@ -254,7 +254,7 @@ class Solver:
 
         for constraint in cls.instantiate_constraints(self):
             if isinstance(constraint, Expression):
-                constraint = constraint.constraint()
+                constraint = constraint.as_constraint()
             self.constraints.add(constraint)
 
         self.features.resize(num_variables=self.num_variables)
