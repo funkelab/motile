@@ -100,8 +100,14 @@ class Solver:
         if timeout > 0:
             self.ilp_solver.set_timeout(self.timeout)
 
-        self.solution, message = self.ilp_solver.solve()
-        if len(message):
+        solution = self.ilp_solver.solve()
+        if hasattr(solution, "get_status"):
+            # ilpy version >= 0.3.0
+            self.solution, message = solution, solution.get_status()
+        else:
+            self.solution, message = solution
+
+        if message:
             logger.info("ILP solver returned with: %s", message)
 
         return self.solution
