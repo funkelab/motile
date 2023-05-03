@@ -1,9 +1,9 @@
 import unittest
 
 import motile
-from motile.data import arlo_graph
 from motile.constraints import MaxChildren, MaxParents, Pin
 from motile.costs import Appear, EdgeSelection, NodeSelection, Split
+from motile.data import arlo_graph
 from motile.variables import EdgeSelected
 
 

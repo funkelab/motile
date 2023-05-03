@@ -1,11 +1,11 @@
 import logging
 
-import numpy as np
-import networkx
 import motile
-from motile.data import toy_graph
+import networkx
+import numpy as np
 from motile.constraints import MaxChildren, MaxParents
 from motile.costs import Appear, EdgeSelection, NodeSelection
+from motile.data import toy_graph
 from motile.variables import EdgeSelected, NodeSelected
 
 logger = logging.getLogger(__name__)

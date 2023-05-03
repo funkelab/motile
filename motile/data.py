@@ -3,7 +3,7 @@ import networkx as nx
 from motile import TrackGraph
 
 
-def arlo_nx_graph() -> nx.DiGraph:
+def arlo_graph_nx() -> nx.DiGraph:
     """Create the "Arlo graph", a simple toy graph for testing:
 
        x
@@ -46,10 +46,10 @@ def arlo_nx_graph() -> nx.DiGraph:
 
 
 def arlo_graph() -> TrackGraph:
-    return TrackGraph(arlo_nx_graph())
+    return TrackGraph(arlo_graph_nx())
 
 
-def toy_example_nx_graph() -> nx.DiGraph:
+def toy_graph_nx() -> nx.DiGraph:
     """Create variation of the "Arlo graph", with
     - one simple edge modified.
     - normalized node and edge scores.
@@ -92,10 +92,10 @@ def toy_example_nx_graph() -> nx.DiGraph:
 
 
 def toy_graph() -> TrackGraph:
-    return TrackGraph(toy_example_nx_graph())
+    return TrackGraph(toy_graph_nx())
 
 
-def toy_hyperedge_nx_graph() -> nx.DiGraph:
+def toy_hypergraph_nx() -> nx.DiGraph:
     """Create variation of the "Arlo graph", with one simple
     edge modified and one hyperedge added.
 
@@ -148,4 +148,4 @@ def toy_hyperedge_nx_graph() -> nx.DiGraph:
 
 
 def toy_hypergraph() -> TrackGraph:
-    return TrackGraph(toy_hyperedge_nx_graph())
+    return TrackGraph(toy_hypergraph_nx())

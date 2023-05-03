@@ -1,7 +1,7 @@
 import motile
 import pytest
-from data import create_arlo_trackgraph
 from motile.costs import Appear, EdgeSelection, NodeSelection, Split
+from motile.data import arlo_graph
 from motile.plot import draw_solution, draw_track_graph
 
 try:
@@ -12,7 +12,7 @@ except ImportError:
 
 @pytest.fixture
 def graph() -> motile.TrackGraph:
-    return create_arlo_trackgraph()
+    return arlo_graph()
 
 
 @pytest.fixture
