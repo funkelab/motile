@@ -1,8 +1,9 @@
-import motile
-import networkx
+import networkx as nx
+
+from motile import TrackGraph
 
 
-def create_arlo_nx_graph() -> networkx.DiGraph:
+def arlo_graph_nx() -> nx.DiGraph:
     """Create the "Arlo graph", a simple toy graph for testing:
 
        x
@@ -38,17 +39,32 @@ def create_arlo_nx_graph() -> networkx.DiGraph:
         {"source": 3, "target": 6, "prediction_distance": 3.0},
     ]
 
-    nx_graph = networkx.DiGraph()
+    nx_graph = nx.DiGraph()
     nx_graph.add_nodes_from([(cell["id"], cell) for cell in cells])
     nx_graph.add_edges_from([(edge["source"], edge["target"], edge) for edge in edges])
     return nx_graph
 
 
-def create_arlo_trackgraph() -> motile.TrackGraph:
-    return motile.TrackGraph(create_arlo_nx_graph())
+def arlo_graph() -> TrackGraph:
+    return TrackGraph(arlo_graph_nx())
 
 
-def create_toy_example_nx_graph() -> networkx.DiGraph:
+def toy_graph_nx() -> nx.DiGraph:
+    """Create variation of the "Arlo graph", with
+    - one simple edge modified.
+    - normalized node and edge scores.
+    - sparse ground truth annotations.
+
+       x
+       |
+       |       --- 6
+       |     /   /
+       |   1---3---5
+       |     /   x
+       |   0---2---4
+        ------------------------------------ t
+           0   1   2
+    """
     cells = [
         {"id": 0, "t": 0, "x": 1, "score": 0.8, "gt": 1},
         {"id": 1, "t": 0, "x": 25, "score": 0.1},
@@ -69,17 +85,17 @@ def create_toy_example_nx_graph() -> networkx.DiGraph:
         {"source": 3, "target": 4, "score": 0.3},
         {"source": 3, "target": 6, "score": 0.8},
     ]
-    nx_graph = networkx.DiGraph()
+    nx_graph = nx.DiGraph()
     nx_graph.add_nodes_from([(cell["id"], cell) for cell in cells])
     nx_graph.add_edges_from([(edge["source"], edge["target"], edge) for edge in edges])
     return nx_graph
 
 
-def create_toy_example_trackgraph() -> motile.TrackGraph:
-    return motile.TrackGraph(create_toy_example_nx_graph())
+def toy_graph() -> TrackGraph:
+    return TrackGraph(toy_graph_nx())
 
 
-def create_toy_hyperedge_nx_graph() -> networkx.DiGraph:
+def toy_hypergraph_nx() -> nx.DiGraph:
     """Create variation of the "Arlo graph", with one simple
     edge modified and one hyperedge added.
 
@@ -115,9 +131,11 @@ def create_toy_hyperedge_nx_graph() -> networkx.DiGraph:
         {"source": 3, "target": 6, "score": 0.8, "gt": None},
     ]
 
-    nx_graph = networkx.DiGraph()
-    nx_graph.add_nodes_from([(cell["id"], cell) for cell in cells])
-    nx_graph.add_edges_from([(edge["source"], edge["target"], edge) for edge in edges])
+    nx_graph = nx.DiGraph()
+    nx_graph.add_nodes_from([(cell["id"], cell) for cell in cells])  # type: ignore
+    nx_graph.add_edges_from(
+        [(edge["source"], edge["target"], edge) for edge in edges]  # type: ignore
+    )
 
     # this is how to add a TrackGraph hyperedge into a nx_graph:
     nx_graph.add_node(
@@ -129,34 +147,5 @@ def create_toy_hyperedge_nx_graph() -> networkx.DiGraph:
     return nx_graph
 
 
-def create_toy_hyperedge_trackgraph() -> motile.TrackGraph:
-    return motile.TrackGraph(create_toy_hyperedge_nx_graph())
-
-
-def create_ssvm_noise_trackgraph() -> motile.TrackGraph:
-    cells = [
-        {"id": 0, "t": 0, "x": 1, "score": 0.8, "gt": 1, "noise": 0.5},
-        {"id": 1, "t": 0, "x": 25, "score": 0.9, "gt": 1, "noise": -0.5},
-        {"id": 2, "t": 1, "x": 0, "score": 0.9, "gt": 1, "noise": 0.5},
-        {"id": 3, "t": 1, "x": 26, "score": 0.8, "gt": 1, "noise": -0.5},
-        {"id": 4, "t": 2, "x": 2, "score": 0.9, "gt": 1, "noise": 0.5},
-        {"id": 5, "t": 2, "x": 24, "score": 0.1, "gt": 0, "noise": -0.5},
-        {"id": 6, "t": 2, "x": 35, "score": 0.7, "gt": 1, "noise": -0.5},
-    ]
-
-    edges = [
-        {"source": 0, "target": 2, "score": 0.9, "gt": 1, "noise": 0.5},
-        {"source": 1, "target": 3, "score": 0.9, "gt": 1, "noise": -0.5},
-        {"source": 0, "target": 3, "score": 0.2, "gt": 0, "noise": 0.5},
-        {"source": 1, "target": 2, "score": 0.2, "gt": 0, "noise": -0.5},
-        {"source": 2, "target": 4, "score": 0.9, "gt": 1, "noise": 0.5},
-        {"source": 3, "target": 5, "score": 0.1, "gt": 0, "noise": -0.5},
-        {"source": 2, "target": 5, "score": 0.2, "gt": 0, "noise": 0.5},
-        {"source": 3, "target": 4, "score": 0.2, "gt": 0, "noise": -0.5},
-        {"source": 3, "target": 6, "score": 0.8, "gt": 1, "noise": -0.5},
-    ]
-    graph = networkx.DiGraph()
-    graph.add_nodes_from([(cell["id"], cell) for cell in cells])
-    graph.add_edges_from([(edge["source"], edge["target"], edge) for edge in edges])
-
-    return motile.TrackGraph(graph)
+def toy_hypergraph() -> TrackGraph:
+    return TrackGraph(toy_hypergraph_nx())
