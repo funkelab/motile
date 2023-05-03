@@ -15,7 +15,7 @@ Installation
 This will install ``motile`` with all required dependencies, including binaries
 for two discrete optimizers:
 
-1. The `Gurobi Optimizer <https://www.gurobi.com/>`_. This is a comercial
+1. The `Gurobi Optimizer <https://www.gurobi.com/>`_. This is a commercial
    solver, which requires a valid license. Academic licenses are provided for
    free, see `here
    <https://www.gurobi.com/academia/academic-program-and-licenses/>`_ for how
