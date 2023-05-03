@@ -1,25 +1,25 @@
 import unittest
 
 import motile
-from data import (
-    create_arlo_nx_graph,
-    create_arlo_trackgraph,
-    create_toy_hyperedge_nx_graph,
-    create_toy_hyperedge_trackgraph,
-)
 from motile.constraints import MaxChildren, MaxParents
 from motile.costs import Appear, EdgeSelection, NodeSelection, Split
+from motile.data import (
+    arlo_graph,
+    arlo_graph_nx,
+    toy_hypergraph,
+    toy_hypergraph_nx,
+)
 
 
 class TestAPI(unittest.TestCase):
     def test_graph_creation_with_hyperedges(self):
-        graph = create_toy_hyperedge_trackgraph()
+        graph = toy_hypergraph()
         assert len(graph.nodes) == 7
         assert len(graph.edges) == 10
 
     def test_graph_creation_from_multiple_nx_graphs(self):
-        g1 = create_toy_hyperedge_nx_graph()
-        g2 = create_arlo_nx_graph()
+        g1 = toy_hypergraph_nx()
+        g2 = arlo_graph_nx()
         graph = motile.TrackGraph()
 
         graph.add_from_nx_graph(g1)
@@ -35,7 +35,7 @@ class TestAPI(unittest.TestCase):
         assert "prediction_distance" in graph.edges[(0, 2)]
 
     def test_solver(self):
-        graph = create_arlo_trackgraph()
+        graph = arlo_graph()
 
         solver = motile.Solver(graph)
         solver.add_costs(NodeSelection(weight=-1.0, attribute="score", constant=-100.0))

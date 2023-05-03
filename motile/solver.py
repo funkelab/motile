@@ -13,7 +13,6 @@ from .costs import Features, Weight, Weights
 from .ssvm import fit_weights
 
 logger = logging.getLogger(__name__)
-ILPY_V03 = ilpy.__version__.split(".")[:2] >= ["0", "3"]
 
 if TYPE_CHECKING:
     from motile.costs import Costs
@@ -49,9 +48,9 @@ class Solver:
         self._weights_changed = True
         self.features = Features()
 
-        self.ilp_solver: ilpy.LinearSolver | None = None
-        self.objective: ilpy.LinearObjective | None = None
-        self.constraints = ilpy.LinearConstraints()
+        self.ilp_solver: ilpy.Solver | None = None
+        self.objective: ilpy.Objective | None = None
+        self.constraints = ilpy.Constraints()
 
         self.num_variables: int = 0
         self._costs = np.zeros((0,), dtype=np.float32)
@@ -134,13 +133,13 @@ class Solver:
             vector.
         """
 
-        self.objective = ilpy.LinearObjective(self.num_variables)
+        self.objective = ilpy.Objective(self.num_variables)
         for i, c in enumerate(self.costs):
             logger.debug("Setting cost of var %d to %.3f", i, c)
             self.objective.set_coefficient(i, c)
 
         # TODO: support other variable types
-        self.ilp_solver = ilpy.LinearSolver(
+        self.ilp_solver = ilpy.Solver(
             self.num_variables,
             ilpy.VariableType.Binary,
             variable_types=self.variable_types,
@@ -156,13 +155,8 @@ class Solver:
 
         self.ilp_solver.set_verbose(False)
 
-        solution = self.ilp_solver.solve()
-
-        if ILPY_V03:
-            self.solution, message = solution, solution.get_status()
-        else:
-            self.solution, message = solution
-        if message:
+        self.solution = self.ilp_solver.solve()
+        if message := self.solution.get_status():
             logger.info("ILP solver returned with: %s", message)
 
         return self.solution

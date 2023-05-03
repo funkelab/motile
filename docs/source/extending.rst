@@ -104,7 +104,7 @@ Adding Constraints
 New constraints are introduced by subclassing :class:`Constraint
 <motile.constraints.Constraint>` and implementing the :func:`instantiate
 <motile.constraints.Constraint.instantiate>` method. This method should return
-a list of ``ilpy.LinearConstraint``.
+a list of ``ilpy.Constraint``.
 
 Imagine we know precisely that we want to track at most :math:`k` objects, but
 we don't know beforehand which of the many objects in the track graph those
@@ -128,7 +128,7 @@ This can be done with a constraint as follows:
 
         appear_indicators = solver.get_variables(NodeAppear)
 
-        constraint = ilpy.LinearConstraint()
+        constraint = ilpy.Constraint()
         for appear_indicator, index in appear_indicators.items():
           constraint.set_coefficient(index, 1.0)
         constraint.set_relation(ilpy.Relation.LessEqual)
@@ -301,7 +301,7 @@ The complete variable declaration looks like this:
             out_edge_index = edge_indicators[out_edge]
 
             # edge pair indicator = 1 <=> in edge = 1 and out edge = 1
-            constraint = ilpy.LinearConstraint()
+            constraint = ilpy.Constraint()
             constraint.set_coefficient(pair_index, 2)
             constraint.set_coefficient(in_edge_index, -1)
             constraint.set_coefficient(out_edge_index, -1)
@@ -309,7 +309,7 @@ The complete variable declaration looks like this:
             constraint.set_value(0)
             constraints.append(constraint)
 
-            constraint = ilpy.LinearConstraint()
+            constraint = ilpy.Constraint()
             constraint.set_coefficient(pair_index, -1)
             constraint.set_coefficient(in_edge_index, 1)
             constraint.set_coefficient(out_edge_index, 1)

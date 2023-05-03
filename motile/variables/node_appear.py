@@ -7,7 +7,7 @@ from .node_selected import NodeSelected
 from .variable import Variable
 
 if TYPE_CHECKING:
-    from ilpy.expressions import Expression
+    import ilpy
 
     from motile._types import NodeId
     from motile.solver import Solver
@@ -39,7 +39,7 @@ class NodeAppear(Variable["NodeId"]):
         return solver.graph.nodes
 
     @staticmethod
-    def instantiate_constraints(solver: Solver) -> Iterable[Expression]:
+    def instantiate_constraints(solver: Solver) -> Iterable[ilpy.Expression]:
         appear_indicators = solver.get_variables(NodeAppear)
         node_indicators = solver.get_variables(NodeSelected)
         edge_indicators = solver.get_variables(EdgeSelected)

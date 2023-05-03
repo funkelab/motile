@@ -13,7 +13,6 @@ from typing import (
 )
 
 import ilpy
-from ilpy import expressions
 
 if TYPE_CHECKING:
     from motile.solver import Solver
@@ -92,7 +91,7 @@ class Variable(ABC, Mapping[_KT, int]):
     @staticmethod
     def instantiate_constraints(
         solver: Solver,
-    ) -> Iterable[ilpy.LinearConstraint | expressions.Expression]:
+    ) -> Iterable[ilpy.Constraint | ilpy.Expression]:
         """Add linear constraints to the solver to ensure that these variables
         are coupled to other variables of the solver.
 
@@ -103,7 +102,7 @@ class Variable(ABC, Mapping[_KT, int]):
 
         Returns:
 
-            A iterable of :class:`ilpy.LinearConstraint` or
+            A iterable of :class:`ilpy.Constraint` or
             :class:`ilpy.expressions.Expression.` See
             :class:`motile.constraints.Constraint` for how to create linear constraints.
         """
@@ -137,10 +136,10 @@ class Variable(ABC, Mapping[_KT, int]):
     def __len__(self) -> int:
         return len(self._index_map)
 
-    def expr(self, key: _KT, name: str = "") -> expressions.Variable:
+    def expr(self, key: _KT, name: str = "") -> ilpy.Variable:
         if not name:
             name = f"{type(self).__name__}({key})"
-        return expressions.Variable(name, index=self._index_map[key])
+        return ilpy.Variable(name, index=self._index_map[key])
 
     # All of these methods are provided by subclassing typing.Mapping
     # __contains__

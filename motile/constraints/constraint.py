@@ -5,7 +5,6 @@ from typing import TYPE_CHECKING, Iterable
 
 if TYPE_CHECKING:
     import ilpy
-    from ilpy.expressions import Expression
 
     from motile.solver import Solver
 
@@ -14,7 +13,7 @@ class Constraint(ABC):
     @abstractmethod
     def instantiate(
         self, solver: Solver
-    ) -> Iterable[ilpy.LinearConstraint | Expression]:
+    ) -> Iterable[ilpy.Constraint | ilpy.Expression]:
         """Create and return specific linear constraints for the given solver.
 
         Args:
@@ -24,5 +23,5 @@ class Constraint(ABC):
 
         Returns:
 
-            An iterable of :class:`ilpy.LinearConstraint`.
+            An iterable of :class:`ilpy.Constraint`.
         """
