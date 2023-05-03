@@ -17,7 +17,7 @@ authors = [
     { name = 'Florian Jug', email = 'florian.jug@fht.org' },
 ]
 dynamic = ["version"]
-dependencies = ['networkx', 'ilpy', 'numpy', 'structsvm']
+dependencies = ['networkx', 'ilpy>=0.3.0', 'numpy', 'structsvm']
 
 [project.optional-dependencies]
 dev = ["pre-commit", "pytest", "pytest-cov", "ruff", "twine", "build"]
@@ -61,8 +61,8 @@ exclude_lines = [
 
 [tool.mypy]
 files = "motile"
-strict = true                 # feel free to relax this if it's annoying
-allow_untyped_defs = true     # TODO: can eventually fill out typing and remove this
+strict = true             # feel free to relax this if it's annoying
+allow_untyped_defs = true # TODO: can eventually fill out typing and remove this
 # allow_untyped_calls = true    # TODO: can eventually fill out typing and remove this
 disallow_any_generics = false
 ignore_missing_imports = true

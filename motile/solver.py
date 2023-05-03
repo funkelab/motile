@@ -48,9 +48,9 @@ class Solver:
         self._weights_changed = True
         self.features = Features()
 
-        self.ilp_solver: ilpy.LinearSolver | None = None
-        self.objective: ilpy.LinearObjective | None = None
-        self.constraints = ilpy.LinearConstraints()
+        self.ilp_solver: ilpy.Solver | None = None
+        self.objective: ilpy.Objective | None = None
+        self.constraints = ilpy.Constraints()
 
         self.num_variables: int = 0
         self._costs = np.zeros((0,), dtype=np.float32)
@@ -131,13 +131,13 @@ class Solver:
             vector.
         """
 
-        self.objective = ilpy.LinearObjective(self.num_variables)
+        self.objective = ilpy.Objective(self.num_variables)
         for i, c in enumerate(self.costs):
             logger.debug("Setting cost of var %d to %.3f", i, c)
             self.objective.set_coefficient(i, c)
 
         # TODO: support other variable types
-        self.ilp_solver = ilpy.LinearSolver(
+        self.ilp_solver = ilpy.Solver(
             self.num_variables,
             ilpy.VariableType.Binary,
             variable_types=self.variable_types,

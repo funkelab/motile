@@ -33,7 +33,7 @@ class Pin(Constraint):
     def __init__(self, attribute: str) -> None:
         self.attribute = attribute
 
-    def instantiate(self, solver: Solver) -> list[ilpy.LinearConstraint]:
+    def instantiate(self, solver: Solver) -> list[ilpy.Constraint]:
         node_indicators = solver.get_variables(NodeSelected)
         edge_indicators = solver.get_variables(EdgeSelected)
 
@@ -57,8 +57,8 @@ class Pin(Constraint):
             if self.attribute in attributes and not attributes[self.attribute]
         ]
 
-        must_select_constraint = ilpy.LinearConstraint()
-        must_not_select_constraint = ilpy.LinearConstraint()
+        must_select_constraint = ilpy.Constraint()
+        must_not_select_constraint = ilpy.Constraint()
 
         for index in must_select:
             must_select_constraint.set_coefficient(index, 1)

@@ -39,7 +39,7 @@ class NodeAppear(Variable["NodeId"]):
         return solver.graph.nodes
 
     @staticmethod
-    def instantiate_constraints(solver: Solver) -> Iterable[ilpy.LinearConstraint]:
+    def instantiate_constraints(solver: Solver) -> Iterable[ilpy.Constraint]:
         appear_indicators = solver.get_variables(NodeAppear)
         node_indicators = solver.get_variables(NodeSelected)
         edge_indicators = solver.get_variables(EdgeSelected)
@@ -51,7 +51,7 @@ class NodeAppear(Variable["NodeId"]):
             if num_prev_edges == 0:
                 # special case: no incoming edges, appear indicator is equal to
                 # selection indicator
-                constraint = ilpy.LinearConstraint()
+                constraint = ilpy.Constraint()
                 constraint.set_coefficient(node_indicators[node], 1.0)
                 constraint.set_coefficient(appear_indicators[node], -1.0)
                 constraint.set_relation(ilpy.Relation.Equal)
@@ -72,8 +72,8 @@ class NodeAppear(Variable["NodeId"]):
             # (1) s - appear <= num_prev - 1
             # (2) s - appear * num_prev >= 0
 
-            constraint1 = ilpy.LinearConstraint()
-            constraint2 = ilpy.LinearConstraint()
+            constraint1 = ilpy.Constraint()
+            constraint2 = ilpy.Constraint()
 
             # set s for both constraints:
 
