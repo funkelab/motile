@@ -21,7 +21,7 @@ dependencies = ['networkx', 'ilpy', 'numpy', 'structsvm']
 
 [project.optional-dependencies]
 dev = ["pre-commit", "pytest", "pytest-cov", "ruff", "twine", "build"]
-test = ["pytest", "pytest-cov"]
+test = ["pytest", "pytest-cov", "plotly"]
 docs = [
     "sphinx",
     "sphinx_rtd_theme",
@@ -52,12 +52,17 @@ select = [
 
 # https://coverage.readthedocs.io/en/6.4/config.html
 [tool.coverage.report]
-exclude_lines = ["pragma: no cover", "pragma: ${PY_MAJOR_VERSION} no cover"]
+exclude_lines = [
+    "pragma: no cover",
+    "pragma: ${PY_MAJOR_VERSION} no cover",
+    "if TYPE_CHECKING:",
+    "\\.\\.\\.",
+]
 
 [tool.mypy]
 files = "motile"
 strict = true                 # feel free to relax this if it's annoying
 allow_untyped_defs = true     # TODO: can eventually fill out typing and remove this
-allow_untyped_calls = true    # TODO: can eventually fill out typing and remove this
+# allow_untyped_calls = true    # TODO: can eventually fill out typing and remove this
 disallow_any_generics = false
 ignore_missing_imports = true
