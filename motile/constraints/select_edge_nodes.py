@@ -24,7 +24,7 @@ class SelectEdgeNodes(Constraint):
     This constraint will be added by default to any :class:`Solver` instance.
     """
 
-    def instantiate(self, solver: Solver) -> Iterable[ilpy.LinearConstraint]:
+    def instantiate(self, solver: Solver) -> Iterable[ilpy.Constraint]:
         node_indicators = solver.get_variables(NodeSelected)
         edge_indicators = solver.get_variables(EdgeSelected)
 
@@ -34,7 +34,7 @@ class SelectEdgeNodes(Constraint):
             ind_e = edge_indicators[edge]
             nodes_ind = [node_indicators[node] for node in nodes]
 
-            constraint = ilpy.LinearConstraint()
+            constraint = ilpy.Constraint()
             constraint.set_coefficient(ind_e, len(nodes_ind))
             for node_ind in nodes_ind:
                 constraint.set_coefficient(node_ind, -1)

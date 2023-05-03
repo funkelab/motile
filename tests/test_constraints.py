@@ -1,16 +1,16 @@
 import unittest
 
 import motile
-from data import create_arlo_trackgraph
 from motile.constraints import ExpressionConstraint, MaxChildren, MaxParents, Pin
 from motile.costs import Appear, EdgeSelection, NodeSelection, Split
+from motile.data import arlo_graph
 from motile.variables import EdgeSelected
 from motile.variables.node_selected import NodeSelected
 
 
 class TestConstraints(unittest.TestCase):
     def test_pin(self):
-        graph = create_arlo_trackgraph()
+        graph = arlo_graph()
 
         # pin the value of two edges:
         graph.edges[(0, 2)]["pin_to"] = False
@@ -37,7 +37,7 @@ class TestConstraints(unittest.TestCase):
         assert (3, 6) in selected_edges
 
     def test_complex_expression(self):
-        graph = create_arlo_trackgraph()
+        graph = arlo_graph()
         graph.nodes[5]["color"] = "red"
 
         solver = motile.Solver(graph)

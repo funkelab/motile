@@ -36,7 +36,7 @@ class NodeSplit(Variable):
         return solver.graph.nodes
 
     @staticmethod
-    def instantiate_constraints(solver: Solver) -> Iterable[ilpy.LinearConstraint]:
+    def instantiate_constraints(solver: Solver) -> Iterable[ilpy.Constraint]:
         split_indicators = solver.get_variables(NodeSplit)
         edge_indicators = solver.get_variables(EdgeSelected)
 
@@ -53,8 +53,8 @@ class NodeSplit(Variable):
             # (1) 2 * split - sum(next_selected) <= 0
             # (2) (num_next - 1) * split - sum(next_selected) >= -1
 
-            constraint1 = ilpy.LinearConstraint()
-            constraint2 = ilpy.LinearConstraint()
+            constraint1 = ilpy.Constraint()
+            constraint2 = ilpy.Constraint()
 
             constraint1.set_coefficient(split_indicators[node], 2.0)
             constraint2.set_coefficient(split_indicators[node], len(next_edges) - 1.0)

@@ -56,12 +56,12 @@ class ExpressionConstraint(Constraint):
         self.eval_nodes = eval_nodes
         self.eval_edges = eval_edges
 
-    def instantiate(self, solver: Solver) -> list[ilpy.LinearConstraint]:
+    def instantiate(self, solver: Solver) -> list[ilpy.Constraint]:
         node_indicators = solver.get_variables(NodeSelected)
         edge_indicators = solver.get_variables(EdgeSelected)
 
-        select = ilpy.LinearConstraint()
-        exclude = ilpy.LinearConstraint()
+        select = ilpy.Constraint()
+        exclude = ilpy.Constraint()
         n_selected = 0
 
         for do_evaluate, graph_part, indicators in [

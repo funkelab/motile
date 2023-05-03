@@ -89,7 +89,7 @@ class Variable(ABC, Mapping[_KT, int]):
         pass
 
     @staticmethod
-    def instantiate_constraints(solver: Solver) -> Iterable[ilpy.LinearConstraint]:
+    def instantiate_constraints(solver: Solver) -> Iterable[ilpy.Constraint]:
         """Add linear constraints to the solver to ensure that these variables
         are coupled to other variables of the solver.
 
@@ -100,7 +100,7 @@ class Variable(ABC, Mapping[_KT, int]):
 
         Returns:
 
-            A iterable of :class:`ilpy.LinearConstraint`. See
+            A iterable of :class:`ilpy.Constraint`. See
             :class:`motile.constraints.Constraint` for how to create linear
             constraints.
         """
