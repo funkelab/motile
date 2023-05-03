@@ -50,7 +50,7 @@ class Features:
         # Note: consider implementing
         return self._values
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         r = f"array of shape={self._values.shape}"
         if self._values.size > 0:
             r += f", values =\n{self._values}"
