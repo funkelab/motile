@@ -50,6 +50,15 @@ select = [
     "RUF", # ruff specific rules
 ]
 
+# https://docs.pytest.org/en/6.2.x/customize.html
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ["tests"]
+filterwarnings = [
+    "error:::motile",
+    "ignore:ilpy.*:DeprecationWarning:structsvm",
+]
+
 # https://coverage.readthedocs.io/en/6.4/config.html
 [tool.coverage.report]
 exclude_lines = [

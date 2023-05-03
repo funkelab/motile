@@ -12,7 +12,6 @@ from .costs import Features, Weight, Weights
 from .ssvm import fit_weights
 
 logger = logging.getLogger(__name__)
-ILPY_V03 = ilpy.__version__.split(".")[:2] >= ["0", "3"]
 
 if TYPE_CHECKING:
     from motile.costs import Costs
@@ -153,13 +152,8 @@ class Solver:
 
         self.ilp_solver.set_verbose(False)
 
-        solution = self.ilp_solver.solve()
-
-        if ILPY_V03:
-            self.solution, message = solution, solution.get_status()
-        else:
-            self.solution, message = solution
-        if message:
+        self.solution = self.ilp_solver.solve()
+        if message := self.solution.get_status():
             logger.info("ILP solver returned with: %s", message)
 
         return self.solution
