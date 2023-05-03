@@ -30,11 +30,11 @@ class MaxChildren(Constraint):
     def __init__(self, max_children: int) -> None:
         self.max_children = max_children
 
-    def instantiate(self, solver: Solver) -> Iterable[ilpy.LinearConstraint]:
+    def instantiate(self, solver: Solver) -> Iterable[ilpy.Constraint]:
         edge_indicators = solver.get_variables(EdgeSelected)
 
         for node in solver.graph.nodes:
-            constraint = ilpy.LinearConstraint()
+            constraint = ilpy.Constraint()
 
             # all outgoing edges
             for edge in solver.graph.next_edges[node]:
