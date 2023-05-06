@@ -1,6 +1,11 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import numpy as np
+
+if TYPE_CHECKING:
+    import ilpy
 
 
 class Features:
@@ -33,10 +38,11 @@ class Features:
         self._values = np.hstack((self._values, new_features))
 
     def add_feature(
-        self, variable_index: int, feature_index: int, value: float
+        self, variable_index: int | ilpy.Variable, feature_index: int, value: float
     ) -> None:
         num_variables, num_features = self._values.shape
 
+        variable_index = int(variable_index)
         if variable_index >= num_variables or feature_index >= num_features:
             self.resize(
                 max(variable_index + 1, num_variables),

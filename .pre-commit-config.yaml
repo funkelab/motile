@@ -20,3 +20,5 @@ repos:
     hooks:
       - id: mypy
         files: "^motile/"
+        additional_dependencies:
+          - ilpy
