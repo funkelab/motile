@@ -11,7 +11,7 @@ Read all about it in the [documentation](https://funkelab.github.io/motile/).
 
 ## Installation
 
-Motile depends on `ilpy`, which is currently only available via
+Motile depends on [`ilpy`](https://github.com/funkelab/ilpy), which is currently only available via
 conda on the `funkelab` channel.  `ilpy` in turn requires
 gurobi which is only available via the `gurobi` channel.
 
