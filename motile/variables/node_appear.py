@@ -46,8 +46,8 @@ class NodeAppear(Variable["NodeId"]):
 
         for node in solver.graph.nodes:
             prev_edges = solver.graph.prev_edges[node]
-            selected = node_indicators.expr(node, "n")
-            appear = appear_indicators.expr(node, "a")
+            selected = node_indicators[node]
+            appear = appear_indicators[node]
 
             if not prev_edges:
                 # special case: no incoming edges, appear indicator is equal to
@@ -67,7 +67,7 @@ class NodeAppear(Variable["NodeId"]):
             # (2) s - appear * num_prev >= 0
 
             num_prev = len(prev_edges)
-            s = num_prev * selected - sum(edge_indicators.expr(e) for e in prev_edges)
+            s = num_prev * selected - sum(edge_indicators[e] for e in prev_edges)
 
             yield s - appear <= num_prev - 1
             yield s - appear >= 0

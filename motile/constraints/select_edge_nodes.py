@@ -30,6 +30,5 @@ class SelectEdgeNodes(Constraint):
 
         for edge in solver.graph.edges:
             nodes = list(solver.graph.nodes_of(edge))
-            x_e = edge_indicators.expr(edge, "e")
-
-            yield len(nodes) * x_e - sum(node_indicators.expr(n) for n in nodes) <= 0
+            x_e = edge_indicators[edge]
+            yield len(nodes) * x_e - sum(node_indicators[n] for n in nodes) <= 0

@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 _KT = TypeVar("_KT", bound=Hashable)
 
 
-class Variable(ABC, Mapping[_KT, int]):
+class Variable(ABC, Mapping[_KT, ilpy.Variable]):
     """Base class for solver variables.
 
     New variables can be introduced by inheriting from this base class and
@@ -38,6 +38,9 @@ class Variable(ABC, Mapping[_KT, int]):
 
         solution = solver.solve()
 
+        # here `node_selected` is an instance of a Variable subclass
+        # specifically, it will be an instance of NodeSelected, which
+        # maps node Ids to variables in the solver.
         node_selected = solver.get_variables(NodeSelected)
 
         for node in graph.nodes:
@@ -127,19 +130,15 @@ class Variable(ABC, Mapping[_KT, int]):
             rs.append(r)
         return "\n".join(rs)
 
-    def __getitem__(self, key: _KT) -> int:
-        return self._index_map[key]
+    def __getitem__(self, key: _KT) -> ilpy.Variable:
+        name = f"{type(self).__name__}({key})"
+        return ilpy.Variable(name, index=self._index_map[key])
 
     def __iter__(self) -> Iterator[_KT]:
         return iter(self._index_map)
 
     def __len__(self) -> int:
         return len(self._index_map)
-
-    def expr(self, key: _KT, name: str = "") -> ilpy.Variable:
-        if not name:
-            name = f"{type(self).__name__}({key})"
-        return ilpy.Variable(name, index=self._index_map[key])
 
     # All of these methods are provided by subclassing typing.Mapping
     # __contains__

@@ -36,7 +36,7 @@ class MaxParents(Constraint):
         for node in solver.graph.nodes:
             # all incoming edges
             s = sum(
-                (edge_indicators.expr(e) for e in solver.graph.prev_edges[node]),
+                (edge_indicators[e] for e in solver.graph.prev_edges[node]),
                 start=Constant(0),
             )
             yield s <= self.max_parents

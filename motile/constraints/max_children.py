@@ -35,8 +35,7 @@ class MaxChildren(Constraint):
 
         for node in solver.graph.nodes:
             n_edges = sum(
-                (edge_indicators.expr(e) for e in solver.graph.next_edges[node]),
-                Constant(0),
+                (edge_indicators[e] for e in solver.graph.next_edges[node]), Constant(0)
             )
 
             yield n_edges <= self.max_children
