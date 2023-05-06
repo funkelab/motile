@@ -99,7 +99,7 @@ def draw_track_graph(
     if position_func is None:
 
         def position_func(node: NodeId) -> float:
-            return float(graph.nodes[node][position_attribute])
+            return float(graph.nodes[node][position_attribute])  # type: ignore
 
     alpha_node_func: ReturnsFloat
     alpha_edge_func: ReturnsFloat
@@ -109,10 +109,10 @@ def draw_track_graph(
     if alpha_attribute is not None:
 
         def alpha_node_func(node):
-            return graph.nodes[node].get(alpha_attribute, 1.0)
+            return graph.nodes[node].get(alpha_attribute, 1.0)  # type: ignore
 
         def alpha_edge_func(edge):
-            return graph.edges[edge].get(alpha_attribute, 1.0)
+            return graph.edges[edge].get(alpha_attribute, 1.0)  # type: ignore
 
     elif alpha_func is None:
 
@@ -131,10 +131,10 @@ def draw_track_graph(
     if label_attribute is not None:
 
         def label_node_func(node):
-            return graph.nodes[node].get(label_attribute, "")
+            return graph.nodes[node].get(label_attribute, "")  # type: ignore
 
         def label_edge_func(edge):
-            return graph.edges[edge].get(label_attribute, "")
+            return graph.edges[edge].get(label_attribute, "")  # type: ignore
 
     elif label_func is None:
 
