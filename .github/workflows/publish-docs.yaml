@@ -18,7 +18,7 @@ permissions:
 jobs:
   build:
     if: contains(github.event.pull_request.labels.*.name, 'documentation') || github.event_name != 'pull_request'
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash -l {0}
