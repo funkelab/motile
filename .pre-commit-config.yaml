@@ -20,5 +20,6 @@ repos:
     hooks:
       - id: mypy
         files: "^motile/"
-        additional_dependencies:
-          - ilpy>=0.3.1
+        # this won't work cause pre-commit can't install ilpy on CI
+        # additional_dependencies:
+          # - ilpy>=0.3.1
