@@ -70,7 +70,7 @@ class ExpressionConstraint(Constraint):
         except SyntaxError:
             raise ValueError(f"Invalid expression: {expression}") from None
 
-        self.expression = expression
+        self._expression = compile(expression, "<string>", "eval")
         self.eval_nodes = eval_nodes
         self.eval_edges = eval_edges
 
@@ -95,7 +95,7 @@ class ExpressionConstraint(Constraint):
                     # if the expression uses a variable name that is not in the dict,
                     # a NameError will be raised.
                     # contextlib.suppress (above) will just skip it and move on...
-                    if eval(self.expression, None, node_or_edge):
+                    if eval(self._expression, None, node_or_edge):
                         # if the expression evaluates to True, we select the node/edge
                         select.set_coefficient(indicator_variables[id_], 1)
                         n_selected += 1
