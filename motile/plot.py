@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Callable, overload
+from typing import TYPE_CHECKING, Any, Callable, Mapping, overload
 
 import numpy as np
 
@@ -24,7 +24,7 @@ if TYPE_CHECKING:
 PURPLE = (127, 30, 121)
 
 
-def _attr_hover_text(attrs: dict) -> str:
+def _attr_hover_text(attrs: Mapping) -> str:
     return "<br>".join([f"{name}: {value}" for name, value in attrs.items()])
 
 

@@ -2,15 +2,18 @@ from __future__ import annotations
 
 import ast
 import contextlib
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
 
 import ilpy
 
-from ..variables import EdgeSelected, NodeSelected
+from ..variables import EdgeSelected, NodeSelected, Variable
 from .constraint import Constraint
 
 if TYPE_CHECKING:
+    from motile._types import EdgeId, GraphObject, NodeId
     from motile.solver import Solver
+
+    NodesOrEdges = Union[dict[NodeId, GraphObject], dict[EdgeId, GraphObject]]
 
 
 class ExpressionConstraint(Constraint):
@@ -57,26 +60,35 @@ class ExpressionConstraint(Constraint):
         self.eval_edges = eval_edges
 
     def instantiate(self, solver: Solver) -> list[ilpy.Constraint]:
-        node_indicators = solver.get_variables(NodeSelected)
-        edge_indicators = solver.get_variables(EdgeSelected)
-
+        # create two constraints: one to select nodes/edges, and one to exclude
         select = ilpy.Constraint()
         exclude = ilpy.Constraint()
-        n_selected = 0
+        n_selected = 0  # number of nodes/edges selected
 
-        for do_evaluate, graph_part, indicators in [
-            (self.eval_nodes, solver.graph.nodes, node_indicators),
-            (self.eval_edges, solver.graph.edges, edge_indicators),
-        ]:
-            if do_evaluate:
-                for id_, namespace in graph_part.items():  # type: ignore
-                    with contextlib.suppress(NameError):
-                        if eval(self.expression, None, namespace):
-                            select.set_coefficient(indicators[id_], 1)  # type: ignore
-                            n_selected += 1
-                        else:
-                            exclude.set_coefficient(indicators[id_], 1)  # type: ignore
+        to_evaluate: list[tuple[NodesOrEdges, type[Variable]]] = []
+        if self.eval_nodes:
+            to_evaluate.append((solver.graph.nodes, NodeSelected))
+        if self.eval_edges:
+            to_evaluate.append((solver.graph.edges, EdgeSelected))
 
+        for nodes_or_edges, VariableType in to_evaluate:
+            indicator_variables = solver.get_variables(VariableType)
+            for id_, node_or_edge in nodes_or_edges.items():
+                with contextlib.suppress(NameError):
+                    # Here is where the expression string is evaluated.
+                    # We use the node/edge dict as a namespace to look up variables.
+                    # if the expression uses a variable name that is not in the dict,
+                    # a NameError will be raised.
+                    # contextlib.suppress (above) will just skip it and move on...
+                    if eval(self.expression, None, node_or_edge):
+                        # if the expression evaluates to True, we select the node/edge
+                        select.set_coefficient(indicator_variables[id_], 1)
+                        n_selected += 1
+                    else:
+                        # Otherwise, we exclude it.
+                        exclude.set_coefficient(indicator_variables[id_], 1)
+
+        # finally, apply the relation and value to the constraints
         select.set_relation(ilpy.Relation.Equal)
         select.set_value(n_selected)
 
