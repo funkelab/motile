@@ -20,8 +20,23 @@ class ExpressionConstraint(Constraint):
     """Enforces the selection of nodes/edges based on an expression evaluated
     with the node/edge dict as a namespace.
 
-    Args:
+    This is a powerful general constraint that allows you to select nodes/edges based on
+    any combination of node/edge attributes. The `expression` string is evaluated for
+    each node/edge (assuming eval_nodes/eval_edges is True) using the actual node object
+    as a namespace to populate any variables names used in the provided expression. If
+    the expression evaluates to True, the node/edge is selected; otherwise, it is
+    excluded.
 
+    This takes advantaged of python's `eval` function, like this:
+
+    ```python
+    my_expression = "some_attribute == True"
+    eval(my_expression, None, {"some_attribute": True})  # returns True (select)
+    eval(my_expression, None, {"some_attribute": False})  # returns False (exclude)
+    eval(my_expression, None, {})  # raises NameError (do nothing)
+    ```
+
+    Args:
         expression (string):
             An expression to evaluate for each node/edge. The expression must
             evaluate to a boolean value. The expression can use any names of
