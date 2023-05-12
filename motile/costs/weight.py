@@ -4,6 +4,15 @@ Callback = Callable[[float, float], Any]
 
 
 class Weight:
+    """A single Weight with observer/callback pattern on update.
+
+    See also :class:`motile.costs.weights.Weights`.
+
+    Args:
+        initial_value (float):
+            The initial value of the weight.
+    """
+
     def __init__(self, initial_value: float) -> None:
         self._value = initial_value
         self._modify_callbacks: List[Callback] = []

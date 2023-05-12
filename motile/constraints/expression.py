@@ -47,7 +47,6 @@ class ExpressionConstraint(Constraint):
             Whether to evaluate the expression for edges. By default, True.
 
     Example:
-
     If the nodes of a graph are:
         cells = [
             {"id": 0, "t": 0, "color": "red", "score": 1.0},

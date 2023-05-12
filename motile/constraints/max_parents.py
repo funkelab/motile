@@ -22,7 +22,6 @@ class MaxParents(Constraint):
       \sum_{e \in \\text{in_edges}(v)} x_e \leq \\text{max_parents}
 
     Args:
-
         max_parents (int):
             The maximum number of parents allowed.
     """

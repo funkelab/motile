@@ -14,7 +14,6 @@ class Split(Costs):
     """Costs for :class:`motile.variables.NodeSplit` variables.
 
     Args:
-
         constant (float):
             A constant cost for each node that has more than one selected
             child.

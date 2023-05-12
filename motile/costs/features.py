@@ -9,6 +9,11 @@ if TYPE_CHECKING:
 
 
 class Features:
+    """Simple container for features with resizeable dimensions.
+
+    A :class:`motile.Solver` has a :class:`Features` instance.
+    """
+
     def __init__(self) -> None:
         self._values = np.zeros((0, 0), dtype=np.float32)
 

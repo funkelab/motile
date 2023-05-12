@@ -11,6 +11,13 @@ Callback = Callable[[Optional[float], float], Any]
 
 
 class Weights:
+    """A simple container for weights with observer/callback pattern on update.
+
+    A :class:`motile.Solver` has a :class:`Weights` instance that is used to
+    store the weights of the model.  Changes to the weights can be observed with
+    ``Solver.weights.register_modify_callback``
+    """
+
     def __init__(self) -> None:
         self._weights: list[Weight] = []
         self._weights_by_name: dict[Hashable, Weight] = {}
@@ -18,6 +25,7 @@ class Weights:
         self._modify_callbacks: list[Callback] = []
 
     def add_weight(self, weight: Weight, name: Hashable) -> None:
+        """Add a weight to the container."""
         self._weight_indices[weight] = len(self._weights)
         self._weights.append(weight)
         self._weights_by_name[name] = weight
@@ -28,24 +36,36 @@ class Weights:
         self._notify_modified(None, weight.value)
 
     def register_modify_callback(self, callback: Callback) -> None:
+        """Register ``callback`` to be called when a weight is modified."""
         self._modify_callbacks.append(callback)
         for weight in self._weights:
             weight.register_modify_callback(callback)
 
     def to_ndarray(self) -> np.ndarray:
+        """Export the weights as a numpy array.
+
+        Note: you can also use np.asarray(weights) to convert a Weights instance.
+        """
         return np.array([w.value for w in self._weights], dtype=np.float32)
 
+    def __array__(self) -> np.ndarray:
+        return self.to_ndarray()
+
     def from_ndarray(self, values: Iterable[float]) -> None:
+        """Update weights from an iterable of floats."""
         for weight, value in zip(self._weights, values):
             weight.value = value
 
     def index_of(self, weight: Weight) -> int:
+        """Return the index of ``weight`` in this container."""
         return self._weight_indices[weight]
 
     def __getitem__(self, name: str) -> float:
+        """Return the value of the weight with the given name."""
         return self._weights_by_name[name].value
 
     def __setitem__(self, name: str, value: float) -> None:
+        """Set the value of the weight with the given name."""
         self._weights_by_name[name].value = value
 
     def _notify_modified(self, old_value: float | None, new_value: float) -> None:

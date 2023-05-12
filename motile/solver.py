@@ -25,7 +25,6 @@ class Solver:
     """Create a solver for a given track graph.
 
     Args:
-
         track_graph (:class:`TrackGraph`):
             The graph of objects to track over time.
 
@@ -63,7 +62,6 @@ class Solver:
         """Add linear costs to the value of variables in this solver.
 
         Args:
-
             costs (:class:`motile.costs.Costs`):
                 The costs to add.
 
@@ -72,7 +70,6 @@ class Solver:
                 costs in an unambiguous manner. Defaults to the name of the
                 costs class, if not given.
         """
-
         # default name of costs is the class name
         if name is None:
             name = type(costs).__name__
@@ -100,11 +97,9 @@ class Solver:
         """Add linear constraints to the solver.
 
         Args:
-
-            constraints (:class:`motile.constraints.Constraint`)
+            constraints (:class:`motile.constraints.Constraint`):
                 The constraints to add.
         """
-
         logger.info("Adding %s constraints...", type(constraints).__name__)
 
         for constraint in constraints.instantiate(self):
@@ -114,7 +109,6 @@ class Solver:
         """Solve the global optimization problem.
 
         Args:
-
             timeout (float):
                 The timeout for the ILP solver, in seconds. Default (0.0) is no
                 timeout. If the solver times out, the best solution encountered
@@ -124,12 +118,10 @@ class Solver:
                 The number of threads the ILP solver uses.
 
         Returns:
-
             :class:`ilpy.Solution`, a vector of variable values. Use
             :func:`get_variables` to find the indices of variables in this
             vector.
         """
-
         self.objective = ilpy.Objective(self.num_variables)
         for i, c in enumerate(self.costs):
             logger.debug("Setting cost of var %d to %.3f", i, c)
@@ -165,17 +157,14 @@ class Solver:
         created.
 
         Args:
-
             cls (type of :class:`motile.variables.Variable`):
                 A subclass of :class:`motile.variables.Variable`.
 
         Returns:
-
             A singleton instance of :class:`motile.variables.Variable`,
             mimicking a dictionary that can be used to look up variable indices
             by their keys. See :class:`motile.variables.Variable` for details.
         """
-
         if cls not in self.variables:
             self._add_variables(cls)
         return cast("V", self.variables[cls])
@@ -187,7 +176,6 @@ class Solver:
 
         To be used within implementations of :class:`motile.costs.Costs`.
         """
-
         variable_index = index
         feature_index = self.weights.index_of(weight)
         self.features.add_feature(variable_index, feature_index, value)
@@ -204,7 +192,6 @@ class Solver:
         Updates the weights in the solver object to the found solution.
 
         Args:
-
             gt_attribute:
 
                 Node/edge attribute that marks the ground truth for fitting.

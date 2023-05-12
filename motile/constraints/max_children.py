@@ -22,7 +22,6 @@ class MaxChildren(Constraint):
       \sum_{e \in \\text{out_edges}(v)} x_e \leq \\text{max_children}
 
     Args:
-
         max_children (int):
             The maximum number of children allowed.
     """

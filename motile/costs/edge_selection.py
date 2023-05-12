@@ -14,7 +14,6 @@ class EdgeSelection(Costs):
     """Costs for :class:`motile.variables.EdgeSelected` variables.
 
     Args:
-
         weight (float):
             The weight to apply to the cost given by the ``costs`` attribute of
             each edge.

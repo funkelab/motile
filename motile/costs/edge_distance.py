@@ -17,7 +17,6 @@ class EdgeDistance(Costs):
     spatial distance of the incident nodes.
 
     Args:
-
         position_attributes (tuple of string):
             The names of the node attributes that correspond to their spatial
             position, e.g., ``('z', 'y', 'x')``.

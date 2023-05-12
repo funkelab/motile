@@ -14,7 +14,6 @@ class Appear(Costs):
     """Costs for :class:`motile.variables.NodeAppear` variables.
 
     Args:
-
         constant (float):
             A constant cost for each node that starts a track.
     """

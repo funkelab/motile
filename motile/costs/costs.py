@@ -8,6 +8,8 @@ if TYPE_CHECKING:
 
 
 class Costs(ABC):
+    """A base class for costs that can be added to a solver."""
+
     @abstractmethod
     def apply(self, solver: Solver) -> None:
         """Apply costs to the given solver. Use
@@ -15,7 +17,6 @@ class Costs(ABC):
         :func:`motile.Solver.add_variable_cost`.
 
         Args:
-
             solver (:class:`Solver`):
                 The solver to create costs for.
         """

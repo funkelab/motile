@@ -19,7 +19,6 @@ class TrackGraph:
     all the methods inherited from :class:`networkx.DiGraph`.
 
     Args:
-
         nx_graph (``DiGraph``, optional):
 
             A directed networkx graph representing the TrackGraph to be created.
@@ -194,15 +193,14 @@ class TrackGraph:
 
     def get_frames(self) -> tuple[int | None, int | None]:
         """Get a tuple ``(t_begin, t_end)`` of the first and last frame
-        (exclusive) this track graph has nodes for."""
-
+        (exclusive) this track graph has nodes for.
+        """
         self._update_metadata()
 
         return (self.t_begin, self.t_end)
 
     def nodes_by_frame(self, t: int) -> list[Hashable]:
         """Get all nodes in frame ``t``."""
-
         self._update_metadata()
 
         if t not in self._nodes_by_frame:

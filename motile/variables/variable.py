@@ -80,12 +80,10 @@ class Variable(ABC, Mapping[_KT, ilpy.Variable]):
                 print(f"Selection indicator of node {node} has index {index}")
 
         Args:
-
             solver (:class:`Solver`):
                 The solver instance to create variables for.
 
         Returns:
-
             A list of keys (anything that is hashable, e.g., nodes of a graph),
             one for each variable to create.
         """
@@ -99,12 +97,10 @@ class Variable(ABC, Mapping[_KT, ilpy.Variable]):
         are coupled to other variables of the solver.
 
         Args:
-
             solver (:class:`Solver`):
                 The solver instance to create variable constraints for.
 
         Returns:
-
             A iterable of :class:`ilpy.Constraint` or
             :class:`ilpy.expressions.Expression.` See
             :class:`motile.constraints.Constraint` for how to create linear constraints.

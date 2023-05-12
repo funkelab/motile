@@ -17,7 +17,6 @@ class Pin(ExpressionConstraint):
     edges.
 
     Args:
-
         attribute (string):
             The name of the node/edge attribute to use.
     """

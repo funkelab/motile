@@ -10,6 +10,8 @@ if TYPE_CHECKING:
 
 
 class Constraint(ABC):
+    """A base class for a constraint that can be added to a solver."""
+
     @abstractmethod
     def instantiate(
         self, solver: Solver
@@ -17,11 +19,9 @@ class Constraint(ABC):
         """Create and return specific linear constraints for the given solver.
 
         Args:
-
             solver (:class:`Solver`):
                 The solver instance to create linear constraints for.
 
         Returns:
-
             An iterable of :class:`ilpy.Constraint`.
         """

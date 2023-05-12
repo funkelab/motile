@@ -14,7 +14,6 @@ class NodeSelection(Costs):
     """Costs for :class:`motile.variables.NodeSelected` variables.
 
     Args:
-
         weight (float):
             The weight to apply to the cost given by the ``costs`` attribute of
             each node.
