@@ -1,10 +1,11 @@
 import unittest
 
 import motile
-from motile.constraints import MaxChildren, MaxParents, Pin
+from motile.constraints import ExpressionConstraint, MaxChildren, MaxParents, Pin
 from motile.costs import Appear, EdgeSelection, NodeSelection, Split
 from motile.data import arlo_graph
 from motile.variables import EdgeSelected
+from motile.variables.node_selected import NodeSelected
 
 
 class TestConstraints(unittest.TestCase):
@@ -34,3 +35,23 @@ class TestConstraints(unittest.TestCase):
 
         assert (0, 2) not in selected_edges
         assert (3, 6) in selected_edges
+
+    def test_complex_expression(self):
+        graph = arlo_graph()
+        graph.nodes[5]["color"] = "red"
+
+        solver = motile.Solver(graph)
+        solver.add_costs(NodeSelection(weight=-1.0, attribute="score", constant=-100.0))
+        solver.add_costs(EdgeSelection(weight=1.0, attribute="prediction_distance"))
+
+        # constrain solver based on attributes of nodes/edges
+        expr = "x > 140 and t != 1 and color != 'red'"
+        solver.add_constraints(ExpressionConstraint(expr))
+
+        solution = solver.solve()
+        node_indicators = solver.get_variables(NodeSelected)
+        selected_nodes = [
+            node for node, index in node_indicators.items() if solution[index] > 0.5
+        ]
+
+        assert selected_nodes == [1, 6]
