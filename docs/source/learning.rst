@@ -229,6 +229,13 @@ Learning the weights is done by calling :func:`motile.Solver.fit_weights` on the
 ground-truth attribute ``gt`` that we just added:
 
 .. jupyter-execute::
+  :hide-code:
+
+  # this suppresses logging output from structsvm that can fail the docs build
+  import logging
+  logging.getLogger("structsvm.bundle_method").setLevel(logging.CRITICAL)
+
+.. jupyter-execute::
   :hide-output:
 
   solver.fit_weights(gt_attribute="gt", regularizer_weight=0.01)
