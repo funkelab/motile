@@ -180,7 +180,9 @@ class Solver:
             self._add_variables(cls)
         return cast("V", self.variables[cls])
 
-    def add_variable_cost(self, index: int, value: float, weight: Weight) -> None:
+    def add_variable_cost(
+        self, index: int | ilpy.Variable, value: float, weight: Weight
+    ) -> None:
         """Add costs for an individual variable.
 
         To be used within implementations of :class:`motile.costs.Costs`.

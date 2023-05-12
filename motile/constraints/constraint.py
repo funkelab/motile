@@ -11,7 +11,9 @@ if TYPE_CHECKING:
 
 class Constraint(ABC):
     @abstractmethod
-    def instantiate(self, solver: Solver) -> Iterable[ilpy.Constraint]:
+    def instantiate(
+        self, solver: Solver
+    ) -> Iterable[ilpy.Constraint | ilpy.Expression]:
         """Create and return specific linear constraints for the given solver.
 
         Args:

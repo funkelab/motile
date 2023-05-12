@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 _KT = TypeVar("_KT", bound=Hashable)
 
 
-class Variable(ABC, Mapping[_KT, int]):
+class Variable(ABC, Mapping[_KT, ilpy.Variable]):
     """Base class for solver variables.
 
     New variables can be introduced by inheriting from this base class and
@@ -38,6 +38,9 @@ class Variable(ABC, Mapping[_KT, int]):
 
         solution = solver.solve()
 
+        # here `node_selected` is an instance of a Variable subclass
+        # specifically, it will be an instance of NodeSelected, which
+        # maps node Ids to variables in the solver.
         node_selected = solver.get_variables(NodeSelected)
 
         for node in graph.nodes:
@@ -89,7 +92,9 @@ class Variable(ABC, Mapping[_KT, int]):
         pass
 
     @staticmethod
-    def instantiate_constraints(solver: Solver) -> Iterable[ilpy.Constraint]:
+    def instantiate_constraints(
+        solver: Solver,
+    ) -> Iterable[ilpy.Constraint | ilpy.Expression]:
         """Add linear constraints to the solver to ensure that these variables
         are coupled to other variables of the solver.
 
@@ -100,9 +105,9 @@ class Variable(ABC, Mapping[_KT, int]):
 
         Returns:
 
-            A iterable of :class:`ilpy.Constraint`. See
-            :class:`motile.constraints.Constraint` for how to create linear
-            constraints.
+            A iterable of :class:`ilpy.Constraint` or
+            :class:`ilpy.expressions.Expression.` See
+            :class:`motile.constraints.Constraint` for how to create linear constraints.
         """
         return []
 
@@ -125,8 +130,9 @@ class Variable(ABC, Mapping[_KT, int]):
             rs.append(r)
         return "\n".join(rs)
 
-    def __getitem__(self, key: _KT) -> int:
-        return self._index_map[key]
+    def __getitem__(self, key: _KT) -> ilpy.Variable:
+        name = f"{type(self).__name__}({key})"
+        return ilpy.Variable(name, index=self._index_map[key])
 
     def __iter__(self) -> Iterator[_KT]:
         return iter(self._index_map)
