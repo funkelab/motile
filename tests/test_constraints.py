@@ -9,18 +9,19 @@ from motile.variables.node_selected import NodeSelected
 
 @pytest.fixture
 def solver():
-    graph = arlo_graph()
-    return motile.Solver(graph)
+    return motile.Solver(arlo_graph())
 
 
 def _selected_edges(solver: motile.Solver) -> list:
     edge_indicators = solver.get_variables(EdgeSelected)
-    return [e for e, i in edge_indicators.items() if solver.solve()[i]]
+    solution = solver.solve()
+    return [e for e, i in edge_indicators.items() if solution[i]]
 
 
 def _selected_nodes(solver: motile.Solver) -> list:
     node_indicators = solver.get_variables(NodeSelected)
-    return [e for e, i in node_indicators.items() if solver.solve()[i]]
+    solution = solver.solve()
+    return [e for e, i in node_indicators.items() if solution[i]]
 
 
 def test_pin(solver: motile.Solver) -> None:
