@@ -93,8 +93,9 @@ class Variable(ABC, Mapping[_KT, ilpy.Variable]):
     def instantiate_constraints(
         solver: Solver,
     ) -> Iterable[ilpy.Constraint | ilpy.Expression]:
-        """Add linear constraints to the solver to ensure that these variables
-        are coupled to other variables of the solver.
+        """Add constraints for this variable to the solver.
+
+        This ensures that these variables are coupled to other variables of the solver.
 
         Args:
             solver (:class:`Solver`):

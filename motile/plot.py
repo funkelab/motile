@@ -278,7 +278,9 @@ def draw_track_graph(
 def draw_solution(
     graph: TrackGraph, solver: Solver, *args: Any, **kwargs: Any
 ) -> go.Figure:
-    """Wrapper around :func:`draw_track_graph` highlighting the solution found
+    """Draw ``graph`` with the current ``solver.solution`` highlighted.
+
+    This is a wrapper around :func:`draw_track_graph` highlighting the solution found
     by the given solver.
 
     Args:

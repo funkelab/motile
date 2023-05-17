@@ -12,8 +12,9 @@ if TYPE_CHECKING:
 
 
 class SelectEdgeNodes(Constraint):
-    r"""Ensures that if an edge :math:`(u, v)` is selected, :math:`u` and
-    :math:`v` have to be selected as well.
+    r"""Ensures that if an edge is selected, its nodes are selected as well.
+
+    If :math:`(u, v)` is selected, :math:`u` and :math:`v` have to be selected as well.
 
     Adds the following linear constraint for each edge :math:`e = (u,v)`:
 

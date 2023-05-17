@@ -12,8 +12,9 @@ if TYPE_CHECKING:
 
 
 class TrackGraph:
-    """A :class:`networkx.DiGraph` of objects with positions in time and space,
-    and inter-frame edges between them.
+    """A graph of nodes placed in time & space, and edges connecting them across time.
+
+    This wraps a :class:`networkx.DiGraph` object.
 
     Provides a few convenience methods for time series graphs in addition to
     all the methods inherited from :class:`networkx.DiGraph`.
@@ -70,8 +71,7 @@ class TrackGraph:
         self.edges[edge_id] = data
 
     def add_from_nx_graph(self, nx_graph: DiGraph) -> None:
-        """Adds the TrackGraph represented by the given ``nx_graph`` to the
-        existing TrackGraph.
+        """Add nodes/edges from ``nx_graph`` to this TrackGraph.
 
         Hyperedges are represented by nodes in the ``nx_graph`` that do not have the
         ``frame_attribute`` property. All 'regular' nodes connected to such a hyperedge
@@ -140,7 +140,9 @@ class TrackGraph:
             yield edge
 
     def _is_hyperedge_nx_node(self, nx_graph: DiGraph, nx_node: Any) -> bool:
-        """Checks if the given networkx node in the given directed networkx graph
+        """Return ``True`` if ``nx_node`` is a hyperedge node in ``nx_graph``.
+
+        Checks if the given networkx node in the given directed networkx graph
         represents an hyperedge. This boils down to checking if the node does not
         have the ``frame_attribute`` set.
 
@@ -192,8 +194,9 @@ class TrackGraph:
         return edge_tuple, in_nodes, out_nodes
 
     def get_frames(self) -> tuple[int | None, int | None]:
-        """Get a tuple ``(t_begin, t_end)`` of the first and last frame
-        (exclusive) this track graph has nodes for.
+        """Return tuple with first and last (exclusive) frame this graph has nodes for.
+
+        Returns ``(t_begin, t_end)`` where t_end is exclusive.
         """
         self._update_metadata()
 

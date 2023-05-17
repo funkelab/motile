@@ -13,8 +13,9 @@ if TYPE_CHECKING:
 
 
 class EdgeDistance(Costs):
-    """Costs for :class:`motile.variables.EdgeSelected` variables, based on the
-    spatial distance of the incident nodes.
+    """Costs for :class:`motile.variables.EdgeSelected` variables.
+
+    Costs are based on the spatial distance of the incident nodes.
 
     Args:
         position_attributes (tuple of string):

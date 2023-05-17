@@ -57,7 +57,7 @@ ignore = [
     "D107", # Missing docstring in `__init__`
 
     "D102", # Missing docstring in public method
-    "D205", # 1 blank line required between summary line and description
+    # "D205", # 1 blank line required between summary line and description
 
 ]
 [tool.ruff.pydocstyle]

@@ -14,9 +14,9 @@ if TYPE_CHECKING:
 
 
 class NodeAppear(Variable["NodeId"]):
-    r"""A binary variable for each node that indicates whether the node is the
-    start of a track (i.e., the node is selected and has no selected incoming
-    edges).
+    r"""Binary variable indicating whether a node is the start of a track.
+
+    (i.e., the node is selected and has no selected incoming edges).
 
     This variable is coupled to the node and edge selection variables through
     the following linear constraints:

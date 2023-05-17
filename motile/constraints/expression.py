@@ -17,8 +17,9 @@ if TYPE_CHECKING:
 
 
 class ExpressionConstraint(Constraint):
-    """Enforces the selection of nodes/edges based on an expression evaluated
-    with the node/edge dict as a namespace.
+    """Enforcew selection of nodes/edges based on an expression.
+
+    The expression string is evaluated with the node/edge dict as a namespace.
 
     This is a powerful general constraint that allows you to select nodes/edges based on
     any combination of node/edge attributes. The `expression` string is evaluated for

@@ -13,9 +13,9 @@ if TYPE_CHECKING:
 
 
 class NodeSplit(Variable):
-    r"""A binary variable for each node that indicates whether the node has
-    more than one children (i.e., the node is selected and has more than one
-    selected outgoing edge).
+    r"""Binary variable indicating whether a node has more than one child.
+
+    (i.e., the node is selected and has more than one selected outgoing edge).
 
     This variable is coupled to the edge selection variables through the
     following linear constraints:

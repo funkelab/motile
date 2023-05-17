@@ -4,8 +4,7 @@ from .expression import ExpressionConstraint
 
 
 class Pin(ExpressionConstraint):
-    """Enforces the selection of certain nodes and edges based on the value of
-    a given attribute.
+    """Enforces the selection of nodes/edges based on truthiness of  a given attribute.
 
     Every node or edge that has the given attribute will be selected if the
     attribute value is ``True`` (and not selected if the attribute value is
