@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 
 class ExpressionConstraint(Constraint):
-    """Enforcew selection of nodes/edges based on an expression.
+    """Enforce selection of nodes/edges based on an expression.
 
     The expression string is evaluated with the node/edge dict as a namespace.
 
@@ -30,32 +30,34 @@ class ExpressionConstraint(Constraint):
 
     This takes advantaged of python's `eval` function, like this:
 
-    ```python
-    my_expression = "some_attribute == True"
-    eval(my_expression, None, {"some_attribute": True})  # returns True (select)
-    eval(my_expression, None, {"some_attribute": False})  # returns False (exclude)
-    eval(my_expression, None, {})  # raises NameError (do nothing)
-    ```
+    .. code-block:: python
+
+        my_expression = "some_attribute == True"
+        eval(my_expression, None, {"some_attribute": True})  # returns True (select)
+        eval(my_expression, None, {"some_attribute": False})  # returns False (exclude)
+        eval(my_expression, None, {})  # raises NameError (do nothing)
 
     Args:
-        expression (string):
+        expression:
             An expression to evaluate for each node/edge. The expression must
             evaluate to a boolean value. The expression can use any names of
             node/edge attributes as variables.
-        eval_nodes (bool):
+        eval_nodes:
             Whether to evaluate the expression for nodes. By default, True.
-        eval_edges (bool):
+        eval_edges:
             Whether to evaluate the expression for edges. By default, True.
 
     Example:
-    If the nodes of a graph are:
-        cells = [
-            {"id": 0, "t": 0, "color": "red", "score": 1.0},
-            {"id": 1, "t": 0, "color": "green", "score": 1.0},
-            {"id": 2, "t": 1, "color": "blue", "score": 1.0},
-        ]
+        If the nodes of a graph are:
 
-    Then the following constraint will select node 0:
+        >>> cells = [
+        ...     {"id": 0, "t": 0, "color": "red", "score": 1.0},
+        ...     {"id": 1, "t": 0, "color": "green", "score": 1.0},
+        ...     {"id": 2, "t": 1, "color": "blue", "score": 1.0},
+        ... ]
+
+        Then the following constraint will select node 0:
+
         >>> expr = "t == 0 and color != 'green'"
         >>> solver.add_constraints(ExpressionConstraint(expr))
     """

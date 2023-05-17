@@ -23,11 +23,11 @@ class NodeAppear(Variable["NodeId"]):
 
     .. math::
 
-        |\\text{in_edges}(v)|\cdot x_v - &\sum_{e \in \\text{in_edges}(v)} x_e
-        - a_v &\leq&\;\; |\\text{in_edges}(v)| - 1
+        |\text{in_edges}(v)|\cdot x_v - &\sum_{e \in \text{in_edges}(v)} x_e
+        - a_v &\leq&\;\; |\text{in_edges}(v)| - 1
 
-        |\\text{in_edges}(v)|\cdot x_v - &\sum_{e \in \\text{in_edges}(v)} x_e
-        - a_v\cdot |\\text{in_edges}(v)| &\geq&\;\; 0
+        |\text{in_edges}(v)|\cdot x_v - &\sum_{e \in \text{in_edges}(v)} x_e
+        - a_v\cdot |\text{in_edges}(v)| &\geq&\;\; 0
 
     where :math:`x_v` and :math:`x_e` are selection indicators for node
     :math:`v` and edge :math:`e`, and :math:`a_v` is the appear indicator for

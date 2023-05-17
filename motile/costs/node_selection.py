@@ -11,19 +11,19 @@ if TYPE_CHECKING:
 
 
 class NodeSelection(Costs):
-    """Costs for :class:`motile.variables.NodeSelected` variables.
+    """Costs for :class:`~motile.variables.NodeSelected` variables.
 
     Args:
-        weight (float):
+        weight:
             The weight to apply to the cost given by the ``costs`` attribute of
             each node.
 
-        attribute (string):
+        attribute:
             The name of the node attribute to use to look up costs. Default is
-            ``costs``.
+            ``'costs'``.
 
-        constant (float):
-            A constant cost for each selected node.
+        constant:
+            A constant cost for each selected node. Default is ``0.0``.
     """
 
     def __init__(

@@ -6,28 +6,30 @@ from typing import TYPE_CHECKING, Any, DefaultDict, Hashable, Iterator
 logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
-    from networkx.classes import DiGraph
+    import networkx
 
     from motile._types import EdgeId, GraphObject, NodeId
 
 
 class TrackGraph:
-    """A graph of nodes placed in time & space, and edges connecting them across time.
+    """A graph of nodes in time & space, with edges connecting them across time.
 
     This wraps a :class:`networkx.DiGraph` object.
+
+    Both ``nodes`` and ``edges`` are represented by a dictionary of properties.
 
     Provides a few convenience methods for time series graphs in addition to
     all the methods inherited from :class:`networkx.DiGraph`.
 
     Args:
-        nx_graph (``DiGraph``, optional):
+        nx_graph:
 
             A directed networkx graph representing the TrackGraph to be created.
             Hyperedges are represented by networkx nodes that do not have the
             ``frame_attribute`` and are connected to nodes that do have this
             attribute.
 
-        frame_attribute (``string``, optional):
+        frame_attribute:
 
             The name of the node attribute that corresponds to the frame (i.e.,
             the time dimension) of the object. Defaults to ``'t'``.
@@ -35,7 +37,7 @@ class TrackGraph:
 
     def __init__(
         self,
-        nx_graph: DiGraph = None,
+        nx_graph: networkx.DiGraph | None = None,
         frame_attribute: str = "t",
     ):
         self.frame_attribute = frame_attribute
@@ -55,8 +57,8 @@ class TrackGraph:
         """Adds a new node to this TrackGraph.
 
         Args:
-            node_id (int | tuple[int, ...]): the node to be added.
-            data (dict[Hashable, Any]): all properties associated to the added node.
+            node_id: the node to be added.
+            data: all properties associated to the added node.
         """
         self.nodes[node_id] = data
 
@@ -64,13 +66,13 @@ class TrackGraph:
         """Adds an edge to this TrackGraph.
 
         Args:
-            edge_id (EdgeId): an ``EdgeId`` (tuple of NodeIds) defining the edge
+            edge_id: an ``EdgeId`` (tuple of NodeIds) defining the edge
                 (or hyperedge) to be added.
-            data (dict[Hashable, Any]): all properties associated to the added edge.
+            data: all properties associated to the added edge.
         """
         self.edges[edge_id] = data
 
-    def add_from_nx_graph(self, nx_graph: DiGraph) -> None:
+    def add_from_nx_graph(self, nx_graph: networkx.DiGraph) -> None:
         """Add nodes/edges from ``nx_graph`` to this TrackGraph.
 
         Hyperedges are represented by nodes in the ``nx_graph`` that do not have the
@@ -78,12 +80,13 @@ class TrackGraph:
         node will be added as a hyperedge.
 
         Args:
-            nx_graph (networkx.DiGraph):
+            nx_graph:
 
                 A directed networkx graph representing a TrackGraph to be added.
                 Hyperedges are represented by networkx nodes that do not have the
                 ``frame_attribute`` and are connected to nodes that do have this
                 attribute.
+
                 Duplicate nodes and edges will not be added again but new attributes
                 associated to nodes and edges added. If attributes of existing nodes
                 or edges do already exist, the values set in the given ``nx_graph``
@@ -128,10 +131,10 @@ class TrackGraph:
         """Returns an ``Iterator`` of node id's that are incident to the given edge.
 
         Args:
-            edge (EdgeId | int): an edge of this TrackGraph.
+            edge: an edge of this TrackGraph.
 
         Yields:
-            Iterator[int]: all nodes incident to the given edge.
+            all nodes incident to the given edge.
         """
         if isinstance(edge, tuple):
             for x in edge:
@@ -139,7 +142,7 @@ class TrackGraph:
         else:
             yield edge
 
-    def _is_hyperedge_nx_node(self, nx_graph: DiGraph, nx_node: Any) -> bool:
+    def _is_hyperedge_nx_node(self, nx_graph: networkx.DiGraph, nx_node: Any) -> bool:
         """Return ``True`` if ``nx_node`` is a hyperedge node in ``nx_graph``.
 
         Checks if the given networkx node in the given directed networkx graph
@@ -147,8 +150,8 @@ class TrackGraph:
         have the ``frame_attribute`` set.
 
         Args:
-            nx_graph (DiGraph): a networkx ``DiGraph``.
-            nx_node (Any): a node in the given ``nx_graph``.
+            nx_graph: a networkx ``DiGraph``.
+            nx_node: a node in the given ``nx_graph``.
 
         Returns:
             bool: true iff the given ``nx_node`` does not posses the
@@ -157,19 +160,19 @@ class TrackGraph:
         return self.frame_attribute not in nx_graph.nodes[nx_node]
 
     def _hyperedge_nx_node_to_edge_tuple_and_neighbors(
-        self, nx_graph: DiGraph, hyperedge_node: Any
+        self, nx_graph: networkx.DiGraph, hyperedge_node: Any
     ) -> tuple[tuple[NodeId, ...], list[NodeId], list[NodeId]]:
         """Creates a hyperedge tuple for hyperedge node in a given networkx ``DiGraph``.
 
         Args:
-            nx_graph (DiGraph): a networkx ``DiGraph``.
-            hyperedge_node (Any): a node in the given ``nx_graph`` that represents
+            nx_graph: a networkx ``DiGraph``.
+            hyperedge_node: a node in the given ``nx_graph`` that represents
                 a hyperedge.
 
         Returns:
-            tuple[Hashable, ...]: a tuple representing the hyperedge the given
-                ``nx_node`` represented. (It will be a tuple with one entry per
-                involved time point, listing all nodes at that time point.)
+            a tuple representing the hyperedge the given ``nx_node`` represented. (It
+            will be a tuple with one entry per involved time point, listing all nodes at
+            that time point.)
         """
         assert self._is_hyperedge_nx_node(nx_graph, hyperedge_node)
 
@@ -196,7 +199,7 @@ class TrackGraph:
     def get_frames(self) -> tuple[int | None, int | None]:
         """Return tuple with first and last (exclusive) frame this graph has nodes for.
 
-        Returns ``(t_begin, t_end)`` where t_end is exclusive.
+        Returns ``(t_begin, t_end)`` where ``t_end`` is exclusive.
         """
         self._update_metadata()
 

@@ -20,10 +20,10 @@ class MaxChildren(Constraint):
 
     .. math::
 
-      \sum_{e \in \\text{out_edges}(v)} x_e \leq \\text{max_children}
+      \sum_{e \in \text{out_edges}(v)} x_e \leq \text{max_children}
 
     Args:
-        max_children (int):
+        max_children:
             The maximum number of children allowed.
     """
 

@@ -11,19 +11,19 @@ if TYPE_CHECKING:
 
 
 class EdgeSelection(Costs):
-    """Costs for :class:`motile.variables.EdgeSelected` variables.
+    """Costs for :class:`~motile.variables.EdgeSelected` variables.
 
     Args:
-        weight (float):
+        weight:
             The weight to apply to the cost given by the ``costs`` attribute of
             each edge.
 
-        attribute (string):
+        attribute:
             The name of the edge attribute to use to look up costs. Default is
-            ``costs``.
+            ``'costs'``.
 
-        constant (float):
-            A constant cost for each selected edge.
+        constant:
+            A constant cost for each selected edge. Default is ``0.0``.
     """
 
     def __init__(

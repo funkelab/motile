@@ -25,7 +25,14 @@ class Weights:
         self._modify_callbacks: list[Callback] = []
 
     def add_weight(self, weight: Weight, name: Hashable) -> None:
-        """Add a weight to the container."""
+        """Add a weight to the container.
+
+        Args:
+            weight:
+                The :class:`~motile.costs.Weight` to add.
+            name:
+                The name of the weight.
+        """
         self._weight_indices[weight] = len(self._weights)
         self._weights.append(weight)
         self._weights_by_name[name] = weight
@@ -36,7 +43,13 @@ class Weights:
         self._notify_modified(None, weight.value)
 
     def register_modify_callback(self, callback: Callback) -> None:
-        """Register ``callback`` to be called when a weight is modified."""
+        """Register ``callback`` to be called when a weight is modified.
+
+        Args:
+            callback:
+                A function that takes two arguments: the old value (which may be
+                ``None``) and the new value.
+        """
         self._modify_callbacks.append(callback)
         for weight in self._weights:
             weight.register_modify_callback(callback)
@@ -44,7 +57,7 @@ class Weights:
     def to_ndarray(self) -> np.ndarray:
         """Export the weights as a numpy array.
 
-        Note: you can also use np.asarray(weights) to convert a Weights instance.
+        Note: you can also use ``np.asarray(weights)``.
         """
         return np.array([w.value for w in self._weights], dtype=np.float32)
 

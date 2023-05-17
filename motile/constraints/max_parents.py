@@ -20,10 +20,10 @@ class MaxParents(Constraint):
 
     .. math::
 
-      \sum_{e \in \\text{in_edges}(v)} x_e \leq \\text{max_parents}
+      \sum_{e \in \text{in_edges}(v)} x_e \leq \text{max_parents}
 
     Args:
-        max_parents (int):
+        max_parents:
             The maximum number of parents allowed.
     """
 

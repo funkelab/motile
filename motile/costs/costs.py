@@ -18,7 +18,7 @@ class Costs(ABC):
         :func:`motile.Solver.add_variable_cost`.
 
         Args:
-            solver (:class:`Solver`):
-                The solver to create costs for.
+            solver:
+                The :class:`~motile.Solver` to create costs for.
         """
         pass

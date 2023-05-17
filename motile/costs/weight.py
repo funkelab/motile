@@ -9,7 +9,7 @@ class Weight:
     See also :class:`motile.costs.weights.Weights`.
 
     Args:
-        initial_value (float):
+        initial_value:
             The initial value of the weight.
     """
 
@@ -19,15 +19,23 @@ class Weight:
 
     @property
     def value(self) -> float:
+        """Return the value of this weight."""
         return self._value
 
     @value.setter
     def value(self, new_value: float) -> None:
+        """Set the value of this weight."""
         old_value = self._value
         self._value = new_value
         self._notify_modified(old_value, new_value)
 
     def register_modify_callback(self, callback: Callback) -> None:
+        """Register a ``callback`` to be called when the weight is modified.
+
+        Args:
+            callback:
+                A function that takes two arguments: the old value and the new value.
+        """
         self._modify_callbacks.append(callback)
 
     def _notify_modified(self, old_value: float, new_value: float) -> None:

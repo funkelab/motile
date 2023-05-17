@@ -22,4 +22,4 @@ docs:
 .PHONY: docs-watch
 docs-watch:
 	pip install sphinx-autobuild
-	sphinx-autobuild docs/source docs/_build/html
+	sphinx-autobuild docs/source docs/_build/html --watch motile --watch docs/source --open-browser

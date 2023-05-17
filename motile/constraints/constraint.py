@@ -19,8 +19,8 @@ class Constraint(ABC):
         """Create and return specific linear constraints for the given solver.
 
         Args:
-            solver (:class:`Solver`):
-                The solver instance to create linear constraints for.
+            solver:
+                The :class:`~motile.Solver` instance to create linear constraints for.
 
         Returns:
             An iterable of :class:`ilpy.Constraint`.

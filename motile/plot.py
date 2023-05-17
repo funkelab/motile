@@ -47,46 +47,46 @@ def draw_track_graph(
     Time is shown on the x-axis and node positions on the y-axis.
 
     Args:
-        graph (:class:`TrackGraph`):
-            The graph to plot.
+        graph:
+            The :class:`~motile.TrackGraph` to plot.
 
-        position_attribute (``string``):
+        position_attribute (str):
             The name of the node attribute to use to place nodes on the y-axis.
 
         position_func (callable):
             A function returning the position of a given node on the y-axis.
 
-        alpha_attribute (``string``):
+        alpha_attribute (str):
             The name of a node or edge attribute to use for the transparency.
 
         alpha_func (callable):
             A function returning the alpha value to use for each node or edge.
             Can be a tuple for node and edge functions, respectively.
 
-        label_attribute (``string``):
+        label_attribute (str):
             The name of a node or edge attribute to use for a text label.
 
         label_func (callable):
             A function returning the label to use for each node or edge. Can be
             a tuple for node and edge functions, respectively.
 
-        node_size (``float``):
+        node_size (float):
             The size of nodes.
 
-        node_color (``tuple`` of ``int``):
+        node_color (tuple[int, ...]):
             The RGB color to use for nodes.
 
-        edge_color (``tuple`` of ``int``):
+        edge_color (tuple[int, ...]):
             The RGB color to use for edges.
 
-        width (``int``):
+        width (int):
             The width of the plot, in pixels. Default: 660.
 
-        height (``int``):
+        height (int):
             The height of the plot, in pixels. Default: 400.
 
     Returns:
-        ``plotly`` figure showing the graph.
+        :class:`plotly.graph_objects.Figure` showing the graph.
     """
     if position_attribute is not None and position_func is not None:
         raise RuntimeError(
