@@ -59,10 +59,6 @@ pygments_style = "lovelace"
 # Napoleon settings
 napoleon_google_docstring = True
 
-autodoc_type_aliases = {
-    "EdgeId": "motile._types.EdgeId",
-}
-
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
     "networkx": ("https://networkx.org/documentation/stable/", None),
