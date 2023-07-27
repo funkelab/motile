@@ -157,7 +157,7 @@ def draw_track_graph(
     node_positions = np.asarray(
         [
             (attrs[frame_attribute], position_func(node))
-            for node, attrs in graph.nodes.items()
+            for node, attrs in sorted(graph.nodes.items())
         ]
     )
     node_alphas: list[float] = [alpha_node_func(node) for node in graph.nodes]
@@ -220,8 +220,8 @@ def draw_track_graph(
     for ((u, v), attrs), label, color in zip(
         graph.edges.items(), edge_labels, edge_colors
     ):
-        start = node_positions[u, (0, 1)]
-        end = node_positions[v, (0, 1)]
+        start = node_positions[sorted(graph.nodes).index(u), (0, 1)]
+        end = node_positions[sorted(graph.nodes).index(v), (0, 1)]
         mid = 0.6 * start + 0.4 * end
         first_half = go.layout.Annotation(
             dict(
