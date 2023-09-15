@@ -14,17 +14,31 @@ class Split(Costs):
     """Costs for :class:`motile.variables.NodeSplit` variables.
 
     Args:
+        weight (float):
+            The weight to apply to the cost of each split.
+
+        attribute (string)
+            The name of the attribute to use to look up costs. Default is
+            ``None``, which means that a constant cost is used.
 
         constant (float):
             A constant cost for each node that has more than one selected
             child.
     """
 
-    def __init__(self, constant: float) -> None:
+    def __init__(
+        self, weight: float = 1, attribute: str | None = None, constant: float = 0
+    ) -> None:
+        self.weight = Weight(weight)
         self.constant = Weight(constant)
+        self.attribute = attribute
 
     def apply(self, solver: Solver) -> None:
         split_indicators = solver.get_variables(NodeSplit)
 
-        for index in split_indicators.values():
+        for node, index in split_indicators.items():
+            if self.attribute is not None:
+                solver.add_variable_cost(
+                    index, solver.graph.nodes[node][self.attribute], self.weight
+                )
             solver.add_variable_cost(index, 1.0, self.constant)
