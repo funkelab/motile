@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+from collections import defaultdict
 from typing import TYPE_CHECKING, Any, DefaultDict, Hashable, Iterator
 
 logger = logging.getLogger(__name__)
@@ -45,8 +46,8 @@ class TrackGraph:
 
         self.nodes: dict[NodeId, GraphObject] = {}
         self.edges: dict[EdgeId, GraphObject] = {}
-        self.prev_edges: DefaultDict[NodeId, list[EdgeId]] = DefaultDict(list)
-        self.next_edges: DefaultDict[NodeId, list[EdgeId]] = DefaultDict(list)
+        self.prev_edges: defaultdict[NodeId, list[EdgeId]] = DefaultDict(list)
+        self.next_edges: defaultdict[NodeId, list[EdgeId]] = DefaultDict(list)
 
         if nx_graph:
             self.add_from_nx_graph(nx_graph)

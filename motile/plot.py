@@ -103,7 +103,7 @@ def draw_track_graph(
     if position_func is None:
 
         def position_func(node: NodeId) -> float:
-            return float(graph.nodes[node][position_attribute])  # type: ignore
+            return float(graph.nodes[node][position_attribute])
 
     alpha_node_func: ReturnsFloat
     alpha_edge_func: ReturnsFloat
@@ -113,10 +113,10 @@ def draw_track_graph(
     if alpha_attribute is not None:
 
         def alpha_node_func(node):
-            return graph.nodes[node].get(alpha_attribute, 1.0)  # type: ignore
+            return graph.nodes[node].get(alpha_attribute, 1.0)
 
         def alpha_edge_func(edge):
-            return graph.edges[edge].get(alpha_attribute, 1.0)  # type: ignore
+            return graph.edges[edge].get(alpha_attribute, 1.0)
 
     elif alpha_func is None:
 
@@ -135,10 +135,10 @@ def draw_track_graph(
     if label_attribute is not None:
 
         def label_node_func(node):
-            return graph.nodes[node].get(label_attribute, "")  # type: ignore
+            return graph.nodes[node].get(label_attribute, "")
 
         def label_edge_func(edge):
-            return graph.edges[edge].get(label_attribute, "")  # type: ignore
+            return graph.edges[edge].get(label_attribute, "")
 
     elif label_func is None:
 
@@ -339,6 +339,6 @@ def _to_rgba(
         return [_to_rgba(color, a) for a in alpha]
 
     # we fake alpha by mixing with white(ish)
-    # transparancy is tricky...
+    # transparency is tricky...
     r, g, b = tuple(int(c * alpha + 220 * (1.0 - alpha)) for c in color)
     return f"rgb({r},{g},{b})"
