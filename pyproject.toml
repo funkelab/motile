@@ -23,12 +23,13 @@ dependencies = ['networkx', 'ilpy>=0.3.1', 'numpy', 'structsvm']
 dev = ["pre-commit", "pytest", "pytest-cov", "ruff", "twine", "build"]
 test = ["pytest", "pytest-cov", "plotly"]
 docs = [
-    "sphinx",
-    "sphinx_rtd_theme",
-    "sphinx_togglebutton",
-    "tomli",
+    "ipykernel",
     "jupyter_sphinx",
     "plotly",
+    "sphinx_rtd_theme",
+    "sphinx_togglebutton",
+    "sphinx",
+    "tomli",
 ]
 
 [project.urls]
