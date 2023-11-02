@@ -2,7 +2,7 @@ import unittest
 
 import motile
 from motile.constraints import MaxChildren, MaxParents
-from motile.costs import Appear, EdgeSelection, NodeSelection, Split
+from motile.costs import Appear, Disappear, EdgeSelection, NodeSelection, Split
 from motile.data import (
     arlo_graph,
     arlo_graph_nx,
@@ -40,7 +40,8 @@ class TestAPI(unittest.TestCase):
         solver = motile.Solver(graph)
         solver.add_costs(NodeSelection(weight=-1.0, attribute="score", constant=-100.0))
         solver.add_costs(EdgeSelection(weight=1.0, attribute="prediction_distance"))
-        solver.add_costs(Appear(constant=200.0))
+        solver.add_costs(Appear(constant=100.0))
+        solver.add_costs(Disappear(constant=100.0))
         solver.add_costs(Split(constant=100.0))
         solver.add_constraints(MaxParents(1))
         solver.add_constraints(MaxChildren(2))

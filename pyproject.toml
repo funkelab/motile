@@ -23,6 +23,7 @@ dependencies = ['networkx', 'ilpy>=0.3.1', 'numpy', 'structsvm']
 dev = ["pre-commit", "pytest", "pytest-cov", "ruff", "twine", "build"]
 test = ["pytest", "pytest-cov", "plotly"]
 docs = [
+    "ipykernel",
     "jupyter_sphinx",
     "plotly",
     "sphinx_autodoc_typehints",
