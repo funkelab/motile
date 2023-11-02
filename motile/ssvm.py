@@ -18,6 +18,29 @@ def fit_weights(
     max_iterations: int | None,
     eps: float,
 ) -> np.ndarray:
+    """Return the optimal weights for the given solver.
+
+    This uses `structsvm.BundleMethod` to fit the weights.
+
+    Args:
+        solver (Solver):
+            The solver to fit the weights for.
+        gt_attribute (str):
+            Node/edge attribute that marks the ground truth for fitting.
+            `gt_attribute` is expected to be set to `1` for objects labeled as
+            ground truth, `0` for objects explicitly labeled as not part of the
+            ground truth, and `None` or not set for unlabeled objects.
+        regularizer_weight (float):
+            The weight of the quadratic regularizer.
+        max_iterations (int):
+            Maximum number of gradient steps in the structured SVM.
+        eps (float):
+            Convergence threshold.
+
+    Returns:
+        np.ndarray:
+            The optimal weights for the given solver.
+    """
     features = solver.features.to_ndarray()
 
     mask = np.zeros((solver.num_variables,), dtype=np.float32)

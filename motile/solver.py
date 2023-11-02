@@ -25,11 +25,10 @@ class Solver:
     """Create a solver for a given track graph.
 
     Args:
+        track_graph:
+            The :class:`~motile.TrackGraph` of objects to track over time.
 
-        track_graph (:class:`TrackGraph`):
-            The graph of objects to track over time.
-
-        skip_core_constraints (bool, default=False):
+        skip_core_constraints (:obj:`bool`, default=False):
             If true, add no constraints to the solver at all. Otherwise, core
             constraints that ensure consistencies between selected nodes and
             edges are added.
@@ -63,16 +62,14 @@ class Solver:
         """Add linear costs to the value of variables in this solver.
 
         Args:
+            costs:
+                The costs to add.  An instance of :class:`~motile.costs.Costs`.
 
-            costs (:class:`motile.costs.Costs`):
-                The costs to add.
-
-            name (``string``):
+            name:
                 An optional name of the costs, used to refer to weights of
                 costs in an unambiguous manner. Defaults to the name of the
                 costs class, if not given.
         """
-
         # default name of costs is the class name
         if name is None:
             name = type(costs).__name__
@@ -100,11 +97,9 @@ class Solver:
         """Add linear constraints to the solver.
 
         Args:
-
-            constraints (:class:`motile.constraints.Constraint`)
-                The constraints to add.
+            constraints:
+                The :class:`~motile.constraints.Constraint` to add.
         """
-
         logger.info("Adding %s constraints...", type(constraints).__name__)
 
         for constraint in constraints.instantiate(self):
@@ -114,22 +109,19 @@ class Solver:
         """Solve the global optimization problem.
 
         Args:
-
-            timeout (float):
+            timeout:
                 The timeout for the ILP solver, in seconds. Default (0.0) is no
                 timeout. If the solver times out, the best solution encountered
                 so far is returned (if any has been found at all).
 
-            num_threads (int):
+            num_threads:
                 The number of threads the ILP solver uses.
 
         Returns:
-
             :class:`ilpy.Solution`, a vector of variable values. Use
             :func:`get_variables` to find the indices of variables in this
             vector.
         """
-
         self.objective = ilpy.Objective(self.num_variables)
         for i, c in enumerate(self.costs):
             logger.debug("Setting cost of var %d to %.3f", i, c)
@@ -165,17 +157,15 @@ class Solver:
         created.
 
         Args:
-
             cls (type of :class:`motile.variables.Variable`):
                 A subclass of :class:`motile.variables.Variable`.
 
         Returns:
-
-            A singleton instance of :class:`motile.variables.Variable`,
-            mimicking a dictionary that can be used to look up variable indices
-            by their keys. See :class:`motile.variables.Variable` for details.
+            A singleton instance of :class:`~motile.variables.Variable` (of whatever
+            type was passed in as ``cls``), mimicking a dictionary that can be used to
+            look up variable indices by their keys. See
+            :class:`~motile.variables.Variable` for details.
         """
-
         if cls not in self.variables:
             self._add_variables(cls)
         return cast("V", self.variables[cls])
@@ -187,7 +177,6 @@ class Solver:
 
         To be used within implementations of :class:`motile.costs.Costs`.
         """
-
         variable_index = index
         feature_index = self.weights.index_of(weight)
         self.features.add_feature(variable_index, feature_index, value)
@@ -203,28 +192,24 @@ class Solver:
 
         Updates the weights in the solver object to the found solution.
 
+        See https://github.com/funkelab/structsvm for details.
+
         Args:
-
             gt_attribute:
-
                 Node/edge attribute that marks the ground truth for fitting.
-                `gt_attribute` is expected to be set to
+                `gt_attribute` is expected to be set to:
 
-                    - `1` for objects labaled as ground truth.
-                    - `0` for objects explicitly labeled as not part of the
-                        ground truth.
-                    - `None` or not set for unlabeled objects.
+                - ``1`` for objects labaled as ground truth.
+                - ``0`` for objects explicitly labeled as not part of the ground truth.
+                - ``None`` or not set for unlabeled objects.
 
             regularizer_weight:
-
                 The weight of the quadratic regularizer.
 
             max_iterations:
-
                 Maximum number of gradient steps in the structured SVM.
 
             eps:
-
                 Convergence threshold.
         """
         optimal_weights = fit_weights(
@@ -234,6 +219,7 @@ class Solver:
 
     @property
     def costs(self) -> np.ndarray:
+        """Returns the costs as a :class:`numpy.ndarray`."""
         if self._weights_changed:
             self._compute_costs()
             self._weights_changed = False

@@ -11,11 +11,10 @@ if TYPE_CHECKING:
 
 
 class Appear(Costs):
-    """Costs for :class:`motile.variables.NodeAppear` variables.
+    """Costs for :class:`~motile.variables.NodeAppear` variables.
 
     Args:
-
-        constant (float):
+        constant:
             A constant cost for each node that starts a track.
     """
 

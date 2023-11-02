@@ -14,7 +14,6 @@ class Disappear(Costs):
     """Costs for :class:`motile.variables.NodeDisappear` variables.
 
     Args:
-
         constant (float):
             A constant cost for each node that ends a track.
     """

@@ -4,7 +4,7 @@ from motile import TrackGraph
 
 
 def arlo_graph_nx() -> nx.DiGraph:
-    """Create the "Arlo graph", a simple toy graph for testing:
+    """Create the "Arlo graph", a simple toy graph for testing.
 
        x
        |
@@ -16,7 +16,6 @@ def arlo_graph_nx() -> nx.DiGraph:
         ------------------------------------ t
            0   1   2
     """
-
     cells = [
         {"id": 0, "t": 0, "x": 101, "score": 1.0},
         {"id": 1, "t": 0, "x": 150, "score": 1.0},
@@ -46,11 +45,14 @@ def arlo_graph_nx() -> nx.DiGraph:
 
 
 def arlo_graph() -> TrackGraph:
+    """Return the "Arlo graph" as a :class:`motile.TrackGraph` instance."""
     return TrackGraph(arlo_graph_nx())
 
 
 def toy_graph_nx() -> nx.DiGraph:
-    """Create variation of the "Arlo graph", with
+    """Return variation of the "Arlo graph".
+
+    Relative to arlo_graph, this graph has:
     - one simple edge modified.
     - normalized node and edge scores.
     - sparse ground truth annotations.
@@ -92,22 +94,24 @@ def toy_graph_nx() -> nx.DiGraph:
 
 
 def toy_graph() -> TrackGraph:
+    """Return the `toy_graph_nx` as a :class:`motile.TrackGraph` instance."""
     return TrackGraph(toy_graph_nx())
 
 
 def toy_hypergraph_nx() -> nx.DiGraph:
-    """Create variation of the "Arlo graph", with one simple
-    edge modified and one hyperedge added.
+    """Return variation of `toy_graph` with an edge modified and one hyperedge added.
 
-       x
-       |
-       |       --- 6
-       |     /   /
-       |   1---3---5
-       |     /   x
-       |   0---2---4  Hyperedge: (0,(2,3))
+    Visually:
+
+        x
+        |
+        |       --- 6
+        |     /   /
+        |   1---3---5
+        |     /   x
+        |   0---2---4  Hyperedge: (0,(2,3))
         ------------------------------------ t
-           0   1   2
+            0   1   2
     """
     cells = [
         {"id": 0, "t": 0, "x": 1, "score": 0.8, "gt": 1},
@@ -148,4 +152,5 @@ def toy_hypergraph_nx() -> nx.DiGraph:
 
 
 def toy_hypergraph() -> TrackGraph:
+    """Return the `toy_hypergraph_nx` as a :class:`motile.TrackGraph` instance."""
     return TrackGraph(toy_hypergraph_nx())

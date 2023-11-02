@@ -42,48 +42,52 @@ def draw_track_graph(
     width: int = 660,
     height: int = 400,
 ) -> go.Figure:
-    """Create a plotly figure showing the given graph, with time on the x-axis
-    and node positions on the y-axis.
+    """Create a plotly figure showing the given graph.
+
+    Time is shown on the x-axis and node positions on the y-axis.
 
     Args:
+        graph:
+            The :class:`~motile.TrackGraph` to plot.
 
-        graph (:class:`TrackGraph`):
-            The graph to plot.
-
-        position_attribute (``string``):
+        position_attribute (str):
             The name of the node attribute to use to place nodes on the y-axis.
 
         position_func (callable):
             A function returning the position of a given node on the y-axis.
 
-        alpha_attribute (``string``):
+        alpha_attribute (str):
             The name of a node or edge attribute to use for the transparency.
 
         alpha_func (callable):
             A function returning the alpha value to use for each node or edge.
             Can be a tuple for node and edge functions, respectively.
 
-        label_attribute (``string``):
+        label_attribute (str):
             The name of a node or edge attribute to use for a text label.
 
         label_func (callable):
             A function returning the label to use for each node or edge. Can be
             a tuple for node and edge functions, respectively.
 
-        node_size (``float``):
+        node_size (float):
             The size of nodes.
 
-        node_color, edge_color (``tuple`` of ``int``):
-            The RGB color to use for nodes and edges.
+        node_color (tuple[int, ...]):
+            The RGB color to use for nodes.
 
-        width, height (``int``):
-            The width and height of the plot, in pixels. Default: 700 x 400.
+        edge_color (tuple[int, ...]):
+            The RGB color to use for edges.
+
+        width (int):
+            The width of the plot, in pixels. Default: 660.
+
+        height (int):
+            The height of the plot, in pixels. Default: 400.
 
     Returns:
-
-        ``plotly`` figure showing the graph.
+        :class:`plotly.graph_objects.Figure` showing the graph.
     """
-
     if position_attribute is not None and position_func is not None:
         raise RuntimeError(
             "Only one of position_attribute and position_func can be given"
@@ -99,7 +103,7 @@ def draw_track_graph(
     if position_func is None:
 
         def position_func(node: NodeId) -> float:
-            return float(graph.nodes[node][position_attribute])  # type: ignore
+            return float(graph.nodes[node][position_attribute])
 
     alpha_node_func: ReturnsFloat
     alpha_edge_func: ReturnsFloat
@@ -109,10 +113,10 @@ def draw_track_graph(
     if alpha_attribute is not None:
 
         def alpha_node_func(node):
-            return graph.nodes[node].get(alpha_attribute, 1.0)  # type: ignore
+            return graph.nodes[node].get(alpha_attribute, 1.0)
 
         def alpha_edge_func(edge):
-            return graph.edges[edge].get(alpha_attribute, 1.0)  # type: ignore
+            return graph.edges[edge].get(alpha_attribute, 1.0)
 
     elif alpha_func is None:
 
@@ -131,10 +135,10 @@ def draw_track_graph(
     if label_attribute is not None:
 
         def label_node_func(node):
-            return graph.nodes[node].get(label_attribute, "")  # type: ignore
+            return graph.nodes[node].get(label_attribute, "")
 
         def label_edge_func(edge):
-            return graph.edges[edge].get(label_attribute, "")  # type: ignore
+            return graph.edges[edge].get(label_attribute, "")
 
     elif label_func is None:
 
@@ -163,8 +167,8 @@ def draw_track_graph(
     node_alphas: list[float] = [alpha_node_func(node) for node in graph.nodes]
     edge_alphas: list[float] = [alpha_edge_func(edge) for edge in graph.edges]
     # can be a list for different colors per node/edge
-    node_colors = to_rgba(node_color, node_alphas)
-    edge_colors = to_rgba(edge_color, edge_alphas)
+    node_colors = _to_rgba(node_color, node_alphas)
+    edge_colors = _to_rgba(edge_color, edge_alphas)
 
     node_labels = [str(label_node_func(node)) for node in graph.nodes]
     edge_labels = [str(label_edge_func(edge)) for edge in graph.edges]
@@ -274,25 +278,27 @@ def draw_track_graph(
 def draw_solution(
     graph: TrackGraph, solver: Solver, *args: Any, **kwargs: Any
 ) -> go.Figure:
-    """Wrapper around :func:`draw_track_graph` highlighting the solution found
+    """Draw ``graph`` with the current ``solver.solution`` highlighted.
+
+    This is a wrapper around :func:`draw_track_graph` highlighting the solution found
     by the given solver.
 
     Args:
-
         graph (:class:`TrackGraph`):
             The graph to plot.
 
         solver :class:`Solver`):
             The solver that was used to find the solution.
 
-        args, kwargs:
+        *args:
             Pass-through arguments to :func:`draw_track_graph`.
 
-    Returns:
+        **kwargs:
+            Pass-through keyword arguments to :func:`draw_track_graph`.
 
+    Returns:
         ``plotly`` figure showing the graph.
     """
-
     solution = solver.solution
     if solution is None:
         raise RuntimeError("Solver has no solution. Call solve() first.")
@@ -311,27 +317,28 @@ def draw_solution(
 
 
 @overload
-def to_rgba(color: list[Color], alpha: float | list[float] = 1.0) -> list[str]:
+def _to_rgba(color: list[Color], alpha: float | list[float] = 1.0) -> list[str]:
     ...
 
 
 @overload
-def to_rgba(color: Color, alpha: float | list[float] = 1.0) -> str:
+def _to_rgba(color: Color, alpha: float | list[float] = 1.0) -> str:
     ...
 
 
-def to_rgba(
+def _to_rgba(
     color: Color | list[Color], alpha: float | list[float] = 1.0
 ) -> str | list[str]:
+    """Convert a color to a rgba string."""
     if isinstance(color, list):
         if isinstance(alpha, list):
-            return [to_rgba(c, a) for c, a in zip(color, alpha)]
+            return [_to_rgba(c, a) for c, a in zip(color, alpha)]
         else:  # only color is list
-            return [to_rgba(c, alpha) for c in color]
+            return [_to_rgba(c, alpha) for c in color]
     elif isinstance(alpha, list):  # only alpha is list
-        return [to_rgba(color, a) for a in alpha]
+        return [_to_rgba(color, a) for a in alpha]
 
     # we fake alpha by mixing with white(ish)
-    # transparancy is tricky...
+    # transparency is tricky...
     r, g, b = tuple(int(c * alpha + 220 * (1.0 - alpha)) for c in color)
     return f"rgb({r},{g},{b})"

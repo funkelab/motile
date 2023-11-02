@@ -28,7 +28,7 @@ class Variable(ABC, Mapping[_KT, ilpy.Variable]):
     :func:`instantiate_constraints`.
 
     Variable classes should not be instantiated by a user. Instead, the
-    :class:`Solver` provides access to concrete variables through the class
+    :class:`~motile.Solver` provides access to concrete variables through the class
     name. The following example shows how to obtain the variable values after
     optimization::
 
@@ -69,7 +69,7 @@ class Variable(ABC, Mapping[_KT, ilpy.Variable]):
 
         The solver will create one variable for each key. The index of that
         variable can be accessed through a dictionary returned by
-        :func:`Solver.get_variables`::
+        :meth:`motile.Solver.get_variables`::
 
             solver = Solver(graph)
 
@@ -80,13 +80,11 @@ class Variable(ABC, Mapping[_KT, ilpy.Variable]):
                 print(f"Selection indicator of node {node} has index {index}")
 
         Args:
-
-            solver (:class:`Solver`):
-                The solver instance to create variables for.
+            solver:
+                The :class:`~motile.Solver` instance to create variables for.
 
         Returns:
-
-            A list of keys (anything that is hashable, e.g., nodes of a graph),
+            A collection of keys (anything that is hashable, e.g., nodes of a graph),
             one for each variable to create.
         """
         pass
@@ -95,16 +93,15 @@ class Variable(ABC, Mapping[_KT, ilpy.Variable]):
     def instantiate_constraints(
         solver: Solver,
     ) -> Iterable[ilpy.Constraint | ilpy.Expression]:
-        """Add linear constraints to the solver to ensure that these variables
-        are coupled to other variables of the solver.
+        """Add constraints for this variable to the solver.
+
+        This ensures that these variables are coupled to other variables of the solver.
 
         Args:
-
-            solver (:class:`Solver`):
-                The solver instance to create variable constraints for.
+            solver:
+                The :class:`~motile.Solver` instance to create variable constraints for.
 
         Returns:
-
             A iterable of :class:`ilpy.Constraint` or
             :class:`ilpy.expressions.Expression.` See
             :class:`motile.constraints.Constraint` for how to create linear constraints.

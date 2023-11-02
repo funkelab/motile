@@ -10,9 +10,7 @@ if TYPE_CHECKING:
 
 
 class EdgeSelected(Variable["EdgeId"]):
-    """A binary variable for each edge that indicates whether the edge is part
-    of the solution or not.
-    """
+    """Binary variable indicates whether an edge is part of the solution or not."""
 
     @staticmethod
     def instantiate(solver: Solver) -> Collection[EdgeId]:

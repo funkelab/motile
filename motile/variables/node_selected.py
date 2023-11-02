@@ -10,9 +10,7 @@ if TYPE_CHECKING:
 
 
 class NodeSelected(Variable["NodeId"]):
-    """A binary variable for each node that indicates whether the node is part
-    of the solution or not.
-    """
+    """Binary variable indicating whether a node is part of the solution or not."""
 
     @staticmethod
     def instantiate(solver: Solver) -> Collection[NodeId]:

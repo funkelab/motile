@@ -14,9 +14,10 @@ if TYPE_CHECKING:
 
 
 class NodeDisappear(Variable["NodeId"]):
-    r"""A binary variable for each node that indicates whether the node is the
-    end of a track (i.e., the node is selected and has no selected outgoing
-    edges).
+    r"""Binary variable to indicate whether a node disappears.
+
+    This variable indicates whether the node is the end of a track (i.e., the node is
+    selected and has no selected outgoing edges).
 
     This variable is coupled to the node and edge selection variables through
     the following linear constraints:

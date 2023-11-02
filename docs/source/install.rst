@@ -29,7 +29,7 @@ Do I have to use ``conda``?
 ---------------------------
 
 Kinda. ``motile`` uses `ilpy <https://github.com/funkelab/ilpy>`_ to solve the
-optimzation problem. Conda packages for ``ilpy`` are available for all major
+optimization problem. Conda packages for ``ilpy`` are available for all major
 platforms, linking against the conda packages for SCIP and Gurobi.
 
 It is possible to not use ``conda``: If you have SCIP or Gurobi installed

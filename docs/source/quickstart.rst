@@ -142,7 +142,7 @@ Variables are instantiated and managed by the solver. All we have to do is to
 ask the solver for the kind of variables we are interested in via
 :func:`Solver.get_variables`. The returned value (e.g., ``node_selected``) is a
 dictionary that maps *what* to *where*: in the case of node variables, the
-dictionary keys are the nodes themselves (an integer) and the dictionay values
+dictionary keys are the nodes themselves (an integer) and the dictionary values
 are the indices in the ``solution`` vector where we can find the value of the
 variable. Both node and edge indicators are binary variables (one if selected,
 zero otherwise).
