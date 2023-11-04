@@ -11,18 +11,24 @@ Number = Union[float, int]
 
 
 class VariableType(IntEnum):
+    """Type of a variable."""
+
     Continuous = 0
     Integer = auto()
     Binary = auto()
 
 
 class Relation(IntEnum):
+    """Type of a constraint relation."""
+
     LessEqual = 0
     Equal = auto()
     GreaterEqual = auto()
 
 
 class Sense(IntEnum):
+    """Type of an objective sense."""
+
     Minimize = 0
     Maximize = auto()
 
