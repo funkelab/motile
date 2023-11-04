@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
     import ilpy
-    
+
     from motile.costs import Costs
     from motile.track_graph import TrackGraph
     from motile.variables import Variables

@@ -4,7 +4,7 @@ import ast
 import contextlib
 from typing import TYPE_CHECKING, Union
 
-from motile.expressions import Expression, Constant
+from motile.expressions import Constant, Expression
 
 from ..variables import EdgeSelected, NodeSelected, Variables
 from .constraint import Constraint
