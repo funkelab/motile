@@ -103,7 +103,7 @@ class Solver:
         logger.info("Adding %s constraints...", type(constraints).__name__)
 
         for expr in constraints.instantiate(self):
-            if not isinstance(expr, Expression):
+            if not isinstance(expr, Expression):  # pragma: no cover
                 raise TypeError(
                     f"Invalid constraints passed from {constraints}. All Constraints "
                     f"should be motile.Expressions, got {type(expr)} instead."
@@ -257,7 +257,7 @@ class Solver:
             self.variable_types[index] = cls.variable_type
 
         for expr in cls.instantiate_constraints(self):
-            if not isinstance(expr, Expression):
+            if not isinstance(expr, Expression):  # pragma: no cover
                 raise TypeError(
                     f"Invalid constraints passed from {cls}. All Constraints "
                     f"should be motile.Expressions, got {type(expr)} instead."

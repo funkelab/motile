@@ -54,7 +54,7 @@ class Expression(ast.AST):
         """Create a linear objective from this expression."""
         import ilpy
 
-        if _get_ilpy_relation(self) is not None:
+        if _get_ilpy_relation(self) is not None:  # pragma: no cover
             # TODO: may be supported in the future, eg. for piecewise objectives?
             raise ValueError(f"Objective function cannot have comparisons: {self}")
 
@@ -115,7 +115,7 @@ class Expression(ast.AST):
         return BinOp(self, ast.Mult(), other)
 
     def __rmul__(self, other: Number) -> BinOp | Constant:
-        if not isinstance(other, (int, float)):
+        if not isinstance(other, (int, float)):  # pragma: no cover
             raise TypeError("Right multiplication must be with a number")
         return Constant(other) * self
 
@@ -212,7 +212,7 @@ class Constant(Expression, ast.Constant):
         return super().__mul__(other)
 
     def __pow__(self, other: Number) -> Expression:
-        if not isinstance(other, (int, float)):
+        if not isinstance(other, (int, float)):  # pragma: no cover
             raise TypeError("Exponent must be a number")
         return Constant(self.value**other)
 
@@ -244,7 +244,7 @@ class Variable(Expression, ast.Name):
         return id(self)
 
     def __int__(self) -> int:
-        if self.index is None:
+        if self.index is None:  # pragma: no cover
             raise TypeError(f"Variable {self!r} has no index")
         return int(self.index)
 
@@ -268,7 +268,7 @@ def _get_ilpy_relation(expr: Expression) -> ilpy.Relation | None:
     relation: ilpy.Relation | None = None
     for sub in ast.walk(expr):
         if isinstance(sub, Compare):
-            if seen_compare:
+            if seen_compare:  # pragma: no cover
                 raise ValueError("Only single comparisons are supported")
 
             op_type = type(sub.ops[0])
@@ -340,14 +340,10 @@ def _get_coefficients(
         coeffs = {}
 
     if isinstance(expr, Constant):
-        if var_scale is not None:
-            breakpoint()
         coeffs.setdefault(None, 0)
         coeffs[None] += expr.value * scale
 
     elif isinstance(expr, UnaryOp):
-        if var_scale is not None:
-            breakpoint()
         if isinstance(expr.op, ast.USub):
             scale = -scale
         _get_coefficients(expr.operand, coeffs, scale, var_scale)
@@ -363,7 +359,7 @@ def _get_coefficients(
             coeffs[expr] += scale
 
     elif isinstance(expr, Compare):
-        if len(expr.ops) != 1:
+        if len(expr.ops) != 1:  # pragma: no cover
             raise ValueError("Only single comparisons are supported")
         _get_coefficients(expr.left, coeffs, scale, var_scale)
         # negate the right hand side of the comparison
@@ -377,11 +373,10 @@ def _get_coefficients(
             if isinstance(expr.op, (ast.USub, ast.Sub)):
                 scale = -scale
             _get_coefficients(expr.right, coeffs, scale, var_scale)
-        else:
+        else:  # pragma: no cover
             raise ValueError(f"Unsupported binary operator: {type(expr.op)}")
 
-    else:
-        breakpoint()
+    else:  # pragma: no cover
         raise ValueError(f"Unsupported expression type: {type(expr)}")
 
     return coeffs
@@ -419,12 +414,12 @@ def _process_mult_op(
             raise TypeError("Cannot multiply by more than two variables.")
         _get_coefficients(expr.right, coeffs, scale, expr.left)
     elif isinstance(expr.right, Variable):
-        if var_scale is not None:
+        if var_scale is not None:  # pragma: no cover
             raise TypeError("Cannot multiply by more than two variables.")
         _get_coefficients(expr.left, coeffs, scale, expr.right)
     else:
-        raise TypeError(
-            "Unexpected multiplcation or division between "
+        raise TypeError(  # pragma: no cover
+            "Unexpected multiplication or division between "
             f"{type(expr.left)} and {type(expr.right)}"
         )
 
