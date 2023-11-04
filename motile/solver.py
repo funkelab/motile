@@ -102,8 +102,13 @@ class Solver:
         """
         logger.info("Adding %s constraints...", type(constraints).__name__)
 
-        for constraint in constraints.instantiate(self):
-            self._constraints.add(constraint)
+        for expr in constraints.instantiate(self):
+            if not isinstance(expr, Expression):
+                raise TypeError(
+                    f"Invalid constraints passed from {constraints}. All Constraints "
+                    f"should be motile.Expressions, got {type(expr)} instead."
+                )
+            self._constraints.add(expr)
 
     @property
     def ilpy_constraints(self) -> ilpy.Constraints:
@@ -251,8 +256,13 @@ class Solver:
         for index in indices:
             self.variable_types[index] = cls.variable_type
 
-        for constraint in cls.instantiate_constraints(self):
-            self._constraints.add(constraint)
+        for expr in cls.instantiate_constraints(self):
+            if not isinstance(expr, Expression):
+                raise TypeError(
+                    f"Invalid constraints passed from {cls}. All Constraints "
+                    f"should be motile.Expressions, got {type(expr)} instead."
+                )
+            self._constraints.add(expr)
 
         self.features.resize(num_variables=self.num_variables)
 

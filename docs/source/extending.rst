@@ -104,7 +104,7 @@ Adding Constraints
 New constraints are introduced by subclassing :class:`Constraint
 <motile.constraints.Constraint>` and implementing the :func:`instantiate
 <motile.constraints.Constraint.instantiate>` method. This method should return
-a list of ``ilpy.Constraint``.
+a list of ``motile.expression.Expression``.
 
 Imagine we know precisely that we want to track at most :math:`k` objects, but
 we don't know beforehand which of the many objects in the track graph those
@@ -115,7 +115,6 @@ This can be done with a constraint as follows:
 
 .. jupyter-execute::
 
-  import ilpy
   from motile.variables import NodeAppear
 
 
@@ -125,16 +124,8 @@ This can be done with a constraint as follows:
         self.num_tracks = num_tracks
 
     def instantiate(self, solver):
-
         appear_indicators = solver.get_variables(NodeAppear)
-
-        constraint = ilpy.Constraint()
-        for appear_indicator, index in appear_indicators.items():
-          constraint.set_coefficient(index, 1.0)
-        constraint.set_relation(ilpy.Relation.LessEqual)
-        constraint.set_value(self.num_tracks)
-
-        return [constraint]
+        yield sum(appear_indicators.values()) <= self.num_tracks
 
 The ``instantiate`` method gets access to the solver the constraint is added
 to. Through the solver, we can then access variables to formulate constraints
@@ -268,7 +259,6 @@ The complete variable declaration looks like this:
 
 .. jupyter-execute::
 
-  import ilpy
   from motile.variables import EdgeSelected
 
 
@@ -294,30 +284,14 @@ The complete variable declaration looks like this:
         edge_indicators = solver.get_variables(EdgeSelected)
         edge_pair_indicators = solver.get_variables(EdgePairs)
 
-        constraints = []
         for (in_edge, out_edge), pair_index in edge_pair_indicators.items():
 
             in_edge_index = edge_indicators[in_edge]
             out_edge_index = edge_indicators[out_edge]
 
             # edge pair indicator = 1 <=> in edge = 1 and out edge = 1
-            constraint = ilpy.Constraint()
-            constraint.set_coefficient(pair_index, 2)
-            constraint.set_coefficient(in_edge_index, -1)
-            constraint.set_coefficient(out_edge_index, -1)
-            constraint.set_relation(ilpy.Relation.LessEqual)
-            constraint.set_value(0)
-            constraints.append(constraint)
-
-            constraint = ilpy.Constraint()
-            constraint.set_coefficient(pair_index, -1)
-            constraint.set_coefficient(in_edge_index, 1)
-            constraint.set_coefficient(out_edge_index, 1)
-            constraint.set_relation(ilpy.Relation.LessEqual)
-            constraint.set_value(1)
-            constraints.append(constraint)
-
-        return constraints
+            yield 2 * pair_index - in_edge_index - out_edge_index <= 0
+            yield -pair_index + in_edge_index + out_edge_index <= 1
 
 Variables on their own, however, don't do anything yet. They only start to
 affect the solution if they are involved in constraints or have a cost.
