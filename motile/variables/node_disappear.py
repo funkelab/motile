@@ -7,8 +7,8 @@ from .node_selected import NodeSelected
 from .variable import Variables
 
 if TYPE_CHECKING:
-    from motile.expressions import Expression
     from motile._types import NodeId
+    from motile.expressions import Expression
     from motile.solver import Solver
 
 
