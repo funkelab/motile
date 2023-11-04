@@ -18,21 +18,6 @@ class VariableType(IntEnum):
     Binary = auto()
 
 
-class Relation(IntEnum):
-    """Type of a constraint relation."""
-
-    LessEqual = 0
-    Equal = auto()
-    GreaterEqual = auto()
-
-
-class Sense(IntEnum):
-    """Type of an objective sense."""
-
-    Minimize = 0
-    Maximize = auto()
-
-
 class Expression(ast.AST):
     """Base class for all expression nodes.
 
@@ -63,7 +48,9 @@ class Expression(ast.AST):
             value=-value,  # negate value to convert to RHS form
         )
 
-    def as_ilpy_objective(self, sense: Sense = Sense.Minimize) -> ilpy.Objective:
+    def as_ilpy_objective(
+        self, sense: ilpy.Sense | str | int = "Minimize"
+    ) -> ilpy.Objective:
         """Create a linear objective from this expression."""
         import ilpy
 
@@ -72,11 +59,12 @@ class Expression(ast.AST):
             raise ValueError(f"Objective function cannot have comparisons: {self}")
 
         l_coeffs, q_coeffs, value = _get_coeff_indices(self)
+        sense = ilpy.Sense[sense] if isinstance(sense, str) else ilpy.Sense(sense)
         return ilpy.Objective.from_coefficients(
             coefficients=l_coeffs,
             quadratic_coefficients=q_coeffs,
             constant=value,
-            sense=ilpy.Sense(sense),
+            sense=sense,
         )
 
     @staticmethod
@@ -266,20 +254,18 @@ class Variable(Expression, ast.Name):
         return f"motile.Variable({self.id!r}, index={self.index!r})"
 
 
-# conversion between ast comparison operators and ilpy relations
-# TODO: support more less/greater than operators
-OPERATOR_MAP: dict[type[ast.cmpop], Relation] = {
-    ast.LtE: Relation.LessEqual,
-    ast.Eq: Relation.Equal,
-    ast.GtE: Relation.GreaterEqual,
-}
-
-
 def _get_ilpy_relation(expr: Expression) -> ilpy.Relation | None:
     import ilpy
 
+    # conversion between ast comparison operators and ilpy relations
+    # TODO: support more less/greater than operators
+    OPERATOR_MAP: dict[type[ast.cmpop], ilpy.Relation] = {
+        ast.LtE: ilpy.Relation.LessEqual,
+        ast.Eq: ilpy.Relation.Equal,
+        ast.GtE: ilpy.Relation.GreaterEqual,
+    }
     seen_compare = False
-    relation: Relation | None = None
+    relation: ilpy.Relation | None = None
     for sub in ast.walk(expr):
         if isinstance(sub, Compare):
             if seen_compare:
