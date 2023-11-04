@@ -251,7 +251,7 @@ class Variable(Expression, ast.Name):
     __index__ = __int__
 
     def __repr__(self) -> str:
-        return f"motile.Variable({self.id!r}, index={self.index!r})"
+        return f"motile.Variables({self.id!r}, index={self.index!r})"
 
 
 def _get_ilpy_relation(expr: Expression) -> ilpy.Relation | None:

@@ -171,14 +171,14 @@ class Solver:
         created.
 
         Args:
-            cls (type of :class:`motile.variables.Variable`):
-                A subclass of :class:`motile.variables.Variable`.
+            cls (type of :class:`motile.variables.Variables`):
+                A subclass of :class:`motile.variables.Variables`.
 
         Returns:
-            A singleton instance of :class:`~motile.variables.Variable` (of whatever
+            A singleton instance of :class:`~motile.variables.Variables` (of whatever
             type was passed in as ``cls``), mimicking a dictionary that can be used to
             look up variable indices by their keys. See
-            :class:`~motile.variables.Variable` for details.
+            :class:`~motile.variables.Variables` for details.
         """
         if cls not in self.variables:
             self._add_variables(cls)

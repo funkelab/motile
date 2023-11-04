@@ -50,7 +50,7 @@ Solver variables are introduced by inheriting from the following abstract base c
 
 .. automodule:: motile.variables
 
-  .. autoclass:: Variable
+  .. autoclass:: Variables
     :members:
 
 The following lists all variables that are already implemented in ``motile``.

@@ -234,9 +234,9 @@ graph:
 Adding Variables
 ----------------
 
-Variables in ``motile`` are added by subclassing the :class:`Variable
-<motile.variables.Variable>` class. Subclasses need to implement at least a
-static method :func:`instantiate <motile.variables.Variable.instantiate>`. This
+Variables in ``motile`` are added by subclassing the :class:`Variables
+<motile.variables.Variables>` class. Subclasses need to implement at least a
+static method :func:`instantiate <motile.variables.Variables.instantiate>`. This
 method should return keys for *what* kind of things we would like to create a
 variable for. This should be a list of anything that is hashable (the keys will
 be used in a dictionary).
@@ -255,12 +255,12 @@ measure the curvature of a track and put a cost on that.
 
 To create our new variables, we simply return a list of all pairs of edges we
 wish to have a variable for in :func:`instantiate
-<motile.variables.Variable.instantiate>`. However, declaring those variables
+<motile.variables.Variables.instantiate>`. However, declaring those variables
 alone is not sufficient. To give them semantic meaning, we also have to make
 sure that our edge-pair variables are set to 1 if the two edges they represent
 have been selected, and 0 otherwise. To that end, we also add constraints that
 are specific to our variables by overriding the :func:`instantiate_constraints
-<motile.variables.Variable.instantiate_constraints>` method, such that our
+<motile.variables.Variables.instantiate_constraints>` method, such that our
 variables are linked to the already existing :class:`EdgeSelected
 <motile.variables.EdgeSelected>` variables.
 
@@ -272,7 +272,7 @@ The complete variable declaration looks like this:
   from motile.variables import EdgeSelected
 
 
-  class EdgePairs(motile.variables.Variable):
+  class EdgePairs(motile.variables.Variables):
 
     @staticmethod
     def instantiate(solver):
