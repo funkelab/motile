@@ -3,22 +3,24 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING, TypeVar, cast
 
-import ilpy
 import numpy as np
 
 from .constraints import SelectEdgeNodes
 from .constraints.constraint import Constraint
 from .costs import Features, Weight, Weights
+from .expressions import Expression, Variable, VariableType
 from .ssvm import fit_weights
 
 logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
+    import ilpy
+    
     from motile.costs import Costs
     from motile.track_graph import TrackGraph
-    from motile.variables import Variable
+    from motile.variables import Variables
 
-    V = TypeVar("V", bound=Variable)
+    V = TypeVar("V", bound=Variables)
 
 
 class Solver:
@@ -38,17 +40,15 @@ class Solver:
         self, track_graph: TrackGraph, skip_core_constraints: bool = False
     ) -> None:
         self.graph = track_graph
-        self.variables: dict[type[Variable], Variable] = {}
-        self.variable_types: dict[int, ilpy.VariableType] = {}
+        self.variables: dict[type[Variables], Variables] = {}
+        self.variable_types: dict[int, VariableType] = {}
 
         self.weights = Weights()
         self.weights.register_modify_callback(self._on_weights_modified)
         self._weights_changed = True
         self.features = Features()
 
-        self.ilp_solver: ilpy.Solver | None = None
-        self.objective: ilpy.Objective | None = None
-        self.constraints = ilpy.Constraints()
+        self._constraints: set[Expression] = set()
 
         self.num_variables: int = 0
         self._costs = np.zeros((0,), dtype=np.float32)
@@ -103,7 +103,16 @@ class Solver:
         logger.info("Adding %s constraints...", type(constraints).__name__)
 
         for constraint in constraints.instantiate(self):
-            self.constraints.add(constraint)
+            self._constraints.add(constraint)
+
+    @property
+    def ilpy_constraints(self) -> ilpy.Constraints:
+        import ilpy
+
+        constraints = ilpy.Constraints()
+        for expr in self._constraints:
+            constraints.add(expr.as_ilpy_constraint())
+        return constraints
 
     def solve(self, timeout: float = 0.0, num_threads: int = 1) -> ilpy.Solution:
         """Solve the global optimization problem.
@@ -122,21 +131,26 @@ class Solver:
             :func:`get_variables` to find the indices of variables in this
             vector.
         """
+        import ilpy
+
         self.objective = ilpy.Objective(self.num_variables)
         for i, c in enumerate(self.costs):
             logger.debug("Setting cost of var %d to %.3f", i, c)
             self.objective.set_coefficient(i, c)
 
         # TODO: support other variable types
+        ilpy_var_types = {
+            i: ilpy.VariableType(v) for i, v in self.variable_types.items()
+        }
         self.ilp_solver = ilpy.Solver(
             self.num_variables,
             ilpy.VariableType.Binary,
-            variable_types=self.variable_types,
+            variable_types=ilpy_var_types,
             preference=ilpy.Preference.Any,
         )
 
         self.ilp_solver.set_objective(self.objective)
-        self.ilp_solver.set_constraints(self.constraints)
+        self.ilp_solver.set_constraints(self.ilpy_constraints)
 
         self.ilp_solver.set_num_threads(num_threads)
         if timeout > 0:
@@ -171,7 +185,7 @@ class Solver:
         return cast("V", self.variables[cls])
 
     def add_variable_cost(
-        self, index: int | ilpy.Variable, value: float, weight: Weight
+        self, index: int | Variable, value: float, weight: Weight
     ) -> None:
         """Add costs for an individual variable.
 
@@ -238,7 +252,7 @@ class Solver:
             self.variable_types[index] = cls.variable_type
 
         for constraint in cls.instantiate_constraints(self):
-            self.constraints.add(constraint)
+            self._constraints.add(constraint)
 
         self.features.resize(num_variables=self.num_variables)
 

@@ -4,16 +4,15 @@ from typing import TYPE_CHECKING, Collection, Iterable
 
 from .edge_selected import EdgeSelected
 from .node_selected import NodeSelected
-from .variable import Variable
+from .variable import Variables
 
 if TYPE_CHECKING:
-    import ilpy
-
+    from motile.expressions import Expression
     from motile._types import NodeId
     from motile.solver import Solver
 
 
-class NodeDisappear(Variable["NodeId"]):
+class NodeDisappear(Variables["NodeId"]):
     r"""Binary variable to indicate whether a node disappears.
 
     This variable indicates whether the node is the end of a track (i.e., the node is
@@ -39,7 +38,7 @@ class NodeDisappear(Variable["NodeId"]):
         return solver.graph.nodes
 
     @staticmethod
-    def instantiate_constraints(solver: Solver) -> Iterable[ilpy.Expression]:
+    def instantiate_constraints(solver: Solver) -> Iterable[Expression]:
         node_indicators = solver.get_variables(NodeSelected)
         edge_indicators = solver.get_variables(EdgeSelected)
         disappear_indicators = solver.get_variables(NodeDisappear)

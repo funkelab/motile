@@ -4,16 +4,15 @@ from typing import TYPE_CHECKING, Collection, Iterable
 
 from .edge_selected import EdgeSelected
 from .node_selected import NodeSelected
-from .variable import Variable
+from .variable import Variables
 
 if TYPE_CHECKING:
-    import ilpy
-
     from motile._types import NodeId
+    from motile.expressions import Expression
     from motile.solver import Solver
 
 
-class NodeAppear(Variable["NodeId"]):
+class NodeAppear(Variables["NodeId"]):
     r"""Binary variable indicating whether a node is the start of a track.
 
     (i.e., the node is selected and has no selected incoming edges).
@@ -39,7 +38,7 @@ class NodeAppear(Variable["NodeId"]):
         return solver.graph.nodes
 
     @staticmethod
-    def instantiate_constraints(solver: Solver) -> Iterable[ilpy.Expression]:
+    def instantiate_constraints(solver: Solver) -> Iterable[Expression]:
         appear_indicators = solver.get_variables(NodeAppear)
         node_indicators = solver.get_variables(NodeSelected)
         edge_indicators = solver.get_variables(EdgeSelected)

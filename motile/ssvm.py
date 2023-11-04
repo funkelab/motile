@@ -59,7 +59,7 @@ def fit_weights(
             ground_truth[index] = gt
 
     loss = ssvm.SoftMarginLoss(
-        solver.constraints,
+        solver.ilpy_constraints,
         features.T,  # TODO: fix in ssvm
         ground_truth,
         ssvm.HammingCosts(ground_truth, mask),

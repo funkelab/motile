@@ -4,9 +4,9 @@ import ast
 import contextlib
 from typing import TYPE_CHECKING, Union
 
-import ilpy
+from motile.expressions import Expression, Constant
 
-from ..variables import EdgeSelected, NodeSelected, Variable
+from ..variables import EdgeSelected, NodeSelected, Variables
 from .constraint import Constraint
 
 if TYPE_CHECKING:
@@ -76,13 +76,13 @@ class ExpressionConstraint(Constraint):
         self.eval_nodes = eval_nodes
         self.eval_edges = eval_edges
 
-    def instantiate(self, solver: Solver) -> list[ilpy.Constraint]:
+    def instantiate(self, solver: Solver) -> list[Expression]:
         # create two constraints: one to select nodes/edges, and one to exclude
-        select = ilpy.Constraint()
-        exclude = ilpy.Constraint()
+        select: Expression = Constant(0)
+        exclude: Expression = Constant(0)
         n_selected = 0  # number of nodes/edges selected
 
-        to_evaluate: list[tuple[NodesOrEdges, type[Variable]]] = []
+        to_evaluate: list[tuple[NodesOrEdges, type[Variables]]] = []
         if self.eval_nodes:
             to_evaluate.append((solver.graph.nodes, NodeSelected))
         if self.eval_edges:
@@ -99,17 +99,14 @@ class ExpressionConstraint(Constraint):
                     # contextlib.suppress (above) will just skip it and move on...
                     if eval(self._expression, None, node_or_edge):
                         # if the expression evaluates to True, we select the node/edge
-                        select.set_coefficient(indicator_variables[id_], 1)
+                        select += indicator_variables[id_]
                         n_selected += 1
                     else:
                         # Otherwise, we exclude it.
-                        exclude.set_coefficient(indicator_variables[id_], 1)
+                        exclude += indicator_variables[id_]
 
         # finally, apply the relation and value to the constraints
-        select.set_relation(ilpy.Relation.Equal)
-        select.set_value(n_selected)
-
-        exclude.set_relation(ilpy.Relation.Equal)
-        exclude.set_value(0)
+        select = select == n_selected
+        exclude = exclude == 0
 
         return [select, exclude]

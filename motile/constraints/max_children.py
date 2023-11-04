@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Iterable
 
-from ilpy.expressions import Constant, Expression
+from motile.expressions import Constant, Expression
 
 from ..variables import EdgeSelected
 from .constraint import Constraint

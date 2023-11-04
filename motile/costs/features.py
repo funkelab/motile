@@ -1,11 +1,8 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 import numpy as np
 
-if TYPE_CHECKING:
-    import ilpy
+from motile.expressions import Variable
 
 
 class Features:
@@ -53,7 +50,7 @@ class Features:
         self._values = np.hstack((self._values, new_features))
 
     def add_feature(
-        self, variable_index: int | ilpy.Variable, feature_index: int, value: float
+        self, variable_index: int | Variable, feature_index: int, value: float
     ) -> None:
         """Add a value to a feature.
 

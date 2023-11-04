@@ -12,7 +12,7 @@ from typing import (
     TypeVar,
 )
 
-import ilpy
+from motile.expressions import Expression, Variable, VariableType
 
 if TYPE_CHECKING:
     from motile.solver import Solver
@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 _KT = TypeVar("_KT", bound=Hashable)
 
 
-class Variable(ABC, Mapping[_KT, ilpy.Variable]):
+class Variables(ABC, Mapping[_KT, Variable]):
     """Base class for solver variables.
 
     New variables can be introduced by inheriting from this base class and
@@ -53,7 +53,7 @@ class Variable(ABC, Mapping[_KT, ilpy.Variable]):
     """
 
     # default variable type, replace in subclasses to override
-    variable_type: ClassVar[ilpy.VariableType] = ilpy.VariableType.Binary
+    variable_type: ClassVar[VariableType] = VariableType.Binary
 
     @staticmethod
     @abstractmethod
@@ -90,9 +90,7 @@ class Variable(ABC, Mapping[_KT, ilpy.Variable]):
         pass
 
     @staticmethod
-    def instantiate_constraints(
-        solver: Solver,
-    ) -> Iterable[ilpy.Constraint | ilpy.Expression]:
+    def instantiate_constraints(solver: Solver) -> Iterable[Expression]:
         """Add constraints for this variable to the solver.
 
         This ensures that these variables are coupled to other variables of the solver.
@@ -127,9 +125,9 @@ class Variable(ABC, Mapping[_KT, ilpy.Variable]):
             rs.append(r)
         return "\n".join(rs)
 
-    def __getitem__(self, key: _KT) -> ilpy.Variable:
+    def __getitem__(self, key: _KT) -> Variable:
         name = f"{type(self).__name__}({key})"
-        return ilpy.Variable(name, index=self._index_map[key])
+        return Variable(name, index=self._index_map[key])
 
     def __iter__(self) -> Iterator[_KT]:
         return iter(self._index_map)

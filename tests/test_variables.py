@@ -2,14 +2,14 @@ from __future__ import annotations
 
 from typing import Collection, Hashable, Iterable
 
-import ilpy
 import pytest
 from motile import Solver, data
-from motile.variables import Variable
+from motile.expressions import Expression
+from motile.variables import Variables
 
 
-@pytest.mark.parametrize("VarCls", Variable.__subclasses__())
-def test_variable_subclass_protocols(VarCls: type[Variable]) -> None:
+@pytest.mark.parametrize("VarCls", Variables.__subclasses__())
+def test_variable_subclass_protocols(VarCls: type[Variables]) -> None:
     """Test that all Variable subclasses properly implement the Variable protocol."""
     solver = Solver(data.arlo_graph())
 
@@ -19,4 +19,4 @@ def test_variable_subclass_protocols(VarCls: type[Variable]) -> None:
 
     constraints = VarCls.instantiate_constraints(solver)
     assert isinstance(constraints, Iterable)
-    assert all(isinstance(c, (ilpy.Expression, ilpy.Constraint)) for c in constraints)
+    assert all(isinstance(c, Expression) for c in constraints)
