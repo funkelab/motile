@@ -12,18 +12,18 @@ if TYPE_CHECKING:
 
 
 class MaxChildren(Constraint):
-    r"""Ensures that every selected node has no more than ``max_children``
-    selected edges to the next frame.
+    r"""Ensures that every selected node has no more than ``max_children``.
+
+    Where a "child" is a selected edges to the next frame.
 
     Adds the following linear constraint for each node :math:`v`:
 
     .. math::
 
-      \sum_{e \in \\text{out_edges}(v)} x_e \leq \\text{max_children}
+      \sum_{e \in \text{out_edges}(v)} x_e \leq \text{max_children}
 
     Args:
-
-        max_children (int):
+        max_children:
             The maximum number of children allowed.
     """
 

@@ -1,6 +1,12 @@
 import motile
 from motile.constraints import MaxChildren, MaxParents
-from motile.costs import Appear, EdgeDistance, EdgeSelection, NodeSelection, Split
+from motile.costs import (
+    Appear,
+    EdgeDistance,
+    EdgeSelection,
+    NodeSelection,
+    Split,
+)
 from motile.data import (
     arlo_graph,
     arlo_graph_nx,

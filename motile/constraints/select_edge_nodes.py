@@ -12,8 +12,13 @@ if TYPE_CHECKING:
 
 
 class SelectEdgeNodes(Constraint):
-    r"""Ensures that if an edge :math:`(u, v)` is selected, :math:`u` and
-    :math:`v` have to be selected as well.
+    r"""Ensures that if an edge is selected, its nodes are selected as well.
+
+    .. NOTE::
+
+        This class is for internal use.
+
+    If :math:`(u, v)` is selected, :math:`u` and :math:`v` have to be selected as well.
 
     Adds the following linear constraint for each edge :math:`e = (u,v)`:
 
@@ -21,7 +26,7 @@ class SelectEdgeNodes(Constraint):
 
       2 x_e - x_u - x_v \leq 0
 
-    This constraint will be added by default to any :class:`Solver` instance.
+    This constraint will be added by default to any :class:`~motile.Solver` instance.
     """
 
     def instantiate(self, solver: Solver) -> Iterable[Expression]:

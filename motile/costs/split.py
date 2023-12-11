@@ -11,17 +11,17 @@ if TYPE_CHECKING:
 
 
 class Split(Costs):
-    """Costs for :class:`motile.variables.NodeSplit` variables.
+    """Costs for :class:`~motile.variables.NodeSplit` variables.
 
     Args:
-        weight (float):
+        weight:
             The weight to apply to the cost of each split.
 
-        attribute (string)
+        attribute:
             The name of the attribute to use to look up costs. Default is
             ``None``, which means that a constant cost is used.
 
-        constant (float):
+        constant:
             A constant cost for each node that has more than one selected
             child.
     """

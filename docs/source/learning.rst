@@ -117,7 +117,7 @@ to the solver.
 
 In the example above, the :class:`motile.variables.EdgeSelected` variable
 (which is the target of the cost :class:`motile.costs.EdgeSelection`), has the
-follwing weights and features:
+following weights and features:
 
 .. math::
   \vct{w}

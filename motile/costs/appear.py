@@ -11,18 +11,17 @@ if TYPE_CHECKING:
 
 
 class Appear(Costs):
-    """Costs for :class:`motile.variables.NodeAppear` variables.
+    """Costs for :class:`~motile.variables.NodeAppear` variables.
 
     Args:
-
-        weight (float):
+        weight:
             The weight to apply to the cost of each starting track.
 
-        attribute (string):
+        attribute:
             The name of the attribute to use to look up costs. Default is
             ``None``, which means that a constant cost is used.
 
-        constant (float):
+        constant:
             A constant cost for each node that starts a track.
     """
 
