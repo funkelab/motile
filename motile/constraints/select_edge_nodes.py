@@ -6,7 +6,7 @@ from ..variables import EdgeSelected, NodeSelected
 from .constraint import Constraint
 
 if TYPE_CHECKING:
-    from ilpy.expressions import Expression
+    import ilpy
 
     from motile.solver import Solver
 
@@ -29,7 +29,7 @@ class SelectEdgeNodes(Constraint):
     This constraint will be added by default to any :class:`~motile.Solver` instance.
     """
 
-    def instantiate(self, solver: Solver) -> Iterable[Expression]:
+    def instantiate(self, solver: Solver) -> Iterable[ilpy.Expression]:
         node_indicators = solver.get_variables(NodeSelected)
         edge_indicators = solver.get_variables(EdgeSelected)
 
