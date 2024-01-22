@@ -3,25 +3,13 @@ import pytest
 from motile.constraints import ExpressionConstraint, MaxChildren, MaxParents, Pin
 from motile.costs import EdgeSelection, NodeSelection
 from motile.data import arlo_graph
-from motile.variables import EdgeSelected
-from motile.variables.node_selected import NodeSelected
+
+from .test_api import _selected_edges, _selected_nodes
 
 
 @pytest.fixture
 def solver():
     return motile.Solver(arlo_graph())
-
-
-def _selected_edges(solver: motile.Solver) -> list:
-    edge_indicators = solver.get_variables(EdgeSelected)
-    solution = solver.solve()
-    return [e for e, i in edge_indicators.items() if solution[i]]
-
-
-def _selected_nodes(solver: motile.Solver) -> list:
-    node_indicators = solver.get_variables(NodeSelected)
-    solution = solver.solve()
-    return [e for e, i in node_indicators.items() if solution[i]]
 
 
 def test_pin(solver: motile.Solver) -> None:
