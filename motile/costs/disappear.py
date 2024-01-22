@@ -24,14 +24,14 @@ class Disappear(Costs):
             at no cost.
     """
 
-    def __init__(self, constant: float) -> None:
+    def __init__(self, constant: float, ignore_attribute: str | None = None) -> None:
         self.constant = Weight(constant)
         self.ignore_attribute = ignore_attribute
 
     def apply(self, solver: Solver) -> None:
         disappear_indicators = solver.get_variables(NodeDisappear)
 
-        for index in disappear_indicators.values():
+        for node, index in disappear_indicators.items():
             if self.ignore_attribute is not None:
                 if solver.graph.nodes[node].get(self.ignore_attribute, False):
                     continue
