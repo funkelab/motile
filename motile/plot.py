@@ -317,13 +317,11 @@ def draw_solution(
 
 
 @overload
-def _to_rgba(color: list[Color], alpha: float | list[float] = 1.0) -> list[str]:
-    ...
+def _to_rgba(color: list[Color], alpha: float | list[float] = 1.0) -> list[str]: ...
 
 
 @overload
-def _to_rgba(color: Color, alpha: float | list[float] = 1.0) -> str:
-    ...
+def _to_rgba(color: Color, alpha: float | list[float] = 1.0) -> str: ...
 
 
 def _to_rgba(
