@@ -113,9 +113,10 @@ class Solver:
                 The timeout for the ILP solver, in seconds. Default (0.0) is no
                 timeout. If the solver times out, the best solution encountered
                 so far is returned (if any has been found at all).
-
             num_threads:
                 The number of threads the ILP solver uses.
+            verbose:
+                If true, print more information from ILP solver. Defaults to False.
 
         Returns:
             :class:`ilpy.Solution`, a vector of variable values. Use
