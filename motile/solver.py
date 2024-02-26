@@ -47,7 +47,7 @@ class Solver:
                     "To silence this warning, please pass a motile.TrackGraph instance."
                 )
                 track_graph = TrackGraph(track_graph)
-            else:
+            else:  # pragma: no cover
                 raise ValueError(
                     f"Expected a TrackGraph or networkx.Graph, got {type(track_graph)}"
                 )
