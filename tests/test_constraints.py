@@ -2,7 +2,7 @@ import motile
 import pytest
 from motile.constraints import ExpressionConstraint, MaxChildren, MaxParents, Pin
 from motile.costs import EdgeSelection, NodeSelection
-from motile.data import arlo_graph
+from motile.data import arlo_graph, arlo_graph_nx
 
 from .test_api import _selected_edges, _selected_nodes
 
@@ -10,6 +10,11 @@ from .test_api import _selected_edges, _selected_nodes
 @pytest.fixture
 def solver():
     return motile.Solver(arlo_graph())
+
+
+def test_graph_casting() -> None:
+    with pytest.warns(UserWarning, match="Coercing networkx graph to TrackGraph"):
+        motile.Solver(arlo_graph_nx())
 
 
 def test_pin(solver: motile.Solver) -> None:
