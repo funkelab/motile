@@ -105,7 +105,9 @@ class Solver:
         for constraint in constraints.instantiate(self):
             self.constraints.add(constraint)
 
-    def solve(self, timeout: float = 0.0, num_threads: int = 1, verbose: bool = False) -> ilpy.Solution:
+    def solve(
+        self, timeout: float = 0.0, num_threads: int = 1, verbose: bool = False
+    ) -> ilpy.Solution:
         """Solve the global optimization problem.
 
         Args:
