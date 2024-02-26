@@ -13,7 +13,7 @@ def solver():
 
 
 def test_graph_casting() -> None:
-    with pytest.warns(UserWarning, match='Coercing networkx graph to TrackGraph'):
+    with pytest.warns(UserWarning, match="Coercing networkx graph to TrackGraph"):
         motile.Solver(arlo_graph_nx())
 
 
