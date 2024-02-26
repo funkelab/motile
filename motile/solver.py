@@ -105,7 +105,7 @@ class Solver:
         for constraint in constraints.instantiate(self):
             self.constraints.add(constraint)
 
-    def solve(self, timeout: float = 0.0, num_threads: int = 1) -> ilpy.Solution:
+    def solve(self, timeout: float = 0.0, num_threads: int = 1, verbose: bool = False) -> ilpy.Solution:
         """Solve the global optimization problem.
 
         Args:
@@ -142,7 +142,7 @@ class Solver:
         if timeout > 0:
             self.ilp_solver.set_timeout(timeout)
 
-        self.ilp_solver.set_verbose(False)
+        self.ilp_solver.set_verbose(verbose)
 
         self.solution = self.ilp_solver.solve()
         if message := self.solution.get_status():
