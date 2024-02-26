@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import warnings
 from typing import TYPE_CHECKING, TypeVar, cast
 
 import ilpy
@@ -10,12 +11,12 @@ from .constraints import SelectEdgeNodes
 from .constraints.constraint import Constraint
 from .costs import Features, Weight, Weights
 from .ssvm import fit_weights
+from .track_graph import TrackGraph
 
 logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
     from motile.costs import Costs
-    from motile.track_graph import TrackGraph
     from motile.variables import Variable
 
     V = TypeVar("V", bound=Variable)
@@ -37,6 +38,20 @@ class Solver:
     def __init__(
         self, track_graph: TrackGraph, skip_core_constraints: bool = False
     ) -> None:
+        if not isinstance(track_graph, TrackGraph):
+            import networkx as nx
+
+            if isinstance(track_graph, nx.Graph):
+                warnings.warn(
+                    "Coercing networkx graph to TrackGraph with frame_attribute='t'. "
+                    "To silence this warning, please pass a motile.TrackGraph instance."
+                )
+                track_graph = TrackGraph(track_graph)
+            else:
+                raise ValueError(
+                    f"Expected a TrackGraph or networkx.Graph, got {type(track_graph)}"
+                )
+
         self.graph = track_graph
         self.variables: dict[type[Variable], Variable] = {}
         self.variable_types: dict[int, ilpy.VariableType] = {}
