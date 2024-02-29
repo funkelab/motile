@@ -10,12 +10,12 @@ from .constraints import SelectEdgeNodes
 from .constraints.constraint import Constraint
 from .costs import Features, Weight, Weights
 from .ssvm import fit_weights
+from .track_graph import TrackGraph
 
 logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
     from motile.costs import Costs
-    from motile.track_graph import TrackGraph
     from motile.variables import Variable
 
     V = TypeVar("V", bound=Variable)
@@ -267,7 +267,7 @@ class Solver:
 
             self._weights_changed = True
 
-    def get_selected_solution(
+    def get_selected_subgraph(
         self, solution: ilpy.Solution | None = None
     ) -> TrackGraph:
         """Return TrackGraph with only the selected nodes/edges from the solution.
