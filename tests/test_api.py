@@ -68,8 +68,13 @@ def test_solver():
     solver.add_constraints(MaxChildren(2))
 
     solution = solver.solve()
+    subgraph = solver.get_selected_subgraph()
 
-    assert _selected_edges(solver) == [(0, 2), (1, 3), (2, 4), (3, 5)]
-    assert _selected_nodes(solver) == [0, 1, 2, 3, 4, 5]
+    assert (
+        list(subgraph.edges)
+        == _selected_edges(solver)
+        == [(0, 2), (1, 3), (2, 4), (3, 5)]
+    )
+    assert list(subgraph.nodes) == _selected_nodes(solver) == [0, 1, 2, 3, 4, 5]
     cost = solution.get_value()
     assert cost == -206.0, f"{cost=}"
