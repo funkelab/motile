@@ -1,3 +1,4 @@
+from unittest.mock import Mock
 import motile
 from motile.constraints import MaxChildren, MaxParents
 from motile.costs import (
@@ -67,7 +68,9 @@ def test_solver():
     solver.add_constraints(MaxParents(1))
     solver.add_constraints(MaxChildren(2))
 
-    solution = solver.solve()
+    callback = Mock()
+    solution = solver.solve(on_event=callback)
+    assert callback.call_count
     subgraph = solver.get_selected_subgraph()
 
     assert (
