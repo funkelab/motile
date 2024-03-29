@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 import warnings
-from typing import TYPE_CHECKING, TypeVar, cast
+from typing import TYPE_CHECKING, Callable, Mapping, TypeVar, cast
 
 import ilpy
 import numpy as np
