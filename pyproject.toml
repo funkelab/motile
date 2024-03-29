@@ -13,6 +13,7 @@ license = { text = "MIT" }
 authors = [
     { name = 'Jan Funke', email = 'funkej@janelia.hhmi.org' },
     { name = 'Talley Lambert', email = 'talley.lambert@gmail.com' },
+    { name = 'Caroline Malin-Mayor', email = 'malinmayorc@janelia.hhmi.org' },
     { name = 'Benjamin Gallusser', email = 'bgallusser@googlemail.com' },
     { name = 'Florian Jug', email = 'florian.jug@fht.org' },
 ]
@@ -44,6 +45,9 @@ path = "motile/__init__.py"
 [tool.ruff]
 target-version = "py38"
 src = ["motile"]
+
+[tool.ruff.lint]
+pydocstyle = { convention = "google" }
 select = [
     "F",   # pyflakes
     "E",   # pycodestyle
@@ -57,14 +61,10 @@ ignore = [
     "D104", # Missing docstring in public package
     "D105", # Missing docstring in magic method
     "D107", # Missing docstring in `__init__`
-
     "D102", # Missing docstring in public method
-    # "D205", # 1 blank line required between summary line and description
-
 ]
-[tool.ruff.pydocstyle]
-convention = "google"
-[tool.ruff.per-file-ignores]
+
+[tool.ruff.lint.per-file-ignores]
 "tests/*" = ["D"]
 
 # https://docs.pytest.org/en/6.2.x/customize.html
