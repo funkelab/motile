@@ -1,4 +1,5 @@
 from unittest.mock import Mock
+
 import motile
 from motile.constraints import MaxChildren, MaxParents
 from motile.costs import (
