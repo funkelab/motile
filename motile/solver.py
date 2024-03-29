@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 import warnings
-from typing import TYPE_CHECKING, Callable, Mapping, TypeVar, cast
+from typing import TYPE_CHECKING, TypeVar, cast
 
 import ilpy
 import numpy as np
@@ -294,3 +294,46 @@ class Solver:
                 logger.info("Weights have changed")
 
             self._weights_changed = True
+
+    def get_selected_subgraph(
+        self, solution: ilpy.Solution | None = None
+    ) -> TrackGraph:
+        """Return TrackGraph with only the selected nodes/edges from the solution.
+
+        Args:
+            solution:
+                The solution to use. If not provided, the last solution is used.
+
+        Returns:
+            A new TrackGraph with only the selected nodes and edges.
+
+        Raises:
+            RuntimeError: If no solution is provided and the solver has not been solved
+            yet.
+        """
+        from motile.variables import EdgeSelected, NodeSelected
+
+        if solution is None:
+            solution = self.solution
+
+        # TODO:
+        # in theory this could be made more efficient by using a nx.DiGraph view
+        # but TrackGraph itself doesn't provide views (and isn't a subclass)
+        if not solution:
+            raise RuntimeError(
+                "No solution available. Run solve() first or manually pass a solution."
+            )
+
+        node_selected = self.get_variables(NodeSelected)
+        edge_selected = self.get_variables(EdgeSelected)
+        selected_graph = TrackGraph()
+
+        for node_id, node in self.graph.nodes.items():
+            if solution[node_selected[node_id]]:
+                selected_graph.add_node(node_id, node)
+
+        for edge_id, edge in self.graph.edges.items():
+            if solution[edge_selected[edge_id]]:
+                selected_graph.add_edge(edge_id, edge)
+
+        return selected_graph
