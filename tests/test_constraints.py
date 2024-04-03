@@ -1,7 +1,13 @@
 import motile
 import pytest
-from motile.constraints import ExpressionConstraint, MaxChildren, MaxParents, Pin
-from motile.costs import EdgeSelection, NodeSelection
+from motile.constraints import (
+    ExclusiveNodes,
+    ExpressionConstraint,
+    MaxChildren,
+    MaxParents,
+    Pin,
+)
+from motile.costs import Appear, EdgeSelection, NodeSelection
 from motile.data import arlo_graph, arlo_graph_nx
 
 from .test_api import _selected_edges, _selected_nodes
@@ -58,3 +64,22 @@ def test_max_parents(solver: motile.Solver) -> None:
     assert _selected_edges(solver) != expect, "test invalid"
     solver.add_constraints(MaxParents(1))
     assert _selected_edges(solver) == expect
+
+
+def test_exlusive_nodes(solver: motile.Solver) -> None:
+
+    exclusive_sets = [
+        [0, 1],
+        [2, 3],
+        [4, 5],
+    ]
+
+    solver.add_costs(
+        EdgeSelection(weight=1.0, attribute="prediction_distance", constant=-100)
+    )
+    solver.add_costs(Appear(constant=2.0, attribute="score", weight=0))
+    solver.add_constraints(MaxParents(1))
+    solver.add_constraints(MaxChildren(2))
+    solver.add_constraints(ExclusiveNodes(exclusive_sets))
+
+    assert _selected_nodes(solver) == [1, 3, 5, 6], "test invalid"
