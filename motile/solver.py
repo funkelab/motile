@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 import warnings
-from typing import TYPE_CHECKING, TypeVar, cast
+from typing import TYPE_CHECKING, Callable, Mapping, TypeVar, cast
 
 import ilpy
 import numpy as np
@@ -121,7 +121,12 @@ class Solver:
             self.constraints.add(constraint)
 
     def solve(
-        self, timeout: float = 0.0, num_threads: int = 1, verbose: bool = False
+        self,
+        timeout: float = 0.0,
+        num_threads: int = 1,
+        verbose: bool = False,
+        backend: ilpy.Preference = ilpy.Preference.Any,
+        on_event: Callable[[Mapping], None] | None = None,
     ) -> ilpy.Solution:
         """Solve the global optimization problem.
 
@@ -134,6 +139,13 @@ class Solver:
                 The number of threads the ILP solver uses.
             verbose:
                 If true, print more information from ILP solver. Defaults to False.
+            backend:
+                The ILP solver backend to use. Defaults to Any.
+            on_event:
+                A callback function that will be called when the solver emits an event.
+                Should accept an event data dict. (see `ilpy.EventData` for typing info
+                which may be imported inside of a TYPE_CHECKING block.)
+                Defaults to None.
 
         Returns:
             :class:`ilpy.Solution`, a vector of variable values. Use
@@ -150,7 +162,7 @@ class Solver:
             self.num_variables,
             ilpy.VariableType.Binary,
             variable_types=self.variable_types,
-            preference=ilpy.Preference.Any,
+            preference=backend,
         )
 
         self.ilp_solver.set_objective(self.objective)
@@ -161,6 +173,7 @@ class Solver:
             self.ilp_solver.set_timeout(timeout)
 
         self.ilp_solver.set_verbose(verbose)
+        self.ilp_solver.set_event_callback(on_event)
 
         self.solution = self.ilp_solver.solve()
         if message := self.solution.get_status():
