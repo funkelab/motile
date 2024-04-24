@@ -329,11 +329,11 @@ class Solver:
         selected_graph = TrackGraph()
 
         for node_id, node in self.graph.nodes.items():
-            if solution[node_selected[node_id]]:
+            if solution[node_selected[node_id]] > 0.5:
                 selected_graph.add_node(node_id, node)
 
         for edge_id, edge in self.graph.edges.items():
-            if solution[edge_selected[edge_id]]:
+            if solution[edge_selected[edge_id]] > 0.5:
                 selected_graph.add_edge(edge_id, edge)
 
         return selected_graph
