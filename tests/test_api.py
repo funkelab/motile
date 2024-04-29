@@ -62,7 +62,7 @@ def test_solver():
     solver.add_costs(
         EdgeSelection(weight=0.5, attribute="prediction_distance", constant=-1.0)
     )
-    solver.add_costs(EdgeDistance(position_attributes=("x",), weight=0.5))
+    solver.add_costs(EdgeDistance(position_attribute=("x",), weight=0.5))
     solver.add_costs(Appear(constant=200.0, attribute="score", weight=-1.0))
     solver.add_costs(Split(constant=100.0, attribute="score", weight=1.0))
 
