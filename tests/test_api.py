@@ -1,3 +1,5 @@
+from unittest.mock import Mock
+
 import motile
 from motile.constraints import MaxChildren, MaxParents
 from motile.costs import (
@@ -60,14 +62,16 @@ def test_solver():
     solver.add_costs(
         EdgeSelection(weight=0.5, attribute="prediction_distance", constant=-1.0)
     )
-    solver.add_costs(EdgeDistance(position_attributes=("x",), weight=0.5))
+    solver.add_costs(EdgeDistance(position_attribute=("x",), weight=0.5))
     solver.add_costs(Appear(constant=200.0, attribute="score", weight=-1.0))
     solver.add_costs(Split(constant=100.0, attribute="score", weight=1.0))
 
     solver.add_constraints(MaxParents(1))
     solver.add_constraints(MaxChildren(2))
 
-    solution = solver.solve()
+    callback = Mock()
+    solution = solver.solve(on_event=callback)
+    assert callback.call_count
     subgraph = solver.get_selected_subgraph()
 
     assert (
