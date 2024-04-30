@@ -52,6 +52,7 @@ class EdgeDistance(Costs):
             feature = np.linalg.norm(pos_u - pos_v)
 
             solver.add_variable_cost(index, feature, self.weight)
+            solver.add_variable_cost(index, 1.0, self.constant)
 
     def __get_node_position(self, graph: nx.DiGraph, node: int) -> np.ndarray:
 
