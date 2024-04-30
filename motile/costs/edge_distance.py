@@ -55,7 +55,6 @@ class EdgeDistance(Costs):
             solver.add_variable_cost(index, 1.0, self.constant)
 
     def __get_node_position(self, graph: nx.DiGraph, node: int) -> np.ndarray:
-
         if isinstance(self.position_attribute, tuple):
             return np.array([graph.nodes[node][p] for p in self.position_attribute])
         else:
