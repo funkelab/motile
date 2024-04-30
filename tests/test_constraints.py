@@ -67,7 +67,6 @@ def test_max_parents(solver: motile.Solver) -> None:
 
 
 def test_exlusive_nodes(solver: motile.Solver) -> None:
-
     exclusive_sets = [
         [0, 1],
         [2, 3],
