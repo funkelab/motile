@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 from collections import defaultdict
-from typing import TYPE_CHECKING, Any, DefaultDict, Hashable, Iterator
+from typing import TYPE_CHECKING, Any, DefaultDict, Hashable, Iterator, cast
 
 logger = logging.getLogger(__name__)
 
@@ -61,7 +61,12 @@ class TrackGraph:
             node_id: the node to be added.
             data: all properties associated to the added node.
         """
+        assert self.frame_attribute in data, (
+            "Nodes in the track graph need to have (at least) a frame "
+            f"attribute {self.frame_attribute}"
+        )
         self.nodes[node_id] = data
+        self._graph_changed = True
 
     def add_edge(self, edge_id: EdgeId, data: GraphObject) -> None:
         """Adds an edge to this TrackGraph.
@@ -72,6 +77,20 @@ class TrackGraph:
             data: all properties associated to the added edge.
         """
         self.edges[edge_id] = data
+
+        if self.is_hyperedge(edge_id):
+            us, vs = cast("tuple[tuple[int], tuple[int]]", edge_id)
+            for v in vs:
+                self.prev_edges[v].append(edge_id)
+            for u in us:
+                self.next_edges[v].append(edge_id)
+        else:
+            # normal (u, v) edge
+            u, v = cast("tuple[int, int]", edge_id)
+            self.prev_edges[v].append(edge_id)
+            self.next_edges[u].append(edge_id)
+
+        self._graph_changed = True
 
     def add_from_nx_graph(self, nx_graph: networkx.DiGraph) -> None:
         """Add nodes/edges from ``nx_graph`` to this TrackGraph.
@@ -142,6 +161,18 @@ class TrackGraph:
                 yield from self.nodes_of(x)
         else:
             yield edge
+
+    def is_hyperedge(self, edge: EdgeId) -> bool:
+        """Test if the given edge is a hyperedge in this track graph."""
+        assert len(edge) == 2, "(Hyper)edges need to be 2-tuples"
+        num_tuples = sum(isinstance(x, tuple) for x in edge)
+        if num_tuples == 0:
+            return False
+        elif num_tuples == 2:
+            return True
+        raise RuntimeError(
+            f"(Hyper)edges have to contain two tuples or two node IDs, not {edge}"
+        )
 
     def _is_hyperedge_nx_node(self, nx_graph: networkx.DiGraph, nx_node: Any) -> bool:
         """Return ``True`` if ``nx_node`` is a hyperedge node in ``nx_graph``.
