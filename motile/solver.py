@@ -16,7 +16,7 @@ from .track_graph import TrackGraph
 logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
-    from motile.costs import Costs
+    from motile.costs import Cost
     from motile.variables import Variable
 
     V = TypeVar("V", bound=Variable)
@@ -67,57 +67,57 @@ class Solver:
 
         self.num_variables: int = 0
         self._costs = np.zeros((0,), dtype=np.float32)
-        self._costs_instances: dict[str, Costs] = {}
+        self._cost_instances: dict[str, Cost] = {}
         self.solution: ilpy.Solution | None = None
 
         if not skip_core_constraints:
-            self.add_constraints(SelectEdgeNodes())
+            self.add_constraint(SelectEdgeNodes())
 
-    def add_costs(self, costs: Costs, name: str | None = None) -> None:
-        """Add linear costs to the value of variables in this solver.
+    def add_cost(self, cost: Cost, name: str | None = None) -> None:
+        """Add linear cost to the value of variables in this solver.
 
         Args:
-            costs:
-                The costs to add.  An instance of :class:`~motile.costs.Costs`.
+            cost:
+                The cost to add.  An instance of :class:`~motile.costs.Cost`.
 
             name:
-                An optional name of the costs, used to refer to weights of
-                costs in an unambiguous manner. Defaults to the name of the
-                costs class, if not given.
+                An optional name of the , used to refer to weights of
+                cost in an unambiguous manner. Defaults to the name of the
+                cost class, if not given.
         """
-        # default name of costs is the class name
+        # default name of the cost is the class name
         if name is None:
-            name = type(costs).__name__
+            name = type(cost).__name__
 
-        if name in self._costs_instances:
+        if name in self._cost_instances:
             raise RuntimeError(
                 f"A cost instance with name '{name}' was already registered. "
                 "Consider passing a different name with the 'name=' argument "
-                "to Solver.add_costs"
+                "to Solver.add_cost"
             )
 
-        logger.info("Adding %s costs...", name)
+        logger.info("Adding %s cost...", name)
 
-        self._costs_instances[name] = costs
+        self._cost_instances[name] = cost
 
         # fish out all weights used in this cost object
-        for var_name, var in costs.__dict__.items():
+        for var_name, var in cost.__dict__.items():
             if not isinstance(var, Weight):
                 continue
             self.weights.add_weight(var, (name, var_name))
 
-        costs.apply(self)
+        cost.apply(self)
 
-    def add_constraints(self, constraints: Constraint) -> None:
+    def add_constraint(self, constraint: Constraint) -> None:
         """Add linear constraints to the solver.
 
         Args:
             constraints:
                 The :class:`~motile.constraints.Constraint` to add.
         """
-        logger.info("Adding %s constraints...", type(constraints).__name__)
+        logger.info("Adding %s constraint...", type(constraint).__name__)
 
-        for constraint in constraints.instantiate(self):
+        for constraint in constraint.instantiate(self):
             self.constraints.add(constraint)
 
     def solve(
@@ -204,9 +204,9 @@ class Solver:
     def add_variable_cost(
         self, index: int | ilpy.Variable, value: float, weight: Weight
     ) -> None:
-        """Add costs for an individual variable.
+        """Add cost for an individual variable.
 
-        To be used within implementations of :class:`motile.costs.Costs`.
+        To be used within implementations of :class:`motile.costs.Cost`.
         """
         variable_index = index
         feature_index = self.weights.index_of(weight)

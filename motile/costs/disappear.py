@@ -3,15 +3,15 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from ..variables import NodeDisappear
-from .costs import Costs
+from .cost import Cost
 from .weight import Weight
 
 if TYPE_CHECKING:
     from motile.solver import Solver
 
 
-class Disappear(Costs):
-    """Costs for :class:`motile.variables.NodeDisappear` variables.
+class Disappear(Cost):
+    """Cost for :class:`motile.variables.NodeDisappear` variables.
 
     Args:
         constant (float):
@@ -19,7 +19,7 @@ class Disappear(Costs):
 
         ignore_attribute:
             The name of an optional node attribute that, if it is set and
-            evaluates to ``True``, will not set the disappear costs for that
+            evaluates to ``True``, will not set the disappear cost for that
             node. This is useful to allow nodes in the last frame to disappear
             at no cost.
     """

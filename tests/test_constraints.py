@@ -29,40 +29,40 @@ def test_pin(solver: motile.Solver) -> None:
     solver.graph.edges[(3, 6)]["pin_to"] = True  # type: ignore
 
     assert _selected_edges(solver) != [(3, 6)], "test invalid"
-    solver.add_constraints(Pin("pin_to"))
+    solver.add_constraint(Pin("pin_to"))
     assert _selected_edges(solver) == [(3, 6)]
 
 
 def test_expression(solver: motile.Solver) -> None:
     solver.graph.nodes[5]["color"] = "red"  # type: ignore
-    solver.add_costs(NodeSelection(weight=-1.0, attribute="score", constant=-1))
+    solver.add_cost(NodeSelection(weight=-1.0, attribute="score", constant=-1))
 
     assert _selected_nodes(solver) != [1, 6], "test invalid"
     # constrain solver based on attributes of nodes/edges
     expr = "x > 140 and t != 1 and color != 'red'"
-    solver.add_constraints(ExpressionConstraint(expr))
+    solver.add_constraint(ExpressionConstraint(expr))
     assert _selected_nodes(solver) == [1, 6]
 
 
 def test_max_children(solver: motile.Solver) -> None:
-    solver.add_costs(
+    solver.add_cost(
         EdgeSelection(weight=1.0, attribute="prediction_distance", constant=-100)
     )
 
     expect = [(0, 2), (1, 3), (2, 4), (3, 5)]
     assert _selected_edges(solver) != expect, "test invalid"
-    solver.add_constraints(MaxChildren(1))
+    solver.add_constraint(MaxChildren(1))
     assert _selected_edges(solver) == expect
 
 
 def test_max_parents(solver: motile.Solver) -> None:
-    solver.add_costs(
+    solver.add_cost(
         EdgeSelection(weight=1.0, attribute="prediction_distance", constant=-100)
     )
 
     expect = [(0, 2), (1, 3), (2, 4), (3, 5), (3, 6)]
     assert _selected_edges(solver) != expect, "test invalid"
-    solver.add_constraints(MaxParents(1))
+    solver.add_constraint(MaxParents(1))
     assert _selected_edges(solver) == expect
 
 
@@ -73,12 +73,12 @@ def test_exlusive_nodes(solver: motile.Solver) -> None:
         [4, 5],
     ]
 
-    solver.add_costs(
+    solver.add_cost(
         EdgeSelection(weight=1.0, attribute="prediction_distance", constant=-100)
     )
-    solver.add_costs(Appear(constant=2.0, attribute="score", weight=0))
-    solver.add_constraints(MaxParents(1))
-    solver.add_constraints(MaxChildren(2))
-    solver.add_constraints(ExclusiveNodes(exclusive_sets))
+    solver.add_cost(Appear(constant=2.0, attribute="score", weight=0))
+    solver.add_constraint(MaxParents(1))
+    solver.add_constraint(MaxChildren(2))
+    solver.add_constraint(ExclusiveNodes(exclusive_sets))
 
     assert _selected_nodes(solver) == [1, 3, 5, 6], "test invalid"
