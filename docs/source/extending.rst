@@ -81,12 +81,12 @@ model is:
 
   solver = motile.Solver(graph)
 
-  solver.add_constraints(MaxParents(1))
-  solver.add_constraints(MaxChildren(1))
+  solver.add_constraint(MaxParents(1))
+  solver.add_constraint(MaxChildren(1))
 
-  solver.add_costs(NodeSelection(weight=-1, attribute="score"))
-  solver.add_costs(EdgeSelection(weight=-1, attribute="score"))
-  solver.add_costs(Appear(constant=1))
+  solver.add_cost(NodeSelection(weight=-1, attribute="score"))
+  solver.add_cost(EdgeSelection(weight=-1, attribute="score"))
+  solver.add_cost(Appear(constant=1))
 
   solver.solve()
 
@@ -155,7 +155,7 @@ instantiating the new class:
 .. jupyter-execute::
   :hide-output:
 
-  solver.add_constraints(LimitNumTracks(1))
+  solver.add_constraint(LimitNumTracks(1))
   solver.solve()
 
 .. jupyter-execute::
@@ -170,18 +170,18 @@ Adding Costs
 We might want to add custom costs to ``motile`` that are not already covered by
 the existing ones. For the sake of this tutorial, let's say we want to make the
 selection of nodes cheaper the higher up the node is in space. For obvious
-reasons, let's call this new cost ``SillyCosts``.
+reasons, let's call this new cost ``SillyCost``.
 
-Costs in ``motile`` are added by subclassing :class:`Costs
-<motile.costs.Costs>` and implementing the :func:`apply
-<motile.costs.Costs.apply>` method:
+Costs in ``motile`` are added by subclassing :class:`Cost
+<motile.costs.Cost>` and implementing the :func:`apply
+<motile.costs.Cost.apply>` method:
 
 .. jupyter-execute::
 
   from motile.variables import NodeSelected
 
 
-  class SillyCosts(motile.costs.Costs):
+  class SillyCost(motile.costs.Cost):
 
       def __init__(self, position_attribute, weight=1.0):
           self.position_attribute = position_attribute
@@ -208,15 +208,15 @@ We can now add those costs in the same way others are added, i.e.:
 
 .. jupyter-execute::
 
-  print("Before adding silly costs:")
+  print("Before adding silly cost:")
   print(solver.get_variables(NodeSelected))
 
-  solver.add_costs(SillyCosts('x', weight=0.02))
+  solver.add_cost(SillyCost('x', weight=0.02))
 
-  print("After adding silly costs:")
+  print("After adding silly cost:")
   print(solver.get_variables(NodeSelected))
 
-As we can see, our new costs have been applied to each ``NodeSelected``
+As we can see, our new cost have been applied to each ``NodeSelected``
 variable and nodes with a larger ``x`` value are now cheaper than others.
 
 Solving again will now select the upper one of the possible tracks in the track
@@ -322,12 +322,12 @@ The complete variable declaration looks like this:
 Variables on their own, however, don't do anything yet. They only start to
 affect the solution if they are involved in constraints or have a cost.
 
-The following defines costs on our new variables, which loosely approximate the
+The following defines a cost on our new variables, which loosely approximate the
 local curvature of the track:
 
 .. jupyter-execute::
 
-  class CurvatureCosts(motile.costs.Costs):
+  class CurvatureCost(motile.costs.Cost):
 
       def __init__(self, position_attribute, weight=1.0):
           self.position_attribute = position_attribute
@@ -364,7 +364,7 @@ added variables:
 .. jupyter-execute::
   :hide-output:
 
-  solver.add_costs(CurvatureCosts('x', weight=0.1))
+  solver.add_cost(CurvatureCost('x', weight=0.1))
   solver.solve()
 
 Let's inspect the solution!

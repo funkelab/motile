@@ -88,12 +88,12 @@ model is:
 
   solver = motile.Solver(graph)
 
-  solver.add_constraints(MaxParents(1))
-  solver.add_constraints(MaxChildren(1))
+  solver.add_constraint(MaxParents(1))
+  solver.add_constraint(MaxChildren(1))
 
-  solver.add_costs(NodeSelection(weight=1, attribute="score"))
-  solver.add_costs(EdgeSelection(weight=-2, attribute="score", constant=1))
-  solver.add_costs(Appear(constant=1))
+  solver.add_cost(NodeSelection(weight=1, attribute="score"))
+  solver.add_cost(EdgeSelection(weight=-2, attribute="score", constant=1))
+  solver.add_cost(Appear(constant=1))
 
 Each of those costs is calculated as the product of `weights` and `features`:
 
@@ -158,10 +158,10 @@ Our initial weights are just a guess, let's solve...
   draw_solution(graph, solver, label_attribute="score")
 
 None of the nodes or edges were selected, which is indeed the cost minimal
-solution: the costs for selecting nodes or edges is too high.
+solution: the cost for selecting nodes or edges is too high.
 
 We can use the ``solver.weights`` object to directly modify the weights on the
-costs. Here, we further lower the costs of edges for example:
+costs. Here, we further lower the cost of edges for example:
 
 .. jupyter-execute::
   :hide-output:
@@ -252,12 +252,12 @@ To see whether those weights are any good, we will solve again...
 
   solver = motile.Solver(graph)
 
-  solver.add_constraints(MaxParents(1))
-  solver.add_constraints(MaxChildren(1))
+  solver.add_constraint(MaxParents(1))
+  solver.add_constraint(MaxChildren(1))
 
-  solver.add_costs(NodeSelection(weight=1, attribute="score"))
-  solver.add_costs(EdgeSelection(weight=-2, attribute="score", constant=1))
-  solver.add_costs(Appear(constant=1))
+  solver.add_cost(NodeSelection(weight=1, attribute="score"))
+  solver.add_cost(EdgeSelection(weight=-2, attribute="score", constant=1))
+  solver.add_cost(Appear(constant=1))
 
   solver.weights.from_ndarray(optimal_weights.to_ndarray())
 

@@ -90,21 +90,21 @@ subject to certain constraints. This can be done with ``motile`` as follows:
   solver = motile.Solver(graph)
 
   # tell it how to compute costs for selecting nodes and edges
-  solver.add_costs(
+  solver.add_cost(
       NodeSelection(
           weight=-1.0,
           attribute='score'))
-  solver.add_costs(
+  solver.add_cost(
       EdgeSelection(
           weight=-1.0,
           attribute='score'))
 
   # add a small penalty to start a new track
-  solver.add_costs(Appear(constant=1.0))
+  solver.add_cost(Appear(constant=1.0))
 
   # add constraints on the solution (no splits, no merges)
-  solver.add_constraints(MaxParents(1))
-  solver.add_constraints(MaxChildren(1))
+  solver.add_constraint(MaxParents(1))
+  solver.add_constraint(MaxChildren(1))
 
   # solve
   solution = solver.solve()

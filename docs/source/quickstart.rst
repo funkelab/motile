@@ -88,7 +88,7 @@ First, we have to create a :class:`Solver` for our track graph:
   solver = motile.Solver(graph)
 
 Once a solver is created, we can add costs and constraints to it. We start with
-the most basic ones: the costs for selecting a node or an edge. Both nodes and
+the most basic ones: the cost for selecting a node or an edge. Both nodes and
 edges in our example graph have an attribute ``score``, which indicates how
 likely the node or edge is a true positive and should therefore be selected. A
 higher score is better.
@@ -104,11 +104,11 @@ classes :class:`costs.NodeSelection` and
 
   from motile.costs import NodeSelection, EdgeSelection
 
-  solver.add_costs(
+  solver.add_cost(
       NodeSelection(
           weight=-1.0,
           attribute='score'))
-  solver.add_costs(
+  solver.add_cost(
       EdgeSelection(
           weight=-1.0,
           attribute='score'))
@@ -169,8 +169,8 @@ sure that tracks don't merge or split:
 
   from motile.constraints import MaxParents, MaxChildren
 
-  solver.add_constraints(MaxParents(1))
-  solver.add_constraints(MaxChildren(1))
+  solver.add_constraint(MaxParents(1))
+  solver.add_constraint(MaxChildren(1))
 
 If we solve again, the solution does now look like this:
 
@@ -195,8 +195,8 @@ track consisting of just one node. To avoid those short tracks, we can add a
 constant cost for the appearance of a track: only tracks that are long enough
 to offset this cost will then be selected.
 
-Adding Costs for Starting a Track
----------------------------------
+Adding a Cost for Starting a Track
+----------------------------------
 
 ``motile`` provides :class:`costs.Appear`, which we can add to our solver to
 discourage selection of short tracks. We add them similarly to how we added the
@@ -206,7 +206,7 @@ node and edge selection costs:
 
   from motile.costs import Appear
 
-  solver.add_costs(Appear(constant=1.0))
+  solver.add_cost(Appear(constant=1.0))
 
 And if we solve the tracking problem again with those costs...
 
