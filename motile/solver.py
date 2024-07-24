@@ -112,7 +112,7 @@ class Solver:
         """Add linear constraints to the solver.
 
         Args:
-            constraints:
+            constraint:
                 The :class:`~motile.constraints.Constraint` to add.
         """
         logger.info("Adding %s constraint...", type(constraint).__name__)
