@@ -1,8 +1,9 @@
 import networkx as nx
-
+import pytest
 from motile import TrackGraph
 
 
+@pytest.fixture
 def arlo_graph_nx() -> nx.DiGraph:
     """Create the "Arlo graph", a simple toy graph for testing.
 
@@ -44,11 +45,13 @@ def arlo_graph_nx() -> nx.DiGraph:
     return nx_graph
 
 
-def arlo_graph() -> TrackGraph:
+@pytest.fixture
+def arlo_graph(arlo_graph_nx) -> TrackGraph:
     """Return the "Arlo graph" as a :class:`motile.TrackGraph` instance."""
-    return TrackGraph(arlo_graph_nx())
+    return TrackGraph(arlo_graph_nx)
 
 
+@pytest.fixture
 def toy_graph_nx() -> nx.DiGraph:
     """Return variation of the "Arlo graph".
 
@@ -93,11 +96,13 @@ def toy_graph_nx() -> nx.DiGraph:
     return nx_graph
 
 
-def toy_graph() -> TrackGraph:
+@pytest.fixture
+def toy_graph(toy_graph_nx) -> TrackGraph:
     """Return the `toy_graph_nx` as a :class:`motile.TrackGraph` instance."""
-    return TrackGraph(toy_graph_nx())
+    return TrackGraph(toy_graph_nx)
 
 
+@pytest.fixture
 def toy_hypergraph_nx() -> nx.DiGraph:
     """Return variation of `toy_graph` with an edge modified and one hyperedge added.
 
@@ -151,6 +156,7 @@ def toy_hypergraph_nx() -> nx.DiGraph:
     return nx_graph
 
 
-def toy_hypergraph() -> TrackGraph:
+@pytest.fixture
+def toy_hypergraph(toy_hypergraph_nx) -> TrackGraph:
     """Return the `toy_hypergraph_nx` as a :class:`motile.TrackGraph` instance."""
-    return TrackGraph(toy_hypergraph_nx())
+    return TrackGraph(toy_hypergraph_nx)

@@ -7,13 +7,10 @@ from motile.costs import (
     NodeSelection,
     Split,
 )
-from motile.data import (
-    arlo_graph,
-)
 
 
-def test_ignore_attributes():
-    graph = arlo_graph()
+def test_ignore_attributes(arlo_graph):
+    graph = arlo_graph
 
     # first solve without ignore attribute:
 

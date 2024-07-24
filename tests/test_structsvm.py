@@ -5,7 +5,6 @@ import networkx
 import numpy as np
 from motile.constraints import MaxChildren, MaxParents
 from motile.costs import Appear, EdgeSelection, NodeSelection
-from motile.data import toy_graph
 from motile.variables import EdgeSelected, NodeSelected
 
 logger = logging.getLogger(__name__)
@@ -56,8 +55,8 @@ def create_toy_solver(graph):
     return solver
 
 
-def test_structsvm_common_toy_example():
-    graph = toy_graph()
+def test_structsvm_common_toy_example(toy_graph):
+    graph = toy_graph
 
     solver = create_toy_solver(graph)
 
