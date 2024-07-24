@@ -26,8 +26,8 @@ API Reference
     ``EdgeId: TypeAlias = tuple[NodeId, ...]``
 
     - ``(0, 1)`` is an edge from node 0 to node 1.
-    - ``((0, 1), 2)`` is a hyperedge from nodes 0 and 1 to node 2 (i.e. a merge).
     - ``((0,), (1, 2))`` is a hyperedge from node 0 to nodes 1 and 2 (i.e. a split).
+    - ``((0, 1), 2)`` is a not a valid edge.
 
 
 
