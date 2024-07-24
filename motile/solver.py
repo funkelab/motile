@@ -7,7 +7,6 @@ from typing import TYPE_CHECKING, Callable, Mapping, TypeVar, cast
 import ilpy
 import numpy as np
 
-from .constraints import SelectEdgeNodes
 from .constraints.constraint import Constraint
 from .costs import Features, Weight, Weights
 from .ssvm import fit_weights
@@ -28,16 +27,9 @@ class Solver:
     Args:
         track_graph:
             The :class:`~motile.TrackGraph` of objects to track over time.
-
-        skip_core_constraints (:obj:`bool`, default=False):
-            If true, add no constraints to the solver at all. Otherwise, core
-            constraints that ensure consistencies between selected nodes and
-            edges are added.
     """
 
-    def __init__(
-        self, track_graph: TrackGraph, skip_core_constraints: bool = False
-    ) -> None:
+    def __init__(self, track_graph: TrackGraph) -> None:
         if not isinstance(track_graph, TrackGraph):
             import networkx as nx
 
@@ -69,9 +61,6 @@ class Solver:
         self._costs = np.zeros((0,), dtype=np.float32)
         self._cost_instances: dict[str, Cost] = {}
         self.solution: ilpy.Solution | None = None
-
-        if not skip_core_constraints:
-            self.add_constraint(SelectEdgeNodes())
 
     def add_cost(self, cost: Cost, name: str | None = None) -> None:
         """Add linear cost to the value of variables in this solver.

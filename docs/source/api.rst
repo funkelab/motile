@@ -156,11 +156,3 @@ Pin
 ^^^
   .. autoclass:: Pin
      :show-inheritance:
-
-SelectEdgeNodes (internal use)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  .. autoclass:: SelectEdgeNodes
-     :show-inheritance:
-
-
-
