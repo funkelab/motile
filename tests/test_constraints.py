@@ -8,19 +8,18 @@ from motile.constraints import (
     Pin,
 )
 from motile.costs import Appear, EdgeSelection, NodeSelection
-from motile.data import arlo_graph, arlo_graph_nx
 
 from .test_api import _selected_edges, _selected_nodes
 
 
 @pytest.fixture
-def solver():
-    return motile.Solver(arlo_graph())
+def solver(arlo_graph):
+    return motile.Solver(arlo_graph)
 
 
-def test_graph_casting() -> None:
+def test_graph_casting(arlo_graph_nx) -> None:
     with pytest.warns(UserWarning, match="Coercing networkx graph to TrackGraph"):
-        motile.Solver(arlo_graph_nx())
+        motile.Solver(arlo_graph_nx)
 
 
 def test_pin(solver: motile.Solver) -> None:

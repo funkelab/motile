@@ -9,12 +9,6 @@ from motile.costs import (
     NodeSelection,
     Split,
 )
-from motile.data import (
-    arlo_graph,
-    arlo_graph_nx,
-    toy_hypergraph,
-    toy_hypergraph_nx,
-)
 from motile.variables import EdgeSelected, NodeSelected
 
 
@@ -30,15 +24,15 @@ def _selected_edges(solver: motile.Solver) -> list:
     return sorted([e for e, i in edge_indicators.items() if solution[i] > 0.5])
 
 
-def test_graph_creation_with_hyperedges():
-    graph = toy_hypergraph()
+def test_graph_creation_with_hyperedges(toy_hypergraph):
+    graph = toy_hypergraph
     assert len(graph.nodes) == 7
     assert len(graph.edges) == 10
 
 
-def test_graph_creation_from_multiple_nx_graphs():
-    g1 = toy_hypergraph_nx()
-    g2 = arlo_graph_nx()
+def test_graph_creation_from_multiple_nx_graphs(toy_hypergraph_nx, arlo_graph_nx):
+    g1 = toy_hypergraph_nx
+    g2 = arlo_graph_nx
     graph = motile.TrackGraph()
 
     graph.add_from_nx_graph(g1)
@@ -54,8 +48,8 @@ def test_graph_creation_from_multiple_nx_graphs():
     assert "prediction_distance" in graph.edges[(0, 2)]
 
 
-def test_solver():
-    graph = arlo_graph()
+def test_solver(arlo_graph):
+    graph = arlo_graph
 
     solver = motile.Solver(graph)
     solver.add_cost(NodeSelection(weight=-1.0, attribute="score", constant=-100.0))
