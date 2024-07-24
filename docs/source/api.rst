@@ -78,7 +78,7 @@ All costs inherit from the following base class:
 
 .. automodule:: motile.costs
 
-  .. autoclass:: Costs
+  .. autoclass:: Cost
     :members:
 
 The following lists all costs that are already implemented in ``motile``.

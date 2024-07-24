@@ -43,12 +43,12 @@ def create_ssvm_noise_trackgraph() -> motile.TrackGraph:
 def create_toy_solver(graph):
     solver = motile.Solver(graph)
 
-    solver.add_constraints(MaxParents(1))
-    solver.add_constraints(MaxChildren(1))
+    solver.add_constraint(MaxParents(1))
+    solver.add_constraint(MaxChildren(1))
 
-    solver.add_costs(NodeSelection(weight=1.0, attribute="score", constant=-10.0))
-    solver.add_costs(EdgeSelection(weight=10.0, attribute="score"))
-    solver.add_costs(Appear(constant=10.0))
+    solver.add_cost(NodeSelection(weight=1.0, attribute="score", constant=-10.0))
+    solver.add_cost(EdgeSelection(weight=10.0, attribute="score"))
+    solver.add_cost(Appear(constant=10.0))
 
     logger.debug("====== Initial Weights ======")
     logger.debug(solver.weights)
@@ -118,14 +118,14 @@ def test_structsvm_common_toy_example():
 def create_noise_solver(graph):
     solver = motile.Solver(graph)
 
-    solver.add_constraints(MaxParents(1))
-    solver.add_constraints(MaxChildren(1))
+    solver.add_constraint(MaxParents(1))
+    solver.add_constraint(MaxChildren(1))
 
-    solver.add_costs(NodeSelection(weight=1.0, attribute="score", constant=-10.0))
-    solver.add_costs(EdgeSelection(weight=10.0, attribute="score", constant=3.0))
-    solver.add_costs(Appear(constant=10.0))
+    solver.add_cost(NodeSelection(weight=1.0, attribute="score", constant=-10.0))
+    solver.add_cost(EdgeSelection(weight=10.0, attribute="score", constant=3.0))
+    solver.add_cost(Appear(constant=10.0))
 
-    solver.add_costs(
+    solver.add_cost(
         NodeSelection(
             weight=2,
             constant=4,
@@ -133,7 +133,7 @@ def create_noise_solver(graph):
         ),
         name="NodeNoise",
     )
-    solver.add_costs(
+    solver.add_cost(
         EdgeSelection(
             weight=6,
             constant=8,

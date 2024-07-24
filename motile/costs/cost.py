@@ -7,18 +7,18 @@ if TYPE_CHECKING:
     from motile.solver import Solver
 
 
-class Costs(ABC):
-    """A base class for costs that can be added to a solver."""
+class Cost(ABC):
+    """A base class for a cost that can be added to a solver."""
 
     @abstractmethod
     def apply(self, solver: Solver) -> None:
-        """Apply costs to the given solver.
+        """Apply a cost to the given solver.
 
         Use :func:`motile.Solver.get_variables` and
         :func:`motile.Solver.add_variable_cost`.
 
         Args:
             solver:
-                The :class:`~motile.Solver` to create costs for.
+                The :class:`~motile.Solver` to create a cost for.
         """
         pass

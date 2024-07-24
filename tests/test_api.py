@@ -58,16 +58,16 @@ def test_solver():
     graph = arlo_graph()
 
     solver = motile.Solver(graph)
-    solver.add_costs(NodeSelection(weight=-1.0, attribute="score", constant=-100.0))
-    solver.add_costs(
+    solver.add_cost(NodeSelection(weight=-1.0, attribute="score", constant=-100.0))
+    solver.add_cost(
         EdgeSelection(weight=0.5, attribute="prediction_distance", constant=-1.0)
     )
-    solver.add_costs(EdgeDistance(position_attribute=("x",), weight=0.5))
-    solver.add_costs(Appear(constant=200.0, attribute="score", weight=-1.0))
-    solver.add_costs(Split(constant=100.0, attribute="score", weight=1.0))
+    solver.add_cost(EdgeDistance(position_attribute=("x",), weight=0.5))
+    solver.add_cost(Appear(constant=200.0, attribute="score", weight=-1.0))
+    solver.add_cost(Split(constant=100.0, attribute="score", weight=1.0))
 
-    solver.add_constraints(MaxParents(1))
-    solver.add_constraints(MaxChildren(2))
+    solver.add_constraint(MaxParents(1))
+    solver.add_constraint(MaxChildren(2))
 
     callback = Mock()
     solution = solver.solve(on_event=callback)

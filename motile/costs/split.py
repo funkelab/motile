@@ -3,22 +3,22 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from ..variables import NodeSplit
-from .costs import Costs
+from .cost import Cost
 from .weight import Weight
 
 if TYPE_CHECKING:
     from motile.solver import Solver
 
 
-class Split(Costs):
-    """Costs for :class:`~motile.variables.NodeSplit` variables.
+class Split(Cost):
+    """Cost for :class:`~motile.variables.NodeSplit` variables.
 
     Args:
         weight:
             The weight to apply to the cost of each split.
 
         attribute:
-            The name of the attribute to use to look up costs. Default is
+            The name of the attribute to use to look up the cost. Default is
             ``None``, which means that a constant cost is used.
 
         constant:
