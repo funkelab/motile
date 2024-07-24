@@ -8,15 +8,15 @@ from .variable import Variable
 if TYPE_CHECKING:
     import ilpy
 
-    from motile._types import GenericEdgeId
+    from motile._types import GenericEdge
     from motile.solver import Solver
 
 
-class EdgeSelected(Variable["GenericEdgeId"]):
+class EdgeSelected(Variable["GenericEdge"]):
     """Binary variable indicates whether an edge is part of the solution or not."""
 
     @staticmethod
-    def instantiate(solver: Solver) -> Collection[GenericEdgeId]:
+    def instantiate(solver: Solver) -> Collection[GenericEdge]:
         return solver.graph.edges
 
     @staticmethod

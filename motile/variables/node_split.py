@@ -8,7 +8,7 @@ from .edge_selected import EdgeSelected
 from .variable import Variable
 
 if TYPE_CHECKING:
-    from motile._types import NodeId
+    from motile._types import Node
     from motile.solver import Solver
 
 
@@ -32,7 +32,7 @@ class NodeSplit(Variable):
     """
 
     @staticmethod
-    def instantiate(solver: Solver) -> Collection[NodeId]:
+    def instantiate(solver: Solver) -> Collection[Node]:
         return solver.graph.nodes
 
     @staticmethod

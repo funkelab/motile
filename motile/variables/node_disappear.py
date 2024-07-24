@@ -9,11 +9,11 @@ from .variable import Variable
 if TYPE_CHECKING:
     import ilpy
 
-    from motile._types import NodeId
+    from motile._types import Node
     from motile.solver import Solver
 
 
-class NodeDisappear(Variable["NodeId"]):
+class NodeDisappear(Variable["Node"]):
     r"""Binary variable to indicate whether a node disappears.
 
     This variable indicates whether the node is the end of a track (i.e., the node is
@@ -35,7 +35,7 @@ class NodeDisappear(Variable["NodeId"]):
     """
 
     @staticmethod
-    def instantiate(solver: Solver) -> Collection[NodeId]:
+    def instantiate(solver: Solver) -> Collection[Node]:
         return solver.graph.nodes
 
     @staticmethod
