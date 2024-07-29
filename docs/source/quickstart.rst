@@ -56,7 +56,7 @@ object and each edge a potential link of objects between frames:
 .. jupyter-execute::
 
   import motile
-  from motile.plot import draw_track_graph, draw_solution
+  from motile_toolbox.visualization import draw_track_graph, draw_solution
 
   draw_track_graph(graph, alpha_attribute='score', label_attribute='score')
 

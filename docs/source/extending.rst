@@ -63,7 +63,7 @@ object and each edge a potential link of objects between frames:
 
 .. jupyter-execute::
 
-  from motile.plot import draw_track_graph
+  from motile_toolbox.visualization import draw_track_graph
 
   draw_track_graph(graph, alpha_attribute="score", label_attribute="score")
 
@@ -94,7 +94,7 @@ model is:
 
 .. jupyter-execute::
 
-  from motile.plot import draw_solution
+  from motile_toolbox.visualization import draw_solution
 
   draw_solution(graph, solver, label_attribute="score")
 

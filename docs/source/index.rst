@@ -22,7 +22,7 @@ object and each edge a potential link of objects between frames:
 
   import motile
   from motile.variables import NodeSelected, EdgeSelected
-  from motile.plot import draw_track_graph, draw_solution
+  from motile_toolbox.visualization import draw_track_graph, draw_solution
 
 
 .. jupyter-execute::

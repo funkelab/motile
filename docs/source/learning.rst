@@ -71,7 +71,7 @@ object and each edge a potential link of objects between frames:
 
 .. jupyter-execute::
 
-  from motile.plot import draw_track_graph
+  from motile_toolbox.visualization import draw_track_graph
 
   draw_track_graph(graph, alpha_attribute="score", label_attribute="score")
 
@@ -144,7 +144,7 @@ Our initial weights are just a guess, let's solve...
   :hide-output:
 
   from motile.variables import NodeSelected, EdgeSelected
-  from motile.plot import draw_solution
+  from motile_toolbox.visualization import draw_solution
 
   solver.solve()
 
