@@ -34,6 +34,9 @@ def test_ignore_attributes(arlo_graph):
     for first_node in graph.nodes_by_frame(0):
         graph.nodes[first_node]["ignore_appear_cost"] = True
 
+    for second_node in graph.nodes_by_frame(1):
+        graph.nodes[second_node]["ignore_appear_cost"] = False
+
     solver = motile.Solver(graph)
     solver.add_cost(NodeSelection(weight=-1.0, attribute="score", constant=-100.0))
     solver.add_cost(
