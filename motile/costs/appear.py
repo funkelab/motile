@@ -48,7 +48,8 @@ class Appear(Cost):
 
         for node, index in appear_indicators.items():
             if self.ignore_attribute is not None:
-                if solver.graph.nodes[node].get(self.ignore_attribute, False):
+                if solver.graph.nodes[node].get(self.ignore_attribute, True):
+                    solver.add_variable_cost(index, 0.0, self.constant)
                     continue
             if self.attribute is not None:
                 solver.add_variable_cost(
