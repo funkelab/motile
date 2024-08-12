@@ -2,12 +2,13 @@ from __future__ import annotations
 
 import logging
 from collections import defaultdict
-from typing import TYPE_CHECKING, Any, DefaultDict, Hashable, Iterator, TypeGuard, cast
+from typing import TYPE_CHECKING, Any, DefaultDict, Hashable, Iterator, cast
 
 logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
     import networkx
+    from typing_extensions import TypeGuard
 
     from motile._types import (
         Attributes,
