@@ -15,7 +15,7 @@ from .variables import EdgeSelected, NodeSelected
 
 if TYPE_CHECKING:
     from motile import Solver, TrackGraph
-    from motile._types import EdgeId, NodeId
+    from motile._types import Edge, Node
 
     Color = tuple[int, int, int]
     ReturnsFloat = Callable[[Any], float]
@@ -102,7 +102,7 @@ def draw_track_graph(
 
     if position_func is None:
 
-        def position_func(node: NodeId) -> float:
+        def position_func(node: Node) -> float:
             return float(graph.nodes[node][position_attribute])
 
     alpha_node_func: ReturnsFloat
@@ -224,6 +224,8 @@ def draw_track_graph(
     for ((u, v), attrs), label, color in zip(
         graph.edges.items(), edge_labels, edge_colors
     ):
+        if isinstance(u, tuple) or isinstance(v, tuple):
+            raise RuntimeError("Hyperedges are not supported.")
         start = node_positions[sorted(graph.nodes).index(u), (0, 1)]
         end = node_positions[sorted(graph.nodes).index(v), (0, 1)]
         mid = 0.6 * start + 0.4 * end
@@ -306,10 +308,10 @@ def draw_solution(
     node_indicators = solver.get_variables(NodeSelected)
     edge_indicators = solver.get_variables(EdgeSelected)
 
-    def node_alpha_func(node: NodeId) -> float:
+    def node_alpha_func(node: Node) -> float:
         return solution[node_indicators[node]]  # type: ignore
 
-    def edge_alpha_func(edge: EdgeId) -> float:
+    def edge_alpha_func(edge: Edge) -> float:
         return solution[edge_indicators[edge]]  # type: ignore
 
     kwargs["alpha_func"] = (node_alpha_func, edge_alpha_func)
