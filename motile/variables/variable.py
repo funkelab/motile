@@ -49,7 +49,7 @@ class Variable(ABC, Mapping[_KT, ilpy.Variable]):
 
     This allows variables to be added lazily to the solver.
     :class:`Constraints<motile.constraints.Constraint>` and
-    :class:`motile.costs.Costs` can ask for variables.
+    :class:`motile.costs.Cost` can ask for variables.
     """
 
     # default variable type, replace in subclasses to override

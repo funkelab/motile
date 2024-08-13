@@ -1,5 +1,5 @@
 from .appear import Appear
-from .costs import Costs
+from .cost import Cost
 from .disappear import Disappear
 from .edge_distance import EdgeDistance
 from .edge_selection import EdgeSelection
@@ -11,7 +11,7 @@ from .weights import Weights
 
 __all__ = [
     "Appear",
-    "Costs",
+    "Cost",
     "Disappear",
     "EdgeDistance",
     "EdgeSelection",

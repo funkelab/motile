@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, cast
 import numpy as np
 
 from ..variables import EdgeSelected
-from .costs import Costs
+from .cost import Cost
 from .weight import Weight
 
 if TYPE_CHECKING:
@@ -14,10 +14,10 @@ if TYPE_CHECKING:
     from motile.solver import Solver
 
 
-class EdgeDistance(Costs):
-    """Costs for :class:`~motile.variables.EdgeSelected` variables.
+class EdgeDistance(Cost):
+    """Cost for :class:`~motile.variables.EdgeSelected` variables.
 
-    Costs are based on the spatial distance of the incident nodes.
+    Cost is based on the spatial distance of the incident nodes.
 
     Args:
         position_attribute:
