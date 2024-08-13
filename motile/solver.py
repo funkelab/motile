@@ -315,7 +315,7 @@ class Solver:
 
         node_selected = self.get_variables(NodeSelected)
         edge_selected = self.get_variables(EdgeSelected)
-        selected_graph = TrackGraph()
+        selected_graph = TrackGraph(frame_attribute=self.graph.frame_attribute)
 
         for node_id, node in self.graph.nodes.items():
             if solution[node_selected[node_id]] > 0.5:
