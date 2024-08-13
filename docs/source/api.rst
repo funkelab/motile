@@ -15,7 +15,7 @@ API Reference
 
     ``Node: TypeAlias = int``
 
-   - Collections of nodes are tuples of ``Node``s
+   - Collections of nodes are tuples of ``Node``
 
     ``Nodes: TypeAlias = tuple[Node, ...]``
 
