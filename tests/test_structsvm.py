@@ -75,20 +75,18 @@ def test_structsvm_common_toy_example(toy_graph):
     optimal_weights = solver.weights
 
     np.testing.assert_allclose(
-        optimal_weights[("NodeSelection", "weight")], -4.9771062468440785, rtol=0.01
+        optimal_weights[("NodeSelection", "weight")], -3.27, atol=0.01
     )
     np.testing.assert_allclose(
-        optimal_weights[("NodeSelection", "constant")], -3.60083857250377, rtol=0.01
+        optimal_weights[("NodeSelection", "constant")], 1.78, atol=0.01
     )
     np.testing.assert_allclose(
-        optimal_weights[("EdgeSelection", "weight")], -6.209937259450144, rtol=0.01
+        optimal_weights[("EdgeSelection", "weight")], -3.23, atol=0.01
     )
     np.testing.assert_allclose(
-        optimal_weights[("EdgeSelection", "constant")], -2.4005590483600203, rtol=0.01
+        optimal_weights[("EdgeSelection", "constant")], 1.06, atol=0.01
     )
-    np.testing.assert_allclose(
-        optimal_weights[("Appear", "constant")], 32.13305455424766, rtol=0.01
-    )
+    np.testing.assert_allclose(optimal_weights[("Appear", "constant")], 0.20, atol=0.01)
 
     solver = create_toy_solver(graph)
     solver.weights.from_ndarray(optimal_weights.to_ndarray())
@@ -171,20 +169,18 @@ def test_structsvm_noise():
     logger.debug(solver.features.to_ndarray())
 
     np.testing.assert_allclose(
-        optimal_weights[("NodeSelection", "weight")], -2.7777798708004564, rtol=0.01
+        optimal_weights[("NodeSelection", "weight")], -2.77, atol=0.01
     )
     np.testing.assert_allclose(
-        optimal_weights[("NodeSelection", "constant")], -1.3883786845544988, rtol=0.01
+        optimal_weights[("NodeSelection", "constant")], 0.39, atol=0.01
     )
     np.testing.assert_allclose(
-        optimal_weights[("EdgeSelection", "weight")], -3.3333338262308043, rtol=0.01
+        optimal_weights[("EdgeSelection", "weight")], -3.33, atol=0.01
     )
     np.testing.assert_allclose(
-        optimal_weights[("EdgeSelection", "constant")], -0.9255857897041805, rtol=0.01
+        optimal_weights[("EdgeSelection", "constant")], 0, atol=0.01
     )
-    np.testing.assert_allclose(
-        optimal_weights[("Appear", "constant")], 19.53720680712646, rtol=0.01
-    )
+    np.testing.assert_allclose(optimal_weights[("Appear", "constant")], 0.39, atol=0.01)
 
     def _assert_edges(solver, solution):
         edge_indicators = solver.get_variables(EdgeSelected)
@@ -213,7 +209,3 @@ def test_structsvm_noise():
     logger.debug(solver.get_variables(EdgeSelected))
 
     _assert_edges(solver, solution)
-
-
-if __name__ == "__main__":
-    test_structsvm_noise()

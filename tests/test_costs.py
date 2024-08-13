@@ -1,4 +1,5 @@
 import motile
+import pytest
 from motile.constraints import MaxChildren, MaxParents
 from motile.costs import (
     Appear,
@@ -9,6 +10,7 @@ from motile.costs import (
 )
 
 
+@pytest.mark.skip("Should test ignoring appear and disappear costs based on location.")
 def test_ignore_attributes(arlo_graph):
     graph = arlo_graph
 

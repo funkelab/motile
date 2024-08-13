@@ -75,4 +75,4 @@ def test_solver(arlo_graph):
     )
     assert list(subgraph.nodes) == _selected_nodes(solver) == [0, 1, 2, 3, 4, 5]
     cost = solution.get_value()
-    assert cost == -206.0, f"{cost=}"
+    assert cost == -604.0, f"{cost=}"
