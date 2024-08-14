@@ -9,11 +9,11 @@ from .variable import Variable
 if TYPE_CHECKING:
     import ilpy
 
-    from motile._types import NodeId
+    from motile._types import Node
     from motile.solver import Solver
 
 
-class NodeAppear(Variable["NodeId"]):
+class NodeAppear(Variable["Node"]):
     r"""Binary variable indicating whether a node is the start of a track.
 
     (i.e., the node is selected and has no selected incoming edges).
@@ -35,7 +35,7 @@ class NodeAppear(Variable["NodeId"]):
     """
 
     @staticmethod
-    def instantiate(solver: Solver) -> Collection[NodeId]:
+    def instantiate(solver: Solver) -> Collection[Node]:
         return solver.graph.nodes
 
     @staticmethod

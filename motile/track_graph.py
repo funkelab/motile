@@ -8,8 +8,16 @@ logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
     import networkx
+    from typing_extensions import TypeGuard
 
-    from motile._types import EdgeId, GraphObject, NodeId
+    from motile._types import (
+        Attributes,
+        Edge,
+        GenericEdge,
+        HyperEdge,
+        Node,
+        Nodes,
+    )
 
 
 class TrackGraph:
@@ -44,17 +52,17 @@ class TrackGraph:
         self.frame_attribute = frame_attribute
         self._graph_changed = True
 
-        self.nodes: dict[NodeId, GraphObject] = {}
-        self.edges: dict[EdgeId, GraphObject] = {}
-        self.prev_edges: defaultdict[NodeId, list[EdgeId]] = DefaultDict(list)
-        self.next_edges: defaultdict[NodeId, list[EdgeId]] = DefaultDict(list)
+        self.nodes: dict[Node, Attributes] = {}
+        self.edges: dict[GenericEdge, Attributes] = {}
+        self.prev_edges: defaultdict[Node, list[GenericEdge]] = DefaultDict(list)
+        self.next_edges: defaultdict[Node, list[GenericEdge]] = DefaultDict(list)
 
         if nx_graph:
             self.add_from_nx_graph(nx_graph)
 
         self._update_metadata()
 
-    def add_node(self, node_id: NodeId, data: GraphObject) -> None:
+    def add_node(self, node_id: Node, data: Attributes) -> None:
         """Adds a new node to this TrackGraph.
 
         Args:
@@ -68,25 +76,25 @@ class TrackGraph:
         self.nodes[node_id] = data
         self._graph_changed = True
 
-    def add_edge(self, edge_id: EdgeId, data: GraphObject) -> None:
+    def add_edge(self, edge_id: GenericEdge, data: Attributes) -> None:
         """Adds an edge to this TrackGraph.
 
         Args:
-            edge_id: an ``EdgeId`` (tuple of NodeIds) defining the edge
+            edge_id: an ``GenericEdge`` (tuple of Nodes) defining the edge
                 (or hyperedge) to be added.
             data: all properties associated to the added edge.
         """
         self.edges[edge_id] = data
 
         if self.is_hyperedge(edge_id):
-            us, vs = cast("tuple[tuple[int], tuple[int]]", edge_id)
+            us, vs = edge_id
             for v in vs:
                 self.prev_edges[v].append(edge_id)
             for u in us:
                 self.next_edges[v].append(edge_id)
         else:
             # normal (u, v) edge
-            u, v = cast("tuple[int, int]", edge_id)
+            u, v = cast("Edge", edge_id)
             self.prev_edges[v].append(edge_id)
             self.next_edges[u].append(edge_id)
 
@@ -128,11 +136,8 @@ class TrackGraph:
                 continue
             # add hyperedge when nx_edge leads to hyperedge node
             if self._is_hyperedge_nx_node(nx_graph, v):
-                (
-                    edge,
-                    in_nodes,
-                    out_nodes,
-                ) = self._hyperedge_nx_node_to_edge_tuple_and_neighbors(nx_graph, v)
+                edge = self._convert_nx_hypernode(nx_graph, v)
+                in_nodes, out_nodes = edge
                 # avoid adding duplicates
                 if edge not in self.edges:
                     self.edges[edge] = data
@@ -147,7 +152,7 @@ class TrackGraph:
                 self.prev_edges[v].append((u, v))
                 self.next_edges[u].append((u, v))
 
-    def nodes_of(self, edge: EdgeId | int) -> Iterator[int]:
+    def nodes_of(self, edge: GenericEdge | Nodes | Node) -> Iterator[Node]:
         """Returns an ``Iterator`` of node id's that are incident to the given edge.
 
         Args:
@@ -156,13 +161,15 @@ class TrackGraph:
         Yields:
             all nodes incident to the given edge.
         """
+        # recursively descent into tuples and yield their elements if they are
+        # not tuples
         if isinstance(edge, tuple):
             for x in edge:
                 yield from self.nodes_of(x)
         else:
             yield edge
 
-    def is_hyperedge(self, edge: EdgeId) -> bool:
+    def is_hyperedge(self, edge: GenericEdge) -> TypeGuard[HyperEdge]:
         """Test if the given edge is a hyperedge in this track graph."""
         assert len(edge) == 2, "(Hyper)edges need to be 2-tuples"
         num_tuples = sum(isinstance(x, tuple) for x in edge)
@@ -191,9 +198,9 @@ class TrackGraph:
         """
         return self.frame_attribute not in nx_graph.nodes[nx_node]
 
-    def _hyperedge_nx_node_to_edge_tuple_and_neighbors(
+    def _convert_nx_hypernode(
         self, nx_graph: networkx.DiGraph, hyperedge_node: Any
-    ) -> tuple[tuple[NodeId, ...], list[NodeId], list[NodeId]]:
+    ) -> HyperEdge:
         """Creates a hyperedge tuple for hyperedge node in a given networkx ``DiGraph``.
 
         Args:
@@ -208,25 +215,10 @@ class TrackGraph:
         """
         assert self._is_hyperedge_nx_node(nx_graph, hyperedge_node)
 
-        in_nodes = list(nx_graph.predecessors(hyperedge_node))
-        out_nodes = list(nx_graph.successors(hyperedge_node))
-        nx_nodes = in_nodes + out_nodes
+        in_nodes = tuple(nx_graph.predecessors(hyperedge_node))
+        out_nodes = tuple(nx_graph.successors(hyperedge_node))
 
-        frameset = {
-            nx_graph.nodes[nx_node][self.frame_attribute] for nx_node in nx_nodes
-        }
-        frames = list(sorted(frameset))
-
-        edge_tuple = tuple(
-            tuple(
-                node
-                for node in nx_nodes
-                if nx_graph.nodes[node][self.frame_attribute] == frame
-            )
-            for frame in frames
-        )
-
-        return edge_tuple, in_nodes, out_nodes
+        return (in_nodes, out_nodes)
 
     def get_frames(self) -> tuple[int, int]:
         """Return tuple with first and last (exclusive) frame this graph has nodes for.

@@ -6,28 +6,38 @@ API Reference
 .. automodule:: motile
    :noindex:
 
-.. admonition:: A note on ``NodeId`` and ``EdgeId`` types
+.. admonition:: A note on ``Node`` and ``Edge`` types
   :class: note, dropdown
 
    The following types are used throughout the docs
 
-   - All objects in a graph (both ``Nodes`` and ``Edges``) are represented as
-     dictionaries mapping string attribute names to value. For example, a node
-     might be ``{ "id": 1, "x": 0.5, "y": 0.5, "t": 0 }``
+   - Nodes are integers
 
-     ``GraphObject: TypeAlias = Mapping[str, Any]``
+    ``Node: TypeAlias = int``
 
-   - Node IDs may be integers, or a "meta-node" as a tuple of integers.
+   - Collections of nodes are tuples of ``Node``
 
-    ``NodeId: TypeAlias = Union[int, tuple[int, ...]]``
+    ``Nodes: TypeAlias = tuple[Node, ...]``
 
-   - Edges IDs are tuples of ``NodeId``.
+   - Edges are 2-tuples of ``Node``.
 
-    ``EdgeId: TypeAlias = tuple[NodeId, ...]``
+    ``Edge: TypeAlias = tuple[Node, Node]``
+
+   - Hyperedges are 2-tuples of ``Nodes``:
+
+    ``HyperEdge: TypeAlias = tuple[Nodes, Nodes]``
+
+    Examples:
 
     - ``(0, 1)`` is an edge from node 0 to node 1.
-    - ``((0, 1), 2)`` is a hyperedge from nodes 0 and 1 to node 2 (i.e. a merge).
     - ``((0,), (1, 2))`` is a hyperedge from node 0 to nodes 1 and 2 (i.e. a split).
+    - ``((0, 1), 2)`` is a not a valid edge.
+
+   - All attributes in a graph (for both ``Node``s and ``(Hyper)Edge``s) are
+     dictionaries mapping string attribute names to values. For example, a
+     node's attributes might be ``{ "x": 0.5, "y": 0.5, "t": 0 }``
+
+     ``Attributes: TypeAlias = Mapping[str, Any]``
 
 
 
