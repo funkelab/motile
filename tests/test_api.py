@@ -4,6 +4,7 @@ import motile
 from motile.constraints import MaxChildren, MaxParents
 from motile.costs import (
     Appear,
+    Disappear,
     EdgeDistance,
     EdgeSelection,
     NodeSelection,
@@ -58,6 +59,7 @@ def test_solver(arlo_graph):
     )
     solver.add_cost(EdgeDistance(position_attribute=("x",), weight=0.5))
     solver.add_cost(Appear(constant=200.0, attribute="score", weight=-1.0))
+    solver.add_cost(Disappear(constant=55.0))
     solver.add_cost(Split(constant=100.0, attribute="score", weight=1.0))
 
     solver.add_constraint(MaxParents(1))

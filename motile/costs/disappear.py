@@ -37,6 +37,6 @@ class Disappear(Cost):
             if self.ignore_attribute is not None:
                 if G.nodes[node].get(self.ignore_attribute, False):
                     continue
-            if G.nodes[node][G.frame_attribute] == G.get_frames()[1]:
+            if G.nodes[node][G.frame_attribute] == G.get_frames()[1] - 1:
                 continue
             solver.add_variable_cost(index, 1.0, self.constant)
