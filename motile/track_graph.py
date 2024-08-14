@@ -228,10 +228,11 @@ class TrackGraph:
 
         return edge_tuple, in_nodes, out_nodes
 
-    def get_frames(self) -> tuple[int | None, int | None]:
+    def get_frames(self) -> tuple[int, int]:
         """Return tuple with first and last (exclusive) frame this graph has nodes for.
 
         Returns ``(t_begin, t_end)`` where ``t_end`` is exclusive.
+        Returns ``(0, 0)`` for empty graph.
         """
         self._update_metadata()
 
@@ -254,8 +255,8 @@ class TrackGraph:
 
         if not self.nodes:
             self._nodes_by_frame = {}
-            self.t_begin = None
-            self.t_end = None
+            self.t_begin = 0
+            self.t_end = 0
             return
 
         self._nodes_by_frame = {}

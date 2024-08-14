@@ -155,8 +155,7 @@ def draw_track_graph(
         label_edge_func = label_func
 
     frame_attribute = graph.frame_attribute
-    # (get_frames() will return a tuple including None if the graph has no nodes)
-    frames = list(range(*graph.get_frames()))  # type: ignore
+    frames = list(range(*graph.get_frames()))
 
     node_positions = np.asarray(
         [
