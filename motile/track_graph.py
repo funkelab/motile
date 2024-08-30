@@ -133,8 +133,8 @@ class TrackGraph:
         # graph without nodes, it's very likely this was not intentional
         if nodes_count == 0:
             raise KeyError(
-                f"No nodes with `frame_attribute` '{self.frame_attribute}' found in the given `nx_graph`.\n"
-                "It's very likely the wrong `frame_attribute` was set."
+                f"No nodes with `frame_attribute` '{self.frame_attribute}' found in "
+                "the `nx_graph`.\nIt's likely the wrong `frame_attribute` was set."
             )
 
         # add all edges and hyperedges
