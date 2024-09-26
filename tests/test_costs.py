@@ -1,59 +1,83 @@
 import motile
-from motile.constraints import MaxChildren, MaxParents
 from motile.costs import (
     Appear,
-    EdgeDistance,
+    Disappear,
     EdgeSelection,
     NodeSelection,
-    Split,
 )
 
 
-def test_ignore_attributes(arlo_graph):
-    graph = arlo_graph
+def test_appear_cost(arlo_graph):
+    solver = motile.Solver(arlo_graph)
 
-    # first solve without ignore attribute:
-
-    solver = motile.Solver(graph)
-    solver.add_cost(NodeSelection(weight=-1.0, attribute="score", constant=-100.0))
+    # Make a slightly negative node cost, and a very positive appear cost and edge
+    # cost. We expect only selecting nodes in the first frame, where by default the
+    # appear cost is ignored, and not selecting any edges
+    solver.add_cost(NodeSelection(weight=0, attribute="score", constant=-1))
+    solver.add_cost(Appear(constant=100))
     solver.add_cost(
-        EdgeSelection(weight=0.5, attribute="prediction_distance", constant=-1.0)
+        EdgeSelection(weight=0, attribute="prediction_distance", constant=100)
     )
-    solver.add_cost(EdgeDistance(position_attribute=("x",), weight=0.5))
-    solver.add_cost(Appear(constant=200.0, attribute="score", weight=-1.0))
-    solver.add_cost(Split(constant=100.0, attribute="score", weight=1.0))
+    solver.solve()
+    solution_graph = solver.get_selected_subgraph()
+    assert list(solution_graph.nodes.keys()) == [0, 1]
+    assert len(solution_graph.edges) == 0
 
-    solver.add_constraint(MaxParents(1))
-    solver.add_constraint(MaxChildren(2))
+    ignore_attr = "ignore"
+    # now also ignore the appear cost in the second frame
+    for second_node in arlo_graph.nodes_by_frame(1):
+        arlo_graph.nodes[second_node][ignore_attr] = True
+    # but not the third frame
+    for third_node in arlo_graph.nodes_by_frame(2):
+        arlo_graph.nodes[third_node][ignore_attr] = False
 
-    solution = solver.solve()
-    no_ignore_value = solution.get_value()
+    solver = motile.Solver(arlo_graph)
 
-    # solve and ignore appear costs in frame 0
-
-    for first_node in graph.nodes_by_frame(0):
-        graph.nodes[first_node]["ignore_appear_cost"] = True
-
-    solver = motile.Solver(graph)
-    solver.add_cost(NodeSelection(weight=-1.0, attribute="score", constant=-100.0))
+    # Resolving should also select nodes in second frame
+    solver.add_cost(NodeSelection(weight=0, attribute="score", constant=-1))
+    solver.add_cost(Appear(constant=100, ignore_attribute=ignore_attr))
     solver.add_cost(
-        EdgeSelection(weight=0.5, attribute="prediction_distance", constant=-1.0)
+        EdgeSelection(weight=0, attribute="prediction_distance", constant=100)
     )
-    solver.add_cost(EdgeDistance(position_attribute="x", weight=0.5))
+    solver.solve()
+    solution_graph = solver.get_selected_subgraph()
+    assert list(solution_graph.nodes.keys()) == [0, 1, 2, 3]
+    assert len(solution_graph.edges) == 0
+
+
+def test_disappear_cost(arlo_graph):
+    solver = motile.Solver(arlo_graph)
+
+    # make a slightly negative node cost, and a positive disappear cost and edge cost
+    # we expect only selecting nodes in the last frame, where by default the disappear
+    # cost is ignored, and not selecting any edges
+    solver.add_cost(NodeSelection(weight=0, attribute="score", constant=-1))
+    solver.add_cost(Disappear(constant=100))
     solver.add_cost(
-        Appear(
-            constant=200.0,
-            attribute="score",
-            weight=-1.0,
-            ignore_attribute="ignore_appear_cost",
-        )
+        EdgeSelection(weight=0, attribute="prediction_distance", constant=100)
     )
-    solver.add_cost(Split(constant=100.0, attribute="score", weight=1.0))
+    solver.solve()
+    solution_graph = solver.get_selected_subgraph()
+    assert list(solution_graph.nodes.keys()) == [4, 5, 6]
+    assert len(solution_graph.edges) == 0
 
-    solver.add_constraint(MaxParents(1))
-    solver.add_constraint(MaxChildren(2))
+    ignore_attr = "ignore"
+    # now also ignore the disappear cost in the second frame
+    for second_node in arlo_graph.nodes_by_frame(1):
+        arlo_graph.nodes[second_node][ignore_attr] = True
+    # but not the first frame
+    for first_node in arlo_graph.nodes_by_frame(0):
+        arlo_graph.nodes[first_node][ignore_attr] = False
 
-    solution = solver.solve()
-    ignore_value = solution.get_value()
+    solver = motile.Solver(arlo_graph)
 
-    assert ignore_value < no_ignore_value
+    # Resolving should also select nodes in second frame
+    solver.add_cost(NodeSelection(weight=0, attribute="score", constant=-1))
+    solver.add_cost(Disappear(constant=100, ignore_attribute=ignore_attr))
+    solver.add_cost(
+        EdgeSelection(weight=0, attribute="prediction_distance", constant=100)
+    )
+    solver.solve()
+    solution_graph = solver.get_selected_subgraph()
+    assert list(solution_graph.nodes.keys()) == [2, 3, 4, 5, 6]
+    assert len(solution_graph.edges) == 0
