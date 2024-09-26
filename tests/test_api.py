@@ -1,6 +1,7 @@
 from unittest.mock import Mock
 
 import motile
+import pytest
 from motile.constraints import MaxChildren, MaxParents
 from motile.costs import (
     Appear,
@@ -47,6 +48,11 @@ def test_graph_creation_from_multiple_nx_graphs(toy_hypergraph_nx, arlo_graph_nx
     assert len(graph.edges) == 11
     assert graph.nodes[6]["x"] == 200
     assert "prediction_distance" in graph.edges[(0, 2)]
+
+
+def test_graph_creation_wrong_frame_attr(toy_hypergraph_nx):
+    with pytest.raises(KeyError):
+        motile.TrackGraph(toy_hypergraph_nx, frame_attribute="time")
 
 
 def test_solver(arlo_graph):
