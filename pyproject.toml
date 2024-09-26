@@ -29,6 +29,7 @@ docs = [
     "sphinx_autodoc_typehints",
     "sphinx_rtd_theme",
     "sphinx_togglebutton",
+    "sphinxcontrib_jquery",
     "sphinx",
     "tomli",
     "motile_toolbox",
