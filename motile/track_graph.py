@@ -120,6 +120,7 @@ class TrackGraph:
                 or edges do already exist, the values set in the given ``nx_graph``
                 will be updating the previously set values.
         """
+        nodes_count = 0
         # add all regular nodes (all but ones representing hyperedges)
         for node, data in nx_graph.nodes.items():
             if self.frame_attribute in data:
@@ -127,6 +128,14 @@ class TrackGraph:
                     self.nodes[node] = data
                 else:
                     self.nodes[node] |= data
+                nodes_count += 1
+
+        # graph without nodes, it's very likely this was not intentional
+        if nodes_count == 0:
+            raise KeyError(
+                f"No nodes with `frame_attribute` '{self.frame_attribute}' found in "
+                "the `nx_graph`.\nIt's likely the wrong `frame_attribute` was set."
+            )
 
         # add all edges and hyperedges
         for (u, v), data in nx_graph.edges.items():
@@ -220,10 +229,11 @@ class TrackGraph:
 
         return (in_nodes, out_nodes)
 
-    def get_frames(self) -> tuple[int | None, int | None]:
+    def get_frames(self) -> tuple[int, int]:
         """Return tuple with first and last (exclusive) frame this graph has nodes for.
 
         Returns ``(t_begin, t_end)`` where ``t_end`` is exclusive.
+        Returns ``(0, 0)`` for empty graph.
         """
         self._update_metadata()
 
@@ -246,8 +256,8 @@ class TrackGraph:
 
         if not self.nodes:
             self._nodes_by_frame = {}
-            self.t_begin = None
-            self.t_end = None
+            self.t_begin = 0
+            self.t_end = 0
             return
 
         self._nodes_by_frame = {}

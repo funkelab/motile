@@ -1,9 +1,11 @@
 from unittest.mock import Mock
 
 import motile
+import pytest
 from motile.constraints import MaxChildren, MaxParents
 from motile.costs import (
     Appear,
+    Disappear,
     EdgeDistance,
     EdgeSelection,
     NodeSelection,
@@ -48,6 +50,11 @@ def test_graph_creation_from_multiple_nx_graphs(toy_hypergraph_nx, arlo_graph_nx
     assert "prediction_distance" in graph.edges[(0, 2)]
 
 
+def test_graph_creation_wrong_frame_attr(toy_hypergraph_nx):
+    with pytest.raises(KeyError):
+        motile.TrackGraph(toy_hypergraph_nx, frame_attribute="time")
+
+
 def test_solver(arlo_graph):
     graph = arlo_graph
 
@@ -58,6 +65,7 @@ def test_solver(arlo_graph):
     )
     solver.add_cost(EdgeDistance(position_attribute=("x",), weight=0.5))
     solver.add_cost(Appear(constant=200.0, attribute="score", weight=-1.0))
+    solver.add_cost(Disappear(constant=55.0))
     solver.add_cost(Split(constant=100.0, attribute="score", weight=1.0))
 
     solver.add_constraint(MaxParents(1))
@@ -75,4 +83,4 @@ def test_solver(arlo_graph):
     )
     assert list(subgraph.nodes) == _selected_nodes(solver) == [0, 1, 2, 3, 4, 5]
     cost = solution.get_value()
-    assert cost == -206.0, f"{cost=}"
+    assert cost == -604.0, f"{cost=}"
