@@ -13,6 +13,8 @@ if TYPE_CHECKING:
 class Appear(Cost):
     """Cost for :class:`~motile.variables.NodeAppear` variables.
 
+    This is cost is not applied to nodes in the first frame of the graph.
+
     Args:
         weight:
             The weight to apply to the cost of each starting track.
@@ -27,8 +29,6 @@ class Appear(Cost):
         ignore_attribute:
             The name of an optional node attribute that, if it is set and
             evaluates to ``True``, will not set the appear cost for that node.
-            This is useful to allow nodes in the first frame to appear at no
-            cost.
     """
 
     def __init__(
@@ -45,13 +45,16 @@ class Appear(Cost):
 
     def apply(self, solver: Solver) -> None:
         appear_indicators = solver.get_variables(NodeAppear)
+        G = solver.graph
 
         for node, index in appear_indicators.items():
             if self.ignore_attribute is not None:
-                if solver.graph.nodes[node].get(self.ignore_attribute, False):
+                if G.nodes[node].get(self.ignore_attribute, False):
                     continue
+            if G.nodes[node][G.frame_attribute] == G.get_frames()[0]:
+                continue
             if self.attribute is not None:
                 solver.add_variable_cost(
-                    index, solver.graph.nodes[node][self.attribute], self.weight
+                    index, G.nodes[node][self.attribute], self.weight
                 )
             solver.add_variable_cost(index, 1.0, self.constant)
