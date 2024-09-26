@@ -272,3 +272,6 @@ class TrackGraph:
         self.t_end = max(frames) + 1
 
         self._graph_changed = False
+
+    def __str__(self) -> str:
+        return f"TrackGraph({len(self.nodes)} nodes, {len(self.edges)} edges)"
