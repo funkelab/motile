@@ -39,13 +39,12 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           miniforge-version: latest
-          use-mamba: true
           channels: conda-forge
           channel-priority: true
 
       - name: Install package and dependencies
         run: |
-          mamba install -c gurobi -c funkelab ilpy
+          conda install -c gurobi -c funkelab ilpy
           python -m pip install -e .[test]
 
       - name: Test
