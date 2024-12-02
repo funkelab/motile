@@ -47,6 +47,11 @@ jobs:
           conda install -c gurobi -c funkelab ilpy
           python -m pip install -e .[test]
 
+      - name: Debug Conda Env
+        run: |
+          conda info
+          conda list
+
       - name: Test
         run: pytest tests -v --color=yes --cov=motile --cov-report=xml
       
