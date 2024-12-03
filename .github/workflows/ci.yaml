@@ -44,6 +44,7 @@ jobs:
 
       - name: Install package and dependencies
         run: |
+          conda update -all
           conda install -c gurobi -c funkelab ilpy
           python -m pip install -e .[test]
 
