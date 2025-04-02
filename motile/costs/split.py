@@ -15,7 +15,7 @@ class Split(Cost):
 
     Args:
         weight:
-            The weight to apply to the cost of each split.
+            The weight to apply to the cost of each split. Default is ``1``.
 
         attribute:
             The name of the attribute to use to look up the cost. Default is
@@ -23,7 +23,7 @@ class Split(Cost):
 
         constant:
             A constant cost for each node that has more than one selected
-            child.
+            child. Default is ``0``.
     """
 
     def __init__(

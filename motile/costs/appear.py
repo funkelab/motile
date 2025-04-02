@@ -17,18 +17,20 @@ class Appear(Cost):
 
     Args:
         weight:
-            The weight to apply to the cost of each starting track.
+            The weight to apply to the cost attribute of each starting track.
+            Defaults to 1.
 
         attribute:
             The name of the attribute to use to look up cost. Default is
             ``None``, which means that a constant cost is used.
 
         constant:
-            A constant cost for each node that starts a track.
+            A constant cost for each node that starts a track. Defaults to 0.
 
         ignore_attribute:
             The name of an optional node attribute that, if it is set and
             evaluates to ``True``, will not set the appear cost for that node.
+            Defaults to None
     """
 
     def __init__(
