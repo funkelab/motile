@@ -13,7 +13,7 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Run pre-commit linting
         run: pipx run pre-commit run --all-files
 
@@ -33,7 +33,7 @@ jobs:
             python-version: "3.10"
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: conda-incubator/setup-miniconda@v3
         with:
