@@ -26,6 +26,7 @@ object and each edge a potential link of objects between frames:
 
     import motile
     import plotly.io as pio
+    pio.renderers.default = "sphinx_gallery"
     import networkx as nx
 
     cells = [
