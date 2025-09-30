@@ -29,6 +29,7 @@ object and each edge a potential link of objects between frames:
   :hide-code:
 
   import networkx as nx
+  import plotly.io as pio
 
   cells = [
           {'id': 0, 't': 0, 'x': 1, 'score': 0.8},

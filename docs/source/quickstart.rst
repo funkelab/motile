@@ -17,6 +17,7 @@ object and each edge a potential link of objects between frames:
   .. jupyter-execute::
 
     import motile
+    import plotly.io as pio
     import networkx as nx
 
     cells = [
@@ -222,5 +223,50 @@ to justify starting a new track:
   :hide-code:
 
   draw_solution(graph, solver, label_attribute='score')
+
+Adding Divisions
+----------------
+
+Tracking dividing objects with ``motile`` is easy - just change the `MaxChildren` 
+constraint to 2. Because ``motile`` does not currently support removing constraints, 
+we must make a new solver...
+
+.. jupyter-execute::
+
+  # create a motile solver
+  solver = motile.Solver(graph)
+
+and add the same costs as before...
+
+.. jupyter-execute::
+
+  solver.add_cost(
+      NodeSelection(
+          weight=-1.0,
+          attribute='score'))
+  solver.add_cost(
+      EdgeSelection(
+          weight=-1.0,
+          attribute='score'))
+  solver.add_cost(Appear(constant=1.0))
+
+but with the updated constraints.
+
+.. jupyter-execute::
+
+  solver.add_constraint(MaxParents(1))
+  solver.add_constraint(MaxChildren(2))
+
+And if we solve the tracking problem again with those costs...
+
+.. jupyter-execute::
+  :hide-output:
+
+  solution = solver.solve()
+  draw_solution(graph, solver, label_attribute='score')
+
+
+...we see that the orphan node is gone now. Its (negative) cost is not enough
+to justify starting a new track:
 
 :jupyter-download-notebook:`Download this page as a Jupyter notebook<quickstart>`
