@@ -120,7 +120,9 @@ class Variable(ABC, Mapping[_KT, ilpy.Variable]):
                 r += f"cost={self._solver.costs[index]} "
             else:
                 r += "cost=None "
-            if self._solver.solution is not None and index < len(self._solver.solution):
+            if self._solver.solution is not None and index < len(
+                self._solver.solution.variable_values
+            ):
                 r += f"value={self._solver.solution[index]}"
             else:
                 r += "value=None"
