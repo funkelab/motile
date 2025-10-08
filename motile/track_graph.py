@@ -143,16 +143,13 @@ class TrackGraph:
         # add all edges and hyperedges
         for (u, v), data in nx_graph.edges.items():
             # do nothing when you have an nx_edge leaving a hyperedge node
-            # (we will add thi hyperedge when we encounter it via an incoming edge)
+            # (we will add this hyperedge when we encounter it via an incoming edge)
             if self._is_hyperedge_nx_node(nx_graph, u):
                 continue
             # add hyperedge when nx_edge leads to hyperedge node
             if self._is_hyperedge_nx_node(nx_graph, v):
                 # get data off the hypernode
-                hypernode_data = nx_graph.nodes[v]
-                # override with any data off the in-edge to the hypernode
-                # hypernode_data.update(data)
-                data = hypernode_data
+                data = nx_graph.nodes[v]
                 edge = self._convert_nx_hypernode(nx_graph, v)
                 in_nodes, out_nodes = edge
                 # avoid adding duplicates
@@ -162,8 +159,6 @@ class TrackGraph:
                         self.next_edges[in_node].append(edge)
                     for out_node in out_nodes:
                         self.prev_edges[out_node].append(edge)
-                # else:  # but merge in potentially new or updated attributes
-                #     self.edges[edge] |= data
             else:  # add a regular edge otherwise
                 self.edges[(u, v)] = data
                 self.prev_edges[v].append((u, v))
@@ -186,7 +181,6 @@ class TrackGraph:
         nx_graph.add_nodes_from(nodes_list)
         edges_list: list[tuple[Any, Any, Mapping]] = []
         for edge, data in self.edges.items():
-            print(edge, data)
             if self.is_hyperedge(edge):
                 us, vs = edge
                 if flatten_hyperedges:
