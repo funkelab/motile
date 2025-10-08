@@ -264,10 +264,14 @@ And if we solve the tracking problem again with those costs...
   :hide-output:
 
   solution = solver.solve()
+
+.. jupyter-execute::
+  :hide-code:
+
+  solution = solver.solve()
   draw_solution(graph, solver, label_attribute='score')
 
-
-...we see that the orphan node is gone now. Its (negative) cost is not enough
-to justify starting a new track:
+...we see that all three nodes in the final time point are again selected, since
+dividing gives the solver an option to pick the node without paying the appear cost.
 
 :jupyter-download-notebook:`Download this page as a Jupyter notebook<quickstart>`
