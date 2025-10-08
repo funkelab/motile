@@ -16,31 +16,22 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash -l {0}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - uses: conda-incubator/setup-miniconda@v3
+      - uses: actions/checkout@v5
+      - name: Set up Python 3.11
+        uses: astral-sh/setup-uv@v6
         with:
-          python-version: "3.11"
-          miniforge-version: latest
-          use-mamba: true
-          channels: conda-forge
-          channel-priority: true
+          python-version: '3.11'
+          enable-cache: true
 
-      - name: Install package and dependencies
-        run: |
-          mamba install -c gurobi -c funkelab ilpy
-          python -m pip install -e .[docs]
+      - name: Install dependencies
+        run: uv sync
 
       - name: Build documentation
-        run: sphinx-build docs/source docs/build/html -W -b html
+        run: uv run sphinx-build docs/source docs/build/html -W -b html
 
       - name: Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: docs/build/html
           retention-days: 90
