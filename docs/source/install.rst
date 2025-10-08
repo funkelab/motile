@@ -7,6 +7,7 @@ Installation
    :noindex:
 
 .. code-block:: bash
+   
   pip install motile
 
 This will install ``motile`` with all required dependencies, including

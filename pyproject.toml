@@ -50,6 +50,7 @@ docs = [
     "tomli",
     "motile_toolbox",
     "plotly>=6.3",
+    "sphinx-autobuild",
 ]
 
 [project.urls]

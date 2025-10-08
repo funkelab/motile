@@ -6,8 +6,8 @@ install-dev:
 
 .PHONY: tests
 tests:
-	PY_MAJOR_VERSION=py`python -c 'import sys; print(sys.version_info[0])'` pytest -v --cov=motile --cov-config=.coveragerc tests
-	pre-commit run --all-files
+	uv run pytest -v --cov=motile --cov-config=.coveragerc tests
+	uv run pre-commit run --all-files
 
 .PHONY: publish
 publish:
@@ -21,5 +21,4 @@ docs:
 
 .PHONY: docs-watch
 docs-watch:
-	pip install sphinx-autobuild
 	sphinx-autobuild docs/source docs/_build/html --watch motile --watch docs/source --open-browser

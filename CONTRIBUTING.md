@@ -37,4 +37,23 @@ To run the tests from the root directory:
 uv run pytest
 ```
 
+### Deployment
 
+To deploy a new version, first make sure to bump the version string in
+`motile/__init__.py`.  Then create an **annotated** tag, and push it to GitHub.
+This will trigger the `deploy.yaml` workflow to upload to PyPI
+
+```bash
+git tag -a vX.Y.Z -m vX.Y.Z
+git push upstream --follow-tags
+```
+
+### Building Documentation
+From root directory of the repository:
+```sh
+uv run make docs
+open docs/_build/html/index.html
+
+# or to start a live-reloading server
+uv run make docs-watch
+```
