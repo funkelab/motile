@@ -6,6 +6,7 @@ from .edge_selection import EdgeSelection
 from .features import Features
 from .node_selection import NodeSelection
 from .split import Split
+from .symmetric_division import SymmetricDivision
 from .weight import Weight
 from .weights import Weights
 
@@ -18,6 +19,7 @@ __all__ = [
     "Features",
     "NodeSelection",
     "Split",
+    "SymmetricDivision",
     "Weight",
     "Weights",
 ]
