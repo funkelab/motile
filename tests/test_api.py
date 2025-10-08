@@ -1,6 +1,8 @@
+from collections import Counter
 from unittest.mock import Mock
 
 import motile
+import networkx as nx
 import pytest
 from motile.constraints import MaxChildren, MaxParents
 from motile.costs import (
@@ -48,6 +50,27 @@ def test_graph_creation_from_multiple_nx_graphs(toy_hypergraph_nx, arlo_graph_nx
     assert len(graph.edges) == 11
     assert graph.nodes[6]["x"] == 200
     assert "prediction_distance" in graph.edges[(0, 2)]
+
+
+def test_graph_to_nx_with_hypernodes(toy_hypergraph_nx: nx.DiGraph):
+    track_graph = motile.TrackGraph(nx_graph=toy_hypergraph_nx)
+    nx_graph = track_graph.to_nx_graph(flatten_hyperedges=False)
+    # data is slightly different so we just ensure components are equal
+    nx.relabel_nodes(nx_graph, {"0_2_3": 10}, copy=False)
+    assert Counter(toy_hypergraph_nx.nodes) == Counter(nx_graph.nodes)
+    assert Counter(toy_hypergraph_nx.edges) == Counter(nx_graph.edges)
+
+
+def test_graph_to_nx_flattened(toy_hypergraph_nx: nx.DiGraph):
+    track_graph = motile.TrackGraph(nx_graph=toy_hypergraph_nx)
+    nx_graph = track_graph.to_nx_graph(flatten_hyperedges=True)
+    # data is slightly different so we just ensure components are equal
+    expected_graph = toy_hypergraph_nx.copy()
+    expected_graph.remove_node(10)
+    expected_graph.add_edge(0, 2)
+    expected_graph.add_edge(0, 3)
+    assert Counter(expected_graph.nodes) == Counter(nx_graph.nodes)
+    assert Counter(expected_graph.edges) == Counter(nx_graph.edges)
 
 
 def test_graph_creation_wrong_frame_attr(toy_hypergraph_nx):
