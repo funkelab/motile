@@ -4,10 +4,13 @@ import logging
 from collections import defaultdict
 from typing import TYPE_CHECKING, Any, DefaultDict, Hashable, Iterator, cast
 
+import networkx
+
 logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
-    import networkx
+    from typing import Mapping
+
     from typing_extensions import TypeGuard
 
     from motile._types import (
@@ -108,7 +111,7 @@ class TrackGraph:
         node will be added as a hyperedge.
 
         Args:
-            nx_graph:
+            nx_graph (networkx.DiGraph):
 
                 A directed networkx graph representing a TrackGraph to be added.
                 Hyperedges are represented by networkx nodes that do not have the
@@ -145,6 +148,11 @@ class TrackGraph:
                 continue
             # add hyperedge when nx_edge leads to hyperedge node
             if self._is_hyperedge_nx_node(nx_graph, v):
+                # get data off the hypernode
+                hypernode_data = nx_graph.nodes[v]
+                # override with any data off the in-edge to the hypernode
+                # hypernode_data.update(data)
+                data = hypernode_data
                 edge = self._convert_nx_hypernode(nx_graph, v)
                 in_nodes, out_nodes = edge
                 # avoid adding duplicates
@@ -154,12 +162,52 @@ class TrackGraph:
                         self.next_edges[in_node].append(edge)
                     for out_node in out_nodes:
                         self.prev_edges[out_node].append(edge)
-                else:  # but merge in potentially new or updated attributes
-                    self.edges[edge] |= data
+                # else:  # but merge in potentially new or updated attributes
+                #     self.edges[edge] |= data
             else:  # add a regular edge otherwise
                 self.edges[(u, v)] = data
                 self.prev_edges[v].append((u, v))
                 self.next_edges[u].append((u, v))
+
+    def to_nx_graph(self, flatten_hyperedges: bool = True) -> networkx.DiGraph:
+        """Convert a this TrackGraph into a networkx DiGraph.
+
+        Args:
+            flatten_hyperedges (bool, optional): If True, include one edge for each
+                (source, target) combo in a hyperedge. If False, introduce a new
+                hypernode to represent hyperedges. Defaults to True.
+
+        Returns:
+            networkx.DiGraph: Directed networkx graph with same nodes, edges, and
+                attributes.
+        """
+        nx_graph = networkx.DiGraph()
+        nodes_list = list(self.nodes.items())
+        nx_graph.add_nodes_from(nodes_list)
+        edges_list: list[tuple[Any, Any, Mapping]] = []
+        for edge, data in self.edges.items():
+            print(edge, data)
+            if self.is_hyperedge(edge):
+                us, vs = edge
+                if flatten_hyperedges:
+                    # flatten the hyperedges into multiple normal edges
+                    for u in us:
+                        for v in vs:
+                            edges_list.append((u, v, {}))
+                else:
+                    # add a hypernode to connect all in nodes with all out nodes
+                    hypernode_id = "_".join(list(map(str, us)) + list(map(str, vs)))
+                    nx_graph.add_node(hypernode_id, **data)
+                    for u in us:
+                        edges_list.append((u, hypernode_id, {}))
+                    for v in vs:
+                        edges_list.append((hypernode_id, v, {}))
+            else:
+                u, v = edge  # type: ignore
+                edges_list.append((u, v, data))
+
+        nx_graph.add_edges_from(edges_list)
+        return nx_graph
 
     def nodes_of(self, edge: GenericEdge | Nodes | Node) -> Iterator[Node]:
         """Returns an ``Iterator`` of node id's that are incident to the given edge.
