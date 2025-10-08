@@ -17,8 +17,8 @@ publish:
 
 .PHONY: docs
 docs:
-	make -C docs html
+	uv run make -C docs html
 
 .PHONY: docs-watch
 docs-watch:
-	sphinx-autobuild docs/source docs/_build/html --watch motile --watch docs/source --open-browser
+	uv run sphinx-autobuild docs/source docs/_build/html --watch motile --watch docs/source --open-browser
