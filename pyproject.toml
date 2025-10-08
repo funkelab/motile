@@ -18,11 +18,27 @@ authors = [
     { name = 'Florian Jug', email = 'florian.jug@fht.org' },
 ]
 dynamic = ["version"]
-dependencies = ['networkx', 'ilpy>=0.4.0', 'numpy', 'structsvm']
+requires-python = ">=3.13"
+dependencies = [
+    'networkx',
+    'ilpy>=0.4.0',
+    'numpy',
+    'structsvm',
+]
 
-[project.optional-dependencies]
-dev = ["pre-commit", "pytest", "pytest-cov", "ruff", "twine", "build"]
-test = ["pytest", "pytest-cov"]
+[dependency-groups]
+test = [
+    "pytest",
+    "pytest-cov",
+]
+dev = [
+    "pre-commit",
+    "ruff",
+    "twine",
+    "build",
+    {include-group="test"},
+    {include-group="docs"}
+]
 docs = [
     "ipykernel",
     "jupyter_sphinx",
@@ -33,6 +49,7 @@ docs = [
     "sphinx>6",
     "tomli",
     "motile_toolbox",
+    "plotly>=6.3",
 ]
 
 [project.urls]
