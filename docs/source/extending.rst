@@ -127,16 +127,8 @@ This can be done with a constraint as follows:
         self.num_tracks = num_tracks
 
     def instantiate(self, solver):
-
         appear_indicators = solver.get_variables(NodeAppear)
-
-        constraint = ilpy.Constraint()
-        for appear_indicator, index in appear_indicators.items():
-          constraint.set_coefficient(index, 1.0)
-        constraint.set_relation(ilpy.Relation.LessEqual)
-        constraint.set_value(self.num_tracks)
-
-        return [constraint]
+        yield sum([appear_indicators[n] for n in solver.graph.nodes]) <= self.num_tracks
 
 The ``instantiate`` method gets access to the solver the constraint is added
 to. Through the solver, we can then access variables to formulate constraints
@@ -303,23 +295,8 @@ The complete variable declaration looks like this:
             out_edge_index = edge_indicators[out_edge]
 
             # edge pair indicator = 1 <=> in edge = 1 and out edge = 1
-            constraint = ilpy.Constraint()
-            constraint.set_coefficient(pair_index, 2)
-            constraint.set_coefficient(in_edge_index, -1)
-            constraint.set_coefficient(out_edge_index, -1)
-            constraint.set_relation(ilpy.Relation.LessEqual)
-            constraint.set_value(0)
-            constraints.append(constraint)
-
-            constraint = ilpy.Constraint()
-            constraint.set_coefficient(pair_index, -1)
-            constraint.set_coefficient(in_edge_index, 1)
-            constraint.set_coefficient(out_edge_index, 1)
-            constraint.set_relation(ilpy.Relation.LessEqual)
-            constraint.set_value(1)
-            constraints.append(constraint)
-
-        return constraints
+            yield pair_index * 2 + in_edge_index * -1 + out_edge_index * -1 <= 0
+            yield pair_index * -1 + out_edge_index + in_edge_index <= 1
 
 Variables on their own, however, don't do anything yet. They only start to
 affect the solution if they are involved in constraints or have a cost.
