@@ -52,6 +52,14 @@ class Features:
         new_features = np.zeros(shape, dtype=self._values.dtype)
         self._values = np.hstack((self._values, new_features))
 
+    def register_feature(self, feature_index: int) -> None:
+        num_variables, num_features = self._values.shape
+        if feature_index >= num_features:
+            self.resize(
+                num_variables,
+                max(feature_index + 1, num_features),
+            )
+
     def add_feature(
         self, variable_index: int | ilpy.Variable, feature_index: int, value: float
     ) -> None:
@@ -68,10 +76,10 @@ class Features:
         num_variables, num_features = self._values.shape
 
         variable_index = int(variable_index)
-        if variable_index >= num_variables or feature_index >= num_features:
+        if variable_index >= num_variables:
             self.resize(
                 max(variable_index + 1, num_variables),
-                max(feature_index + 1, num_features),
+                num_features,
             )
 
         self._values[variable_index, feature_index] += value

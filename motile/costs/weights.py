@@ -24,7 +24,7 @@ class Weights:
         self._weight_indices: dict[Weight, int] = {}
         self._modify_callbacks: list[Callback] = []
 
-    def add_weight(self, weight: Weight, name: Hashable) -> None:
+    def add_weight(self, weight: Weight, name: Hashable) -> int:
         """Add a weight to the container.
 
         Args:
@@ -32,8 +32,12 @@ class Weights:
                 The :class:`~motile.costs.Weight` to add.
             name:
                 The name of the weight.
+
+        Returns:
+            int: the index of the weight
         """
-        self._weight_indices[weight] = len(self._weights)
+        weight_index = len(self._weights)
+        self._weight_indices[weight] = weight_index
         self._weights.append(weight)
         self._weights_by_name[name] = weight
 
@@ -41,6 +45,7 @@ class Weights:
             weight.register_modify_callback(callback)
 
         self._notify_modified(None, weight.value)
+        return weight_index
 
     def register_modify_callback(self, callback: Callback) -> None:
         """Register ``callback`` to be called when a weight is modified.
