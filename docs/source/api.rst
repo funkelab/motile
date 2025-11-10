@@ -113,6 +113,10 @@ EdgeDistance
 ^^^^^^^^^^^^
   .. autoclass:: EdgeDistance
 
+SymmetricDivision
+^^^^^^^^^^^^^^^^^
+  .. autoclass:: SymmetricDivision
+
 Features
 --------
 
