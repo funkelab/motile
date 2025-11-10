@@ -18,8 +18,8 @@ class SymmetricDivision(Cost):
     """Cost for the distance between a parent and the mean locations of its children.
 
     This cost requires division to be represented as "hyperedges" in the graph.
-    That is, there is an edge (a, (b,c)) for every possible division with node a
-    as the parent and nodes b and c as the children.
+    That is, there is an edge (`a`, (`b`, `c`)) for every possible division with node
+    `a` as the parent and nodes `b` and `c` as the children.
 
     Args:
         position_attribute:
@@ -37,8 +37,8 @@ class SymmetricDivision(Cost):
     def __init__(
         self,
         position_attribute: str | tuple[str, ...],
-        weight: float = 1,
-        constant: float = 0,
+        weight: float = 1.0,
+        constant: float = 0.0,
     ) -> None:
         self.position_attribute = position_attribute
         self.weight = Weight(weight)
