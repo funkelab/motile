@@ -8,7 +8,11 @@ if TYPE_CHECKING:
 
 
 class Cost(ABC):
-    """A base class for a cost that can be added to a solver."""
+    """A base class for a cost that can be added to a solver.
+
+    Weights should be initialized in the __init__ and added to a instance
+    variable so that the Solver can discover them.
+    """
 
     @abstractmethod
     def apply(self, solver: Solver) -> None:

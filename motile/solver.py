@@ -93,7 +93,8 @@ class Solver:
         for var_name, var in cost.__dict__.items():
             if not isinstance(var, Weight):
                 continue
-            self.weights.add_weight(var, (name, var_name))
+            weight_index = self.weights.add_weight(var, (name, var_name))
+            self.features.register_feature(weight_index)
 
         cost.apply(self)
 
