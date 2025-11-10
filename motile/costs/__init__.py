@@ -4,6 +4,7 @@ from .disappear import Disappear
 from .edge_distance import EdgeDistance
 from .edge_selection import EdgeSelection
 from .features import Features
+from .merge import Merge
 from .node_selection import NodeSelection
 from .split import Split
 from .weight import Weight
@@ -16,6 +17,7 @@ __all__ = [
     "EdgeDistance",
     "EdgeSelection",
     "Features",
+    "Merge",
     "NodeSelection",
     "Split",
     "Weight",

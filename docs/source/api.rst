@@ -109,6 +109,10 @@ Split
 ^^^^^
   .. autoclass:: Split
 
+Merge
+^^^^^
+  .. autoclass:: Merge
+
 EdgeDistance
 ^^^^^^^^^^^^
   .. autoclass:: EdgeDistance
