@@ -1,9 +1,11 @@
 import motile
+import networkx as nx
 from motile.costs import (
     Appear,
     Disappear,
     EdgeSelection,
     NodeSelection,
+    SymmetricDivision,
 )
 
 
@@ -81,3 +83,68 @@ def test_disappear_cost(arlo_graph):
     solution_graph = solver.get_selected_subgraph()
     assert list(solution_graph.nodes.keys()) == [2, 3, 4, 5, 6]
     assert len(solution_graph.edges) == 0
+
+
+def test_symmetric_division_cost() -> None:
+    """Test that symmetric division cost favors divisions with centered children.
+
+    Graph structure:
+        t=0: node 0 at y=10
+        t=1: node 1 at y=5, node 2 at y=15, node 3 at y=10
+
+    The symmetric division (0 -> 1,2) should be chosen because the average
+    of y=5 and y=15 equals y=10 (the parent's position), resulting in zero cost.
+    The alternative division (0 -> 1,3) would have higher cost due to asymmetry.
+    """
+    # Create nodes
+    cells = [
+        {"id": 0, "t": 0, "y": 10.0},
+        {"id": 1, "t": 1, "y": 5.0},
+        {"id": 2, "t": 1, "y": 15.0},
+        {"id": 3, "t": 1, "y": 10.0},
+    ]
+
+    nx_graph = nx.DiGraph()
+    nx_graph.add_nodes_from([(cell["id"], cell) for cell in cells])
+
+    # Add hyperedge for division (0 -> 1, 2) - the symmetric division
+    # Create a hypernode to represent this division
+    nx_graph.add_node(10)  # hypernode (no frame attribute)
+    nx_graph.add_edge(0, 10)
+    nx_graph.add_edge(10, 1)
+    nx_graph.add_edge(10, 2)
+
+    # Add hyperedge for division (0 -> 1, 3) - asymmetric division
+    nx_graph.add_node(11)  # another hypernode
+    nx_graph.add_edge(0, 11)
+    nx_graph.add_edge(11, 1)
+    nx_graph.add_edge(11, 3)
+
+    # Add hyperedge for division (0 -> 2, 3) - also asymmetric
+    nx_graph.add_node(12)  # another hypernode
+    nx_graph.add_edge(0, 12)
+    nx_graph.add_edge(12, 2)
+    nx_graph.add_edge(12, 3)
+
+    graph = motile.TrackGraph(nx_graph)
+
+    solver = motile.Solver(graph)
+
+    # Add only the symmetric division cost
+    solver.add_cost(EdgeSelection(constant=-1.0))
+    solver.add_cost(SymmetricDivision(position_attribute="y", weight=1.0))
+
+    # Solve and check that the symmetric division is chosen
+    solver.solve()
+    solution = solver.get_selected_subgraph().to_nx_graph(flatten_hyperedges=True)
+
+    # The solution should select all 4 nodes (0, 1, 2, 3)
+    assert set(solution.nodes.keys()) == {0, 1, 2, 3}
+
+    # Check that the symmetric division hyperedge (through hypernode 10) is selected
+    # The solution should have edges: 0->1, 0->2
+    assert solution.has_edge(0, 1)
+    assert solution.has_edge(0, 2)
+
+    # The asymmetric divisions should not be selected
+    assert not solution.has_edge(0, 3)
