@@ -1,19 +1,13 @@
 default:
-	pip install .
+	uv sync --no-dev
 
 install-dev:
-	pip install -e .[dev]
+	uv sync
 
 .PHONY: tests
 tests:
-	uv run pytest -v --cov=motile --cov-config=.coveragerc tests
+	uv run pytest -v --cov=motile --cov-report=term-missing
 	uv run pre-commit run --all-files
-
-.PHONY: publish
-publish:
-	python -m build
-	twine upload dist/*
-	rm -rf build/ dist/ motile.egg-info/
 
 .PHONY: docs
 docs:
