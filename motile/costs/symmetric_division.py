@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING
 
 import numpy as np
 
@@ -14,10 +14,12 @@ if TYPE_CHECKING:
     from motile.solver import Solver
 
 
-class EdgeDistance(Cost):
-    """Cost for :class:`~motile.variables.EdgeSelected` variables.
+class SymmetricDivision(Cost):
+    """Cost for the distance between a parent and the mean locations of its children.
 
-    Cost is based on the spatial distance of the incident nodes.
+    This cost requires division to be represented as "hyperedges" in the graph.
+    That is, there is an edge (`a`, (`b`, `c`)) for every possible division with node
+    `a` as the parent and nodes `b` and `c` as the children.
 
     Args:
         position_attribute:
@@ -29,7 +31,7 @@ class EdgeDistance(Cost):
             The weight to apply to the distance to convert it into a cost.
 
         constant:
-            A constant cost for each selected node. Default is ``0.0``.
+            A constant cost for each selected division. Default is ``0.0``.
     """
 
     def __init__(
@@ -44,20 +46,19 @@ class EdgeDistance(Cost):
 
     def apply(self, solver: Solver) -> None:
         edge_variables = solver.get_variables(EdgeSelected)
-
         for key, index in edge_variables.items():
             if solver.graph.is_hyperedge(key):
-                solver.add_variable_cost(index, 0.0, self.weight)
-                solver.add_variable_cost(index, 0.0, self.constant)
-            else:
-                u, v = cast("tuple[int, int]", key)
-                pos_u = self.__get_node_position(solver.graph, u)
-                pos_v = self.__get_node_position(solver.graph, v)
-
-                feature = np.linalg.norm(pos_u - pos_v)
-
+                (start,) = key[0]
+                end1, end2 = key[1]
+                pos_start = self.__get_node_position(solver.graph, start)
+                pos_end1 = self.__get_node_position(solver.graph, end1)
+                pos_end2 = self.__get_node_position(solver.graph, end2)
+                feature = np.linalg.norm(pos_start - 0.5 * (pos_end1 + pos_end2))
                 solver.add_variable_cost(index, feature, self.weight)
                 solver.add_variable_cost(index, 1.0, self.constant)
+            else:
+                solver.add_variable_cost(index, 0.0, self.weight)
+                solver.add_variable_cost(index, 0.0, self.constant)
 
     def __get_node_position(self, graph: nx.DiGraph, node: int) -> np.ndarray:
         if isinstance(self.position_attribute, tuple):
