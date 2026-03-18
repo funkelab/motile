@@ -1,4 +1,4 @@
-# motile: Multi-Object Tracker using Integer Linear Equations
+# motile: Multi-Object Tracking with Integer Linear Equations
 
 [![License](https://img.shields.io/pypi/l/motile.svg)](https://github.com/funkelab/motile/raw/main/LICENSE)
 [![PyPI](https://img.shields.io/pypi/v/motile.svg)](https://pypi.org/project/motile)
