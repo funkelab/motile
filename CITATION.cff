@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-title: "motile: Multi-Object Tracker using Integer Linear Equations"
+title: "motile: Multi-Object Tracking using Integer Linear Equations"
 message: >-
   If you use this software, please cite it using the
   metadata from this file.
@@ -18,8 +18,7 @@ authors:
     affiliation: HHMI Janelia Research Campus
   - given-names: Benjamin
     family-names: Gallusser
-    email: bgallusser@googlemail.com
-    affiliation: "École Polytechnique Fédérale de Lausanne"
+    affiliation: "École Polytechnique Fédérale de Lausanne; Biohub"
   - given-names: Florian
     family-names: Jug
     email: florian.jug@fht.org
@@ -29,8 +28,6 @@ authors:
     email: funkej@janelia.hhmi.org
     affiliation: "HHMI Janelia Research Campus; Fondazione Human Technopole"
 repository-code: https://github.com/funkelab/motile
-abstract: >-
-  Multi-Object Tracker using Integer Linear Equations.
 keywords:
   - tracking
   - multi-object-tracking
