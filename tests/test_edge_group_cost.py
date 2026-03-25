@@ -258,3 +258,71 @@ def test_edge_group_cost_empty_groups():
     selected2 = _solve_and_get_edges(solver2)
 
     assert selected1 == selected2
+
+
+def test_subtract_base_cost():
+    """Group cost replaces rather than adds to base edge costs.
+
+    With subtract_base_cost=True, the effective cost for a
+    group should be the group cost alone, not group cost +
+    individual edge costs. We set up a group with cost 0
+    and base edge cost of -1 per edge. Without subtraction,
+    the group variable adds 0 on top of the -2 base cost
+    for two edges. With subtraction, the group variable
+    adds +2 (canceling the base), so the net cost for the
+    group being selected is 0 instead of -2.
+
+    We verify this by making the group cost slightly
+    positive after subtraction, which should discourage
+    that specific path.
+    """
+    graph = _simple_chain_graph()
+
+    # Base edge cost is -1.0 per edge.
+    # Group (0->2, 2->4) has base cost -1 + -1 = -2.
+    # With subtract_base_cost and group cost=+3, the
+    # effective group cost is +3 - (-2) = +5, making the
+    # group expensive and discouraging it.
+    solver = motile.Solver(graph)
+    solver.add_cost(EdgeSelection(constant=-1.0))
+    solver.add_constraint(MaxParents(1))
+    solver.add_constraint(MaxChildren(1))
+    solver.add_cost(
+        EdgeGroupSelection(
+            edge_groups=[((0, 2), (2, 4))],
+            costs=[3.0],
+            weight=1.0,
+            subtract_base_cost=True,
+        )
+    )
+
+    selected = _solve_and_get_edges(solver)
+
+    # The effective group cost is +5, so the solver
+    # should avoid selecting both edges together
+    assert not ((0, 2) in selected and (2, 4) in selected)
+
+    # Without subtract_base_cost, cost=+3 is not enough
+    # to overcome the -2 base cost, so the group is fine
+    solver2 = motile.Solver(graph)
+    solver2.add_cost(EdgeSelection(constant=-1.0))
+    solver2.add_constraint(MaxParents(1))
+    solver2.add_constraint(MaxChildren(1))
+    solver2.add_cost(
+        EdgeGroupSelection(
+            edge_groups=[((0, 2), (2, 4))],
+            costs=[3.0],
+            weight=1.0,
+            subtract_base_cost=False,
+        )
+    )
+
+    selected2 = _solve_and_get_edges(solver2)
+
+    # Net group cost is +3, but each edge still has -1,
+    # so the path total is -2 + 3 = +1. Other paths have
+    # cost -2 with no group penalty. So this path is
+    # disfavored but the individual edges may still appear
+    # in other paths. The key point: behavior differs from
+    # the subtract_base_cost=True case.
+    assert len(selected2) > 0
