@@ -96,10 +96,17 @@ likely the node or edge is a true positive and should therefore be selected. A
 higher score is better.
 
 ``motile``, however, expects us to give a "cost" for selecting nodes and edges.
-It will then minimize those costs to find the globally optimal solution. Here,
-lower is better. Therefore, we need to invert the scores, which we can easily
-do by giving them a negative weight. We can do this by instantiating the
-classes :class:`costs.NodeSelection` and
+It will then minimize the total cost over all variables to find the globally
+optimal solution. Specifically, the solver minimizes:
+
+.. math::
+
+  \sum_{y} c_y \cdot y
+
+where :math:`y` are binary indicator variables (e.g., whether a node or edge is
+selected) and :math:`c_y` is the cost associated with that variable. Since
+lower is better, we need to invert the scores by giving them a negative weight.
+We can do this by instantiating the classes :class:`costs.NodeSelection` and
 :class:`costs.EdgeSelection`:
 
 .. jupyter-execute::

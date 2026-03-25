@@ -117,6 +117,30 @@ The variable :math:`y` can be an indicator for the selection of a node, the
 selection of an edge, a node that starts a track, or any other variable added
 to the solver.
 
+The solver minimizes the total cost over all variables:
+
+.. math::
+
+  \min \sum_{y} c_y \cdot y = \min \sum_{y} \vct{w}^\intercal\vct{f}_y \cdot y
+
+For a concrete example, consider a solver with
+:class:`~motile.costs.NodeSelection` (``weight``\ =\ :math:`w_v`,
+``attribute``\ =\ ``"score"``, ``constant``\ =\ :math:`k_v`),
+:class:`~motile.costs.EdgeSelection` (``weight``\ =\ :math:`w_e`,
+``attribute``\ =\ ``"score"``, ``constant``\ =\ :math:`k_e`), and
+:class:`~motile.costs.Appear` (``constant``\ =\ :math:`k_a`).
+The total objective is:
+
+.. math::
+
+  \min\;\; \sum_{v} \bigl(w_v \cdot \text{score}_v + k_v\bigr) \cdot y_v \;+\; \sum_{e} \bigl(w_e \cdot \text{score}_e + k_e\bigr) \cdot y_e \;+\; \sum_{v} k_a \cdot a_v
+
+where :math:`y_v`, :math:`y_e`, and :math:`a_v` are the binary indicator
+variables for node selection, edge selection, and track appearance,
+respectively. Note that each sum ranges over a different set of variables, so
+the size of each set influences how much that cost term contributes to the
+total objective.
+
 In the example above, the :class:`motile.variables.EdgeSelected` variable
 (which is the target of the cost :class:`motile.costs.EdgeSelection`), has the
 following weights and features:
