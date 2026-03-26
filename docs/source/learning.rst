@@ -94,7 +94,7 @@ model is:
   solver.add_constraint(MaxChildren(1))
 
   solver.add_cost(NodeSelection(weight=1, attribute="score"))
-  solver.add_cost(EdgeSelection(weight=-2, attribute="score", constant=1))
+  solver.add_cost(EdgeSelection(weight=-1, attribute="score", constant=0.5))
   solver.add_cost(Appear(constant=1))
 
 Each of those costs is calculated as the product of `weights` and `features`:
@@ -134,6 +134,33 @@ following weights and features:
 
 where :math:`\text{attr}` is the value of the attribute ``score`` of edge :math:`e`.
 
+
+Objective Function
+------------------
+The solver minimizes the total cost over all variables:
+
+.. math::
+
+  \min \sum_{y} c_y \cdot y = \min \sum_{y} \vct{w}^\intercal\vct{f}_y \cdot y
+
+For a concrete example, consider a solver with
+:class:`~motile.costs.NodeSelection` (``weight``\ =\ :math:`w_v`,
+``attribute``\ =\ ``"score"``, ``constant``\ =\ :math:`k_v`),
+:class:`~motile.costs.EdgeSelection` (``weight``\ =\ :math:`w_e`,
+``attribute``\ =\ ``"score"``, ``constant``\ =\ :math:`k_e`), and
+:class:`~motile.costs.Appear` (``constant``\ =\ :math:`k_a`).
+The total objective is:
+
+.. math::
+
+  \min\;\; \sum_{v} \bigl(w_v \cdot \text{score}_v + k_v\bigr) \cdot y_v \;+\; \sum_{e} \bigl(w_e \cdot \text{score}_e + k_e\bigr) \cdot y_e \;+\; \sum_{v} k_a \cdot a_v
+
+where :math:`y_v`, :math:`y_e`, and :math:`a_v` are the binary indicator
+variables for node selection, edge selection, and track appearance,
+respectively. Note that each sum ranges over a different set of variables, so
+the size of each set influences how much that cost term contributes to the
+total objective.
+
 The ``motile`` solver knows about all the weights that have been introduced through cost functions:
 
 .. jupyter-execute::
@@ -168,8 +195,7 @@ costs. Here, we further lower the cost of edges for example:
 .. jupyter-execute::
   :hide-output:
 
-  solver.weights[("EdgeSelection", "weight")] = -3
-  solver.weights[("Appear", "constant")] = 0.5
+  solver.weights[("EdgeSelection", "weight")] = -2
 
   solution = solver.solve()
 
@@ -180,6 +206,7 @@ costs. Here, we further lower the cost of edges for example:
   print(solver.get_variables(EdgeSelected))
 
   draw_solution(graph, solver, label_attribute="score")
+
 
 Annotate Ground-Truth
 ---------------------
