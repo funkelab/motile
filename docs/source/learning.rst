@@ -94,7 +94,7 @@ model is:
   solver.add_constraint(MaxChildren(1))
 
   solver.add_cost(NodeSelection(weight=1, attribute="score"))
-  solver.add_cost(EdgeSelection(weight=-2, attribute="score", constant=1))
+  solver.add_cost(EdgeSelection(weight=-1, attribute="score", constant=0.5))
   solver.add_cost(Appear(constant=1))
 
 Each of those costs is calculated as the product of `weights` and `features`:
@@ -117,6 +117,26 @@ The variable :math:`y` can be an indicator for the selection of a node, the
 selection of an edge, a node that starts a track, or any other variable added
 to the solver.
 
+In the example above, the :class:`motile.variables.EdgeSelected` variable
+(which is the target of the cost :class:`motile.costs.EdgeSelection`), has the
+following weights and features:
+
+.. math::
+  \vct{w}
+    = \begin{pmatrix} w_\text{attr} \\ w_\text{const} \end{pmatrix}
+    = \begin{pmatrix} -2 \\ 1 \end{pmatrix}
+  \;\;\;
+  \text{and}
+  \;\;\;
+  \vct{f}_e
+    = \begin{pmatrix}\text{attr} \\ 1.0 \end{pmatrix}
+  \text{,}
+
+where :math:`\text{attr}` is the value of the attribute ``score`` of edge :math:`e`.
+
+
+Objective Function
+------------------
 The solver minimizes the total cost over all variables:
 
 .. math::
@@ -140,23 +160,6 @@ variables for node selection, edge selection, and track appearance,
 respectively. Note that each sum ranges over a different set of variables, so
 the size of each set influences how much that cost term contributes to the
 total objective.
-
-In the example above, the :class:`motile.variables.EdgeSelected` variable
-(which is the target of the cost :class:`motile.costs.EdgeSelection`), has the
-following weights and features:
-
-.. math::
-  \vct{w}
-    = \begin{pmatrix} w_\text{attr} \\ w_\text{const} \end{pmatrix}
-    = \begin{pmatrix} -2 \\ 1 \end{pmatrix}
-  \;\;\;
-  \text{and}
-  \;\;\;
-  \vct{f}_e
-    = \begin{pmatrix}\text{attr} \\ 1.0 \end{pmatrix}
-  \text{,}
-
-where :math:`\text{attr}` is the value of the attribute ``score`` of edge :math:`e`.
 
 The ``motile`` solver knows about all the weights that have been introduced through cost functions:
 
@@ -192,8 +195,7 @@ costs. Here, we further lower the cost of edges for example:
 .. jupyter-execute::
   :hide-output:
 
-  solver.weights[("EdgeSelection", "weight")] = -3
-  solver.weights[("Appear", "constant")] = 0.5
+  solver.weights[("EdgeSelection", "weight")] = -2
 
   solution = solver.solve()
 
@@ -204,6 +206,7 @@ costs. Here, we further lower the cost of edges for example:
   print(solver.get_variables(EdgeSelected))
 
   draw_solution(graph, solver, label_attribute="score")
+
 
 Annotate Ground-Truth
 ---------------------
