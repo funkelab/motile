@@ -39,6 +39,12 @@ jobs:
         env:
           DOCS_VERSION: ${{ steps.docs-version.outputs.label }}
 
+      - name: Bundle versions.json into build output
+        run: |
+          curl -sSf https://funkelab.github.io/motile/versions.json \
+            -o docs/build/html/versions.json \
+            || echo '[{"name": "main", "url": "/motile/main/"}]' > docs/build/html/versions.json
+
       - name: Upload docs artifact
         uses: actions/upload-artifact@v4
         with:
@@ -79,32 +85,65 @@ jobs:
           destination_dir: docs/${{ steps.dest.outputs.dir }}
           keep_files: true
 
-      - name: Deploy root and stable redirects
-        if: steps.dest.outputs.is_tag == 'true'
+      - name: Generate versions.json and redirects
         run: |
+          IS_TAG="${{ steps.dest.outputs.is_tag }}"
           VERSION="${{ steps.dest.outputs.version }}"
-          mkdir -p redirect-pages/stable
-          cat > redirect-pages/index.html << 'ROOTEOF'
+
+          # Clone the docs branch to read existing version directories
+          git clone --branch docs --single-branch --depth 1 \
+            "https://github.com/${{ github.repository }}.git" docs-branch
+          cd docs-branch/docs
+
+          # Find all version directories (v*)
+          VERSIONS=$(ls -d v*/ 2>/dev/null | sed 's|/||' | sort -V -r || true)
+
+          # Determine the latest tag version
+          if [ "$IS_TAG" = "true" ]; then
+            LATEST="$VERSION"
+          elif [ -n "$VERSIONS" ]; then
+            LATEST=$(echo "$VERSIONS" | head -1)
+          else
+            LATEST=""
+          fi
+
+          cd "$GITHUB_WORKSPACE"
+          mkdir -p extra-pages/stable
+
+          # Generate versions.json
+          python3 -c "
+          import json
+          versions = '${VERSIONS}'.split()
+          latest = '${LATEST}'
+          result = [{'name': 'main', 'url': '/motile/main/'}]
+          for v in versions:
+              entry = {'name': v, 'url': f'/motile/{v}/'}
+              if v == latest:
+                  entry['latest'] = True
+              result.append(entry)
+          with open('extra-pages/versions.json', 'w') as f:
+              json.dump(result, f, indent=2)
+          "
+
+          # Generate stable redirect (points to latest tag or main)
+          if [ -n "$LATEST" ]; then
+            TARGET="/motile/${LATEST}/"
+          else
+            TARGET="/motile/main/"
+          fi
+          cat > extra-pages/stable/index.html << STABLEEOF
           <!DOCTYPE html>
           <html>
-            <head><meta http-equiv="refresh" content="0; url=stable/"></head>
-            <body><p>Redirecting to <a href="stable/">stable</a>...</p></body>
-          </html>
-          ROOTEOF
-          cat > redirect-pages/stable/index.html << STABLEEOF
-          <!DOCTYPE html>
-          <html>
-            <head><meta http-equiv="refresh" content="0; url=../${VERSION}/"></head>
-            <body><p>Redirecting to <a href="../${VERSION}/">${VERSION}</a>...</p></body>
+            <head><meta http-equiv="refresh" content="0; url=${TARGET}"></head>
+            <body><p>Redirecting to <a href="${TARGET}">${TARGET}</a>...</p></body>
           </html>
           STABLEEOF
 
-      - name: Deploy redirects to GitHub Pages
-        if: steps.dest.outputs.is_tag == 'true'
+      - name: Deploy versions.json and redirects
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: docs
-          publish_dir: redirect-pages
+          publish_dir: extra-pages
           destination_dir: docs
           keep_files: true
