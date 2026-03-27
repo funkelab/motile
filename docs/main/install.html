@@ -131,7 +131,6 @@ information.</p>
     </section>
   </div>
   
-
 <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
   <span class="rst-current-version" data-toggle="rst-current-version">
     <span class="fa fa-book"></span> Version:
@@ -139,17 +138,38 @@ information.</p>
     <span class="fa fa-caret-down"></span>
   </span>
   <div class="rst-other-versions">
-    <dl>
+    <dl id="version-list">
       <dt>Versions</dt>
-      
-        <dd><a href="/motile/stable/">stable</a></dd>
-      
-        <dd><a href="/motile/main/">main</a></dd>
-      
+      <dd>Loading...</dd>
     </dl>
   </div>
 </div>
 <script>
+(function() {
+  var dl = document.getElementById('version-list');
+  function populateVersions(versions) {
+    var dds = dl.querySelectorAll('dd');
+    for (var i = 0; i < dds.length; i++) dl.removeChild(dds[i]);
+    versions.forEach(function(v) {
+      var dd = document.createElement('dd');
+      var a = document.createElement('a');
+      a.href = v.url;
+      a.textContent = v.name + (v.latest ? ' (latest)' : '');
+      dd.appendChild(a);
+      dl.appendChild(dd);
+    });
+  }
+  fetch('versions.json')
+    .then(function(r) { return r.json(); })
+    .then(populateVersions)
+    .catch(function() {
+      populateVersions([
+        {name: 'stable', url: '/motile/stable/'},
+        {name: 'main', url: '/motile/main/'}
+      ]);
+    });
+})();
+</script><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
