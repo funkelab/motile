@@ -68,3 +68,20 @@ html.writer-html5 .rst-content dl[class]:not(.option-list):not(.field-list):not(
   border-top-color: var(--color-a);
   background: var(--color-a-light);
 }
+
+.rst-versions {
+  background: #1f1d53;
+  font-family: "Lato", "proxima-nova", "Helvetica Neue", Arial, sans-serif;
+}
+
+.rst-versions a {
+  color: var(--color-a);
+}
+
+.rst-versions .rst-other-versions dd a {
+  color: var(--color-a);
+}
+
+.rst-versions .rst-other-versions dd a:hover {
+  color: var(--color-a-light);
+}

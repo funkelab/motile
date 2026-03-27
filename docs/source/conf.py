@@ -64,7 +64,7 @@ html_context = {
     "current_version": docs_version,
     "versions": [
         ("stable", "/stable/"),
-        ("dev", "/dev/"),
+        ("main", "/main/"),
     ],
 }
 
