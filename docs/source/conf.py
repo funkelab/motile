@@ -56,11 +56,6 @@ html_show_sourcelink = False
 # The DOCS_VERSION env var is set by CI; defaults to the package version locally.
 docs_version = os.environ.get("DOCS_VERSION", f"v{version}")
 html_context = {
-    "display_github": True,
-    "github_user": "funkelab",
-    "github_repo": "motile",
-    "github_version": "main",
-    "conf_py_path": "/docs/source/",
     "current_version": docs_version,
     "versions": [
         ("stable", "/stable/"),
