@@ -15,33 +15,26 @@
 <script>
 (function() {
   var dl = document.getElementById('version-list');
-  fetch('/motile/versions.json')
+  function populateVersions(versions) {
+    var dds = dl.querySelectorAll('dd');
+    for (var i = 0; i < dds.length; i++) dl.removeChild(dds[i]);
+    versions.forEach(function(v) {
+      var dd = document.createElement('dd');
+      var a = document.createElement('a');
+      a.href = v.url;
+      a.textContent = v.name + (v.latest ? ' (latest)' : '');
+      dd.appendChild(a);
+      dl.appendChild(dd);
+    });
+  }
+  fetch('{{ pathto("versions.json", 1) }}')
     .then(function(r) { return r.json(); })
-    .then(function(versions) {
-      // Remove the "Loading..." placeholder
-      var dds = dl.querySelectorAll('dd');
-      for (var i = 0; i < dds.length; i++) dl.removeChild(dds[i]);
-      versions.forEach(function(v) {
-        var dd = document.createElement('dd');
-        var a = document.createElement('a');
-        a.href = v.url;
-        a.textContent = v.name + (v.latest ? ' (latest)' : '');
-        dd.appendChild(a);
-        dl.appendChild(dd);
-      });
-    })
+    .then(populateVersions)
     .catch(function() {
-      // Fallback: just show stable and main
-      var dds = dl.querySelectorAll('dd');
-      for (var i = 0; i < dds.length; i++) dl.removeChild(dds[i]);
-      [['stable', '/motile/stable/'], ['main', '/motile/main/']].forEach(function(v) {
-        var dd = document.createElement('dd');
-        var a = document.createElement('a');
-        a.href = v[1];
-        a.textContent = v[0];
-        dd.appendChild(a);
-        dl.appendChild(dd);
-      });
+      populateVersions([
+        {name: 'stable', url: '/motile/stable/'},
+        {name: 'main', url: '/motile/main/'}
+      ]);
     });
 })();
 </script>
