@@ -74,8 +74,9 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: docs
           publish_dir: docs/build/html
-          destination_dir: ${{ steps.dest.outputs.dir }}
+          destination_dir: docs/${{ steps.dest.outputs.dir }}
           keep_files: true
 
       - name: Deploy root and stable redirects
@@ -103,5 +104,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: docs
           publish_dir: redirect-pages
+          destination_dir: docs
           keep_files: true
