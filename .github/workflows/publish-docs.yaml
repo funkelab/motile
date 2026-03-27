@@ -3,15 +3,13 @@ name: Deploy Docs to GitHub Pages
 on:
   push:
     branches: [main]
+    tags: ["v*"]
   pull_request:
     branches: [main]
   workflow_dispatch:
 
-# Allow this job to clone the repo and create a page deployment
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 jobs:
   build:
@@ -24,28 +22,89 @@ jobs:
           python-version: '3.11'
           enable-cache: true
 
+      - name: Determine docs version label
+        id: docs-version
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            echo "label=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
+          else
+            echo "label=main" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Install dependencies
         run: uv sync
 
       - name: Build documentation
         run: uv run sphinx-build docs/source docs/build/html -W -b html
+        env:
+          DOCS_VERSION: ${{ steps.docs-version.outputs.label }}
 
-      - name: Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v4
+      - name: Upload docs artifact
+        uses: actions/upload-artifact@v4
         with:
+          name: docs-html
           path: docs/build/html
-          retention-days: 90
+          retention-days: 7
 
   deploy:
-    if: github.ref == 'refs/heads/main'
+    if: github.event_name != 'pull_request'
     needs: build
-    # Deploy to the github-pages environment
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Download docs artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docs-html
+          path: docs/build/html
+
+      - name: Determine destination directory
+        id: dest
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            VERSION="${GITHUB_REF#refs/tags/}"
+            echo "dir=$VERSION" >> "$GITHUB_OUTPUT"
+            echo "is_tag=true" >> "$GITHUB_OUTPUT"
+            echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          else
+            echo "dir=main" >> "$GITHUB_OUTPUT"
+            echo "is_tag=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Deploy docs to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: docs
+          publish_dir: docs/build/html
+          destination_dir: docs/${{ steps.dest.outputs.dir }}
+          keep_files: true
+
+      - name: Deploy root and stable redirects
+        if: steps.dest.outputs.is_tag == 'true'
+        run: |
+          VERSION="${{ steps.dest.outputs.version }}"
+          mkdir -p redirect-pages/stable
+          cat > redirect-pages/index.html << 'ROOTEOF'
+          <!DOCTYPE html>
+          <html>
+            <head><meta http-equiv="refresh" content="0; url=stable/"></head>
+            <body><p>Redirecting to <a href="stable/">stable</a>...</p></body>
+          </html>
+          ROOTEOF
+          cat > redirect-pages/stable/index.html << STABLEEOF
+          <!DOCTYPE html>
+          <html>
+            <head><meta http-equiv="refresh" content="0; url=../${VERSION}/"></head>
+            <body><p>Redirecting to <a href="../${VERSION}/">${VERSION}</a>...</p></body>
+          </html>
+          STABLEEOF
+
+      - name: Deploy redirects to GitHub Pages
+        if: steps.dest.outputs.is_tag == 'true'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: docs
+          publish_dir: redirect-pages
+          destination_dir: docs
+          keep_files: true

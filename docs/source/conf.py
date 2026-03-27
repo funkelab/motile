@@ -6,6 +6,7 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+import os
 from datetime import datetime
 
 import motile
@@ -50,6 +51,17 @@ html_logo = "img/motile.svg"
 html_static_path = ["_static"]
 html_css_files = ["css/custom.css"]
 html_show_sourcelink = False
+
+# Version switcher for versioned docs on GitHub Pages.
+# The DOCS_VERSION env var is set by CI; defaults to the package version locally.
+docs_version = os.environ.get("DOCS_VERSION", f"v{version}")
+html_context = {
+    "current_version": docs_version,
+    "versions": [
+        ("stable", "/stable/"),
+        ("main", "/main/"),
+    ],
+}
 
 togglebutton_hint = ""
 togglebutton_hint_hide = ""
