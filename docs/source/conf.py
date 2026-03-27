@@ -58,8 +58,8 @@ docs_version = os.environ.get("DOCS_VERSION", f"v{version}")
 html_context = {
     "current_version": docs_version,
     "versions": [
-        ("stable", "/stable/"),
-        ("main", "/main/"),
+        ("stable", "/motile/stable/"),
+        ("main", "/motile/main/"),
     ],
 }
 
