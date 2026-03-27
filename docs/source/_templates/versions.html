@@ -1,5 +1,4 @@
 {# Version switcher flyout for GitHub Pages hosted docs #}
-{% if versions %}
 <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
   <span class="rst-current-version" data-toggle="rst-current-version">
     <span class="fa fa-book"></span> Version:
@@ -7,12 +6,42 @@
     <span class="fa fa-caret-down"></span>
   </span>
   <div class="rst-other-versions">
-    <dl>
+    <dl id="version-list">
       <dt>Versions</dt>
-      {% for name, url in versions %}
-        <dd><a href="{{ url }}">{{ name }}</a></dd>
-      {% endfor %}
+      <dd>Loading...</dd>
     </dl>
   </div>
 </div>
-{% endif %}
+<script>
+(function() {
+  var dl = document.getElementById('version-list');
+  fetch('/motile/versions.json')
+    .then(function(r) { return r.json(); })
+    .then(function(versions) {
+      // Remove the "Loading..." placeholder
+      var dds = dl.querySelectorAll('dd');
+      for (var i = 0; i < dds.length; i++) dl.removeChild(dds[i]);
+      versions.forEach(function(v) {
+        var dd = document.createElement('dd');
+        var a = document.createElement('a');
+        a.href = v.url;
+        a.textContent = v.name + (v.latest ? ' (latest)' : '');
+        dd.appendChild(a);
+        dl.appendChild(dd);
+      });
+    })
+    .catch(function() {
+      // Fallback: just show stable and main
+      var dds = dl.querySelectorAll('dd');
+      for (var i = 0; i < dds.length; i++) dl.removeChild(dds[i]);
+      [['stable', '/motile/stable/'], ['main', '/motile/main/']].forEach(function(v) {
+        var dd = document.createElement('dd');
+        var a = document.createElement('a');
+        a.href = v[1];
+        a.textContent = v[0];
+        dd.appendChild(a);
+        dl.appendChild(dd);
+      });
+    });
+})();
+</script>

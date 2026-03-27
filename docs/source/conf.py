@@ -52,15 +52,9 @@ html_static_path = ["_static"]
 html_css_files = ["css/custom.css"]
 html_show_sourcelink = False
 
-# Version switcher for versioned docs on GitHub Pages.
-# The DOCS_VERSION env var is set by CI; defaults to the package version locally.
-docs_version = os.environ.get("DOCS_VERSION", f"v{version}")
+# Version label (set by CI, defaults to package version locally)
 html_context = {
-    "current_version": docs_version,
-    "versions": [
-        ("stable", "/motile/stable/"),
-        ("main", "/motile/main/"),
-    ],
+    "current_version": os.environ.get("DOCS_VERSION", f"v{version}"),
 }
 
 togglebutton_hint = ""
