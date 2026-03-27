@@ -1,0 +1,1292 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Reference &mdash; motile 0.3.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=beddf052" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+      <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+      <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=f8514f61" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=e259d695"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="_static/thebelab-helper.js"></script>
+      <script>let toggleHintShow = '';</script>
+      <script>let toggleHintHide = '';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="_static/togglebutton.js?v=b8b12719"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Learning of Cost Weights" href="learning.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            motile
+              <img src="_static/motile.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extending.html">Extending <code class="docutils literal notranslate"><span class="pre">motile</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="learning.html">Learning of Cost Weights</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#track-graph">Track Graph</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#motile.TrackGraph"><code class="docutils literal notranslate"><span class="pre">TrackGraph</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.TrackGraph.add_edge"><code class="docutils literal notranslate"><span class="pre">TrackGraph.add_edge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.TrackGraph.add_from_nx_graph"><code class="docutils literal notranslate"><span class="pre">TrackGraph.add_from_nx_graph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.TrackGraph.add_node"><code class="docutils literal notranslate"><span class="pre">TrackGraph.add_node()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.TrackGraph.get_frames"><code class="docutils literal notranslate"><span class="pre">TrackGraph.get_frames()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.TrackGraph.is_hyperedge"><code class="docutils literal notranslate"><span class="pre">TrackGraph.is_hyperedge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.TrackGraph.nodes_by_frame"><code class="docutils literal notranslate"><span class="pre">TrackGraph.nodes_by_frame()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.TrackGraph.nodes_of"><code class="docutils literal notranslate"><span class="pre">TrackGraph.nodes_of()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.TrackGraph.to_nx_graph"><code class="docutils literal notranslate"><span class="pre">TrackGraph.to_nx_graph()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#solver">Solver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#motile.Solver"><code class="docutils literal notranslate"><span class="pre">Solver</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.Solver.add_constraint"><code class="docutils literal notranslate"><span class="pre">Solver.add_constraint()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.Solver.add_cost"><code class="docutils literal notranslate"><span class="pre">Solver.add_cost()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.Solver.add_variable_cost"><code class="docutils literal notranslate"><span class="pre">Solver.add_variable_cost()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.Solver.costs"><code class="docutils literal notranslate"><span class="pre">Solver.costs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.Solver.fit_weights"><code class="docutils literal notranslate"><span class="pre">Solver.fit_weights()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.Solver.get_selected_subgraph"><code class="docutils literal notranslate"><span class="pre">Solver.get_selected_subgraph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.Solver.get_variables"><code class="docutils literal notranslate"><span class="pre">Solver.get_variables()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.Solver.solve"><code class="docutils literal notranslate"><span class="pre">Solver.solve()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#variables">Variables</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#motile.variables.Variable"><code class="docutils literal notranslate"><span class="pre">Variable</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.variables.Variable.instantiate"><code class="docutils literal notranslate"><span class="pre">Variable.instantiate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.variables.Variable.instantiate_constraints"><code class="docutils literal notranslate"><span class="pre">Variable.instantiate_constraints()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#nodeselected">NodeSelected</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.variables.NodeSelected"><code class="docutils literal notranslate"><span class="pre">NodeSelected</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#edgeselected">EdgeSelected</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.variables.EdgeSelected"><code class="docutils literal notranslate"><span class="pre">EdgeSelected</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#nodeappear">NodeAppear</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.variables.NodeAppear"><code class="docutils literal notranslate"><span class="pre">NodeAppear</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#nodesplit">NodeSplit</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.variables.NodeSplit"><code class="docutils literal notranslate"><span class="pre">NodeSplit</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#costs">Costs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#motile.costs.Cost"><code class="docutils literal notranslate"><span class="pre">Cost</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.Cost.apply"><code class="docutils literal notranslate"><span class="pre">Cost.apply()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#appear">Appear</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.Appear"><code class="docutils literal notranslate"><span class="pre">Appear</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#edgeselection">EdgeSelection</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.EdgeSelection"><code class="docutils literal notranslate"><span class="pre">EdgeSelection</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#nodeselection">NodeSelection</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.NodeSelection"><code class="docutils literal notranslate"><span class="pre">NodeSelection</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#split">Split</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.Split"><code class="docutils literal notranslate"><span class="pre">Split</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#merge">Merge</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.Merge"><code class="docutils literal notranslate"><span class="pre">Merge</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#edgedistance">EdgeDistance</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.EdgeDistance"><code class="docutils literal notranslate"><span class="pre">EdgeDistance</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#features">Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#motile.costs.Features"><code class="docutils literal notranslate"><span class="pre">Features</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.Features.add_feature"><code class="docutils literal notranslate"><span class="pre">Features.add_feature()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.Features.resize"><code class="docutils literal notranslate"><span class="pre">Features.resize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.Features.to_ndarray"><code class="docutils literal notranslate"><span class="pre">Features.to_ndarray()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#weights">Weights</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#weight">Weight</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.Weight"><code class="docutils literal notranslate"><span class="pre">Weight</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Weights</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.Weights"><code class="docutils literal notranslate"><span class="pre">Weights</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#constraints">Constraints</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#motile.constraints.Constraint"><code class="docutils literal notranslate"><span class="pre">Constraint</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.constraints.Constraint.instantiate"><code class="docutils literal notranslate"><span class="pre">Constraint.instantiate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#maxchildren">MaxChildren</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.constraints.MaxChildren"><code class="docutils literal notranslate"><span class="pre">MaxChildren</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#maxparents">MaxParents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.constraints.MaxParents"><code class="docutils literal notranslate"><span class="pre">MaxParents</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#expressionconstraint">ExpressionConstraint</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.constraints.ExpressionConstraint"><code class="docutils literal notranslate"><span class="pre">ExpressionConstraint</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pin">Pin</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.constraints.Pin"><code class="docutils literal notranslate"><span class="pre">Pin</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">motile</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API Reference</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api-reference">
+<span id="sec-api"></span><h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h1>
+<div class="note dropdown admonition">
+<p class="admonition-title">A note on <code class="docutils literal notranslate"><span class="pre">Node</span></code> and <code class="docutils literal notranslate"><span class="pre">Edge</span></code> types</p>
+<blockquote>
+<div><p>The following types are used throughout the docs</p>
+<ul class="simple">
+<li><p>Nodes are integers</p></li>
+</ul>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">Node:</span> <span class="pre">TypeAlias</span> <span class="pre">=</span> <span class="pre">int</span></code></p>
+</div></blockquote>
+<ul class="simple">
+<li><p>Collections of nodes are tuples of <code class="docutils literal notranslate"><span class="pre">Node</span></code></p></li>
+</ul>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">Nodes:</span> <span class="pre">TypeAlias</span> <span class="pre">=</span> <span class="pre">tuple[Node,</span> <span class="pre">...]</span></code></p>
+</div></blockquote>
+<ul class="simple">
+<li><p>Edges are 2-tuples of <code class="docutils literal notranslate"><span class="pre">Node</span></code>.</p></li>
+</ul>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">Edge:</span> <span class="pre">TypeAlias</span> <span class="pre">=</span> <span class="pre">tuple[Node,</span> <span class="pre">Node]</span></code></p>
+</div></blockquote>
+<ul class="simple">
+<li><p>Hyperedges are 2-tuples of <code class="docutils literal notranslate"><span class="pre">Nodes</span></code>:</p></li>
+</ul>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">HyperEdge:</span> <span class="pre">TypeAlias</span> <span class="pre">=</span> <span class="pre">tuple[Nodes,</span> <span class="pre">Nodes]</span></code></p>
+<p>Examples:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">1)</span></code> is an edge from node 0 to node 1.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">((0,),</span> <span class="pre">(1,</span> <span class="pre">2))</span></code> is a hyperedge from node 0 to nodes 1 and 2 (i.e. a split).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">((0,</span> <span class="pre">1),</span> <span class="pre">2)</span></code> is a not a valid edge.</p></li>
+</ul>
+</div></blockquote>
+<ul>
+<li><p>All attributes in a graph (for both <code class="docutils literal notranslate"><span class="pre">Node``s</span> <span class="pre">and</span> <span class="pre">``(Hyper)Edge``s)</span> <span class="pre">are</span>
+<span class="pre">dictionaries</span> <span class="pre">mapping</span> <span class="pre">string</span> <span class="pre">attribute</span> <span class="pre">names</span> <span class="pre">to</span> <span class="pre">values.</span> <span class="pre">For</span> <span class="pre">example,</span> <span class="pre">a</span>
+<span class="pre">node's</span> <span class="pre">attributes</span> <span class="pre">might</span> <span class="pre">be</span> <span class="pre">``{</span> <span class="pre">&quot;x&quot;:</span> <span class="pre">0.5,</span> <span class="pre">&quot;y&quot;:</span> <span class="pre">0.5,</span> <span class="pre">&quot;t&quot;:</span> <span class="pre">0</span> <span class="pre">}</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">Attributes:</span> <span class="pre">TypeAlias</span> <span class="pre">=</span> <span class="pre">Mapping[str,</span> <span class="pre">Any]</span></code></p>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<section id="track-graph">
+<h2>Track Graph<a class="headerlink" href="#track-graph" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="motile.TrackGraph">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.</span></span><span class="sig-name descname"><span class="pre">TrackGraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx_graph</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'t'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.TrackGraph" title="Link to this definition"></a></dt>
+<dd><p>A graph of nodes in time &amp; space, with edges connecting them across time.</p>
+<p>This wraps a <a class="reference external" href="https://networkx.org/documentation/stable/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.6.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></a> object.</p>
+<p>Both <code class="docutils literal notranslate"><span class="pre">nodes</span></code> and <code class="docutils literal notranslate"><span class="pre">edges</span></code> are represented by a dictionary of properties.</p>
+<p>Provides a few convenience methods for time series graphs in addition to
+all the methods inherited from <a class="reference external" href="https://networkx.org/documentation/stable/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.6.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">networkx.DiGraph</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nx_graph</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://networkx.org/documentation/stable/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.6.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DiGraph</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – A directed networkx graph representing the TrackGraph to be created.
+Hyperedges are represented by networkx nodes that do not have the
+<code class="docutils literal notranslate"><span class="pre">frame_attribute</span></code> and are connected to nodes that do have this
+attribute.</p></li>
+<li><p><strong>frame_attribute</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The name of the node attribute that corresponds to the frame (i.e.,
+the time dimension) of the object. Defaults to <code class="docutils literal notranslate"><span class="pre">'t'</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.TrackGraph.add_edge">
+<span class="sig-name descname"><span class="pre">add_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.TrackGraph.add_edge" title="Link to this definition"></a></dt>
+<dd><p>Adds an edge to this TrackGraph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>edge_id</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>]]]</span>) – an <code class="docutils literal notranslate"><span class="pre">GenericEdge</span></code> (tuple of Nodes) defining the edge
+(or hyperedge) to be added.</p></li>
+<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</span>) – all properties associated to the added edge.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.TrackGraph.add_from_nx_graph">
+<span class="sig-name descname"><span class="pre">add_from_nx_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx_graph</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.TrackGraph.add_from_nx_graph" title="Link to this definition"></a></dt>
+<dd><p>Add nodes/edges from <code class="docutils literal notranslate"><span class="pre">nx_graph</span></code> to this TrackGraph.</p>
+<p>Hyperedges are represented by nodes in the <code class="docutils literal notranslate"><span class="pre">nx_graph</span></code> that do not have the
+<code class="docutils literal notranslate"><span class="pre">frame_attribute</span></code> property. All ‘regular’ nodes connected to such a hyperedge
+node will be added as a hyperedge.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nx_graph</strong> (<a class="reference external" href="https://networkx.org/documentation/stable/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.6.1)"><em>networkx.DiGraph</em></a>) – <p>A directed networkx graph representing a TrackGraph to be added.
+Hyperedges are represented by networkx nodes that do not have the
+<code class="docutils literal notranslate"><span class="pre">frame_attribute</span></code> and are connected to nodes that do have this
+attribute.</p>
+<p>Duplicate nodes and edges will not be added again but new attributes
+associated to nodes and edges added. If attributes of existing nodes
+or edges do already exist, the values set in the given <code class="docutils literal notranslate"><span class="pre">nx_graph</span></code>
+will be updating the previously set values.</p>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.TrackGraph.add_node">
+<span class="sig-name descname"><span class="pre">add_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.TrackGraph.add_node" title="Link to this definition"></a></dt>
+<dd><p>Adds a new node to this TrackGraph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – the node to be added.</p></li>
+<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</span>) – all properties associated to the added node.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.TrackGraph.get_frames">
+<span class="sig-name descname"><span class="pre">get_frames</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#motile.TrackGraph.get_frames" title="Link to this definition"></a></dt>
+<dd><p>Return tuple with first and last (exclusive) frame this graph has nodes for.</p>
+<p>Returns <code class="docutils literal notranslate"><span class="pre">(t_begin,</span> <span class="pre">t_end)</span></code> where <code class="docutils literal notranslate"><span class="pre">t_end</span></code> is exclusive.
+Returns <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">0)</span></code> for empty graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.TrackGraph.is_hyperedge">
+<span class="sig-name descname"><span class="pre">is_hyperedge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.TrackGraph.is_hyperedge" title="Link to this definition"></a></dt>
+<dd><p>Test if the given edge is a hyperedge in this track graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeGuard</span></code>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>]]]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.TrackGraph.nodes_by_frame">
+<span class="sig-name descname"><span class="pre">nodes_by_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.TrackGraph.nodes_by_frame" title="Link to this definition"></a></dt>
+<dd><p>Get all nodes in frame <code class="docutils literal notranslate"><span class="pre">t</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Hashable" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Hashable</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.TrackGraph.nodes_of">
+<span class="sig-name descname"><span class="pre">nodes_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.TrackGraph.nodes_of" title="Link to this definition"></a></dt>
+<dd><p>Returns an <code class="docutils literal notranslate"><span class="pre">Iterator</span></code> of node id’s that are incident to the given edge.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>edge</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>]], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</span>) – an edge of this TrackGraph.</p>
+</dd>
+<dt class="field-even">Yields<span class="colon">:</span></dt>
+<dd class="field-even"><p>all nodes incident to the given edge.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.TrackGraph.to_nx_graph">
+<span class="sig-name descname"><span class="pre">to_nx_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flatten_hyperedges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.TrackGraph.to_nx_graph" title="Link to this definition"></a></dt>
+<dd><p>Convert a this TrackGraph into a networkx DiGraph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>flatten_hyperedges</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, include one edge for each
+(source, target) combo in a hyperedge. If False, introduce a new
+hypernode to represent hyperedges. Defaults to True.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Directed networkx graph with same nodes, edges, and</dt><dd><p>attributes.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://networkx.org/documentation/stable/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.6.1)">networkx.DiGraph</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="solver">
+<h2>Solver<a class="headerlink" href="#solver" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="motile.Solver">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.</span></span><span class="sig-name descname"><span class="pre">Solver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track_graph</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.Solver" title="Link to this definition"></a></dt>
+<dd><p>Create a solver for a given track graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>track_graph</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#motile.TrackGraph" title="motile.track_graph.TrackGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrackGraph</span></code></a></span>) – The <a class="reference internal" href="#motile.TrackGraph" title="motile.TrackGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrackGraph</span></code></a> of objects to track over time.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.Solver.add_constraint">
+<span class="sig-name descname"><span class="pre">add_constraint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">constraint</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.Solver.add_constraint" title="Link to this definition"></a></dt>
+<dd><p>Add linear constraints to the solver.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>constraint</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#motile.constraints.Constraint" title="motile.constraints.constraint.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Constraint</span></code></a></span>) – The <a class="reference internal" href="#motile.constraints.Constraint" title="motile.constraints.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Constraint</span></code></a> to add.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.Solver.add_cost">
+<span class="sig-name descname"><span class="pre">add_cost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cost</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.Solver.add_cost" title="Link to this definition"></a></dt>
+<dd><p>Add linear cost to the value of variables in this solver.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cost</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#motile.costs.Cost" title="motile.costs.cost.Cost"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cost</span></code></a></span>) – The cost to add.  An instance of <a class="reference internal" href="#motile.costs.Cost" title="motile.costs.Cost"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cost</span></code></a>.</p></li>
+<li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – An optional name of the , used to refer to weights of
+cost in an unambiguous manner. Defaults to the name of the
+cost class, if not given.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.Solver.add_variable_cost">
+<span class="sig-name descname"><span class="pre">add_variable_cost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.Solver.add_variable_cost" title="Link to this definition"></a></dt>
+<dd><p>Add cost for an individual variable.</p>
+<p>To be used within implementations of <a class="reference internal" href="#motile.costs.Cost" title="motile.costs.Cost"><code class="xref py py-class docutils literal notranslate"><span class="pre">motile.costs.Cost</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="motile.Solver.costs">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">costs</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a></span><a class="headerlink" href="#motile.Solver.costs" title="Link to this definition"></a></dt>
+<dd><p>Returns the costs as a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.Solver.fit_weights">
+<span class="sig-name descname"><span class="pre">fit_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gt_attribute</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regularizer_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.Solver.fit_weights" title="Link to this definition"></a></dt>
+<dd><p>Fit weights of ILP costs to ground truth with structured SVM.</p>
+<p>Updates the weights in the solver object to the found solution.</p>
+<p>See <a class="reference external" href="https://github.com/funkelab/structsvm">https://github.com/funkelab/structsvm</a> for details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gt_attribute</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – <p>Node/edge attribute that marks the ground truth for fitting.
+<cite>gt_attribute</cite> is expected to be set to:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code> for objects labaled as ground truth.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code> for objects explicitly labeled as not part of the ground truth.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code> or not set for unlabeled objects.</p></li>
+</ul>
+</p></li>
+<li><p><strong>regularizer_weight</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The weight of the quadratic regularizer.</p></li>
+<li><p><strong>max_iterations</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – Maximum number of gradient steps in the structured SVM.</p></li>
+<li><p><strong>eps</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – Convergence threshold.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.Solver.get_selected_subgraph">
+<span class="sig-name descname"><span class="pre">get_selected_subgraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.Solver.get_selected_subgraph" title="Link to this definition"></a></dt>
+<dd><p>Return TrackGraph with only the selected nodes/edges from the solution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>solution</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Solution</span></code> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – The solution to use. If not provided, the last solution is used.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#motile.TrackGraph" title="motile.track_graph.TrackGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrackGraph</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A new TrackGraph with only the selected nodes and edges.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.14)"><strong>RuntimeError</strong></a> – If no solution is provided and the solver has not been solved</p></li>
+<li><p><strong>yet.</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.Solver.get_variables">
+<span class="sig-name descname"><span class="pre">get_variables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.Solver.get_variables" title="Link to this definition"></a></dt>
+<dd><p>Get variables by their class name.</p>
+<p>If the solver does not yet contain those variables, they will be
+created.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cls</strong> (type of <a class="reference internal" href="#motile.variables.Variable" title="motile.variables.Variable"><code class="xref py py-class docutils literal notranslate"><span class="pre">motile.variables.Variable</span></code></a>) – A subclass of <a class="reference internal" href="#motile.variables.Variable" title="motile.variables.Variable"><code class="xref py py-class docutils literal notranslate"><span class="pre">motile.variables.Variable</span></code></a>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">V</span></code>, bound= <a class="reference internal" href="#motile.variables.Variable" title="motile.variables.variable.Variable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variable</span></code></a>)</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A singleton instance of <a class="reference internal" href="#motile.variables.Variable" title="motile.variables.Variable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variable</span></code></a> (of whatever
+type was passed in as <code class="docutils literal notranslate"><span class="pre">cls</span></code>), mimicking a dictionary that can be used to
+look up variable indices by their keys. See
+<a class="reference internal" href="#motile.variables.Variable" title="motile.variables.Variable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variable</span></code></a> for details.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.Solver.solve">
+<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_threads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Preference.Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.Solver.solve" title="Link to this definition"></a></dt>
+<dd><p>Solve the global optimization problem.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeout</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The timeout for the ILP solver, in seconds. Default (0.0) is no
+timeout. If the solver times out, the best solution encountered
+so far is returned (if any has been found at all).</p></li>
+<li><p><strong>num_threads</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – The number of threads the ILP solver uses.</p></li>
+<li><p><strong>verbose</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – If true, print more information from ILP solver. Defaults to False.</p></li>
+<li><p><strong>backend</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Preference</span></code></span>) – The ILP solver backend to use. Defaults to Any.</p></li>
+<li><p><strong>on_event</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></a>[[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]]</span>) – A callback function that will be called when the solver emits an event.
+Should accept an event data dict. (see <cite>ilpy.EventData</cite> for typing info
+which may be imported inside of a TYPE_CHECKING block.)
+Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Solution</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ilpy.Solution</span></code>, a vector of variable values. Use
+<a class="reference internal" href="#motile.Solver.get_variables" title="motile.Solver.get_variables"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_variables()</span></code></a> to find the indices of variables in this
+vector.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="variables">
+<h2>Variables<a class="headerlink" href="#variables" title="Link to this heading"></a></h2>
+<p>Solver variables are introduced by inheriting from the following abstract base class:</p>
+<dl class="py class" id="module-motile.variables">
+<dt class="sig sig-object py" id="motile.variables.Variable">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">Variable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.Variable" title="Link to this definition"></a></dt>
+<dd><p>Base class for solver variables.</p>
+<p>New variables can be introduced by inheriting from this base class and
+overwriting <a class="reference internal" href="#motile.variables.Variable.instantiate" title="motile.variables.Variable.instantiate"><code class="xref py py-func docutils literal notranslate"><span class="pre">instantiate()</span></code></a> and optionally
+<a class="reference internal" href="#motile.variables.Variable.instantiate_constraints" title="motile.variables.Variable.instantiate_constraints"><code class="xref py py-func docutils literal notranslate"><span class="pre">instantiate_constraints()</span></code></a>.</p>
+<p>Variable classes should not be instantiated by a user. Instead, the
+<a class="reference internal" href="#motile.Solver" title="motile.Solver"><code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code></a> provides access to concrete variables through the class
+name. The following example shows how to obtain the variable values after
+optimization:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">solver</span> <span class="o">=</span> <span class="n">Solver</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+
+<span class="c1"># add costs, constraints...</span>
+
+<span class="n">solution</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+
+<span class="c1"># here `node_selected` is an instance of a Variable subclass</span>
+<span class="c1"># specifically, it will be an instance of NodeSelected, which</span>
+<span class="c1"># maps node Ids to variables in the solver.</span>
+<span class="n">node_selected</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">get_variables</span><span class="p">(</span><span class="n">NodeSelected</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">solution</span><span class="p">[</span><span class="n">node_selected</span><span class="p">[</span><span class="n">node</span><span class="p">]]</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Node </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2"> was selected&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This allows variables to be added lazily to the solver.
+<a class="reference internal" href="#motile.constraints.Constraint" title="motile.constraints.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Constraints</span></code></a> and
+<a class="reference internal" href="#motile.costs.Cost" title="motile.costs.Cost"><code class="xref py py-class docutils literal notranslate"><span class="pre">motile.costs.Cost</span></code></a> can ask for variables.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.variables.Variable.instantiate">
+<span class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">instantiate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.Variable.instantiate" title="Link to this definition"></a></dt>
+<dd><p>Create and return keys for the variables.</p>
+<p>For example, to create a variable for each node, this function would
+return a list of all nodes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@staticmethod</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">instantiate</span><span class="p">(</span><span class="n">solver</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">solver</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span>
+</pre></div>
+</div>
+<p>The solver will create one variable for each key. The index of that
+variable can be accessed through a dictionary returned by
+<a class="reference internal" href="#motile.Solver.get_variables" title="motile.Solver.get_variables"><code class="xref py py-meth docutils literal notranslate"><span class="pre">motile.Solver.get_variables()</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">solver</span> <span class="o">=</span> <span class="n">Solver</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+
+<span class="n">node_selected</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">get_variables</span><span class="p">(</span><span class="n">NodeSelected</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">node_selected</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Selection indicator of node </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2"> has index </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>solver</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#motile.Solver" title="motile.solver.Solver"><code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code></a></span>) – The <a class="reference internal" href="#motile.Solver" title="motile.Solver"><code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code></a> instance to create variables for.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Collection" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Collection</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_KT</span></code>, bound= <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Hashable" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Hashable</span></code></a>)]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A collection of keys (anything that is hashable, e.g., nodes of a graph),
+one for each variable to create.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.variables.Variable.instantiate_constraints">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">instantiate_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.Variable.instantiate_constraints" title="Link to this definition"></a></dt>
+<dd><p>Add constraints for this variable to the solver.</p>
+<p>This ensures that these variables are coupled to other variables of the solver.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>solver</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#motile.Solver" title="motile.solver.Solver"><code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code></a></span>) – The <a class="reference internal" href="#motile.Solver" title="motile.Solver"><code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code></a> instance to create variable constraints for.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Constraint</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">Expression</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A iterable of <code class="xref py py-class docutils literal notranslate"><span class="pre">ilpy.Constraint</span></code> or
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ilpy.expressions.Expression.</span></code> See
+<a class="reference internal" href="#motile.constraints.Constraint" title="motile.constraints.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">motile.constraints.Constraint</span></code></a> for how to create linear constraints.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p>The following lists all variables that are already implemented in <code class="docutils literal notranslate"><span class="pre">motile</span></code>.</p>
+<section id="nodeselected">
+<h3>NodeSelected<a class="headerlink" href="#nodeselected" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.variables.NodeSelected">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">NodeSelected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.NodeSelected" title="Link to this definition"></a></dt>
+<dd><p>Binary variable indicating whether a node is part of the solution or not.</p>
+</dd></dl>
+
+</div></blockquote>
+</section>
+<section id="edgeselected">
+<h3>EdgeSelected<a class="headerlink" href="#edgeselected" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.variables.EdgeSelected">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">EdgeSelected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.EdgeSelected" title="Link to this definition"></a></dt>
+<dd><p>Binary variable indicates whether an edge is part of the solution or not.</p>
+</dd></dl>
+
+</div></blockquote>
+</section>
+<section id="nodeappear">
+<h3>NodeAppear<a class="headerlink" href="#nodeappear" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.variables.NodeAppear">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">NodeAppear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.NodeAppear" title="Link to this definition"></a></dt>
+<dd><p>Binary variable indicating whether a node is the start of a track.</p>
+<p>(i.e., the node is selected and has no selected incoming edges).</p>
+<p>This variable is coupled to the node and edge selection variables through
+the following linear constraints:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}|\text{in_edges}(v)|\cdot x_v - &amp;\sum_{e \in \text{in_edges}(v)} x_e
+- a_v &amp;\leq&amp;\;\; |\text{in_edges}(v)| - 1\\|\text{in_edges}(v)|\cdot x_v - &amp;\sum_{e \in \text{in_edges}(v)} x_e
+- a_v\cdot |\text{in_edges}(v)| &amp;\geq&amp;\;\; 0\end{aligned}\end{align} \]</div>
+<p>where <span class="math notranslate nohighlight">\(x_v\)</span> and <span class="math notranslate nohighlight">\(x_e\)</span> are selection indicators for node
+<span class="math notranslate nohighlight">\(v\)</span> and edge <span class="math notranslate nohighlight">\(e\)</span>, and <span class="math notranslate nohighlight">\(a_v\)</span> is the appear indicator for
+node <span class="math notranslate nohighlight">\(v\)</span>.</p>
+</dd></dl>
+
+</div></blockquote>
+</section>
+<section id="nodesplit">
+<h3>NodeSplit<a class="headerlink" href="#nodesplit" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.variables.NodeSplit">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">NodeSplit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.NodeSplit" title="Link to this definition"></a></dt>
+<dd><p>Binary variable indicating whether a node has more than one child.</p>
+<p>(i.e., the node is selected and has more than one selected outgoing edge).</p>
+<p>This variable is coupled to the edge selection variables through the
+following linear constraints:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}2 s_v\; - &amp;\sum_{e\in\text{out_edges}(v)} x_e &amp;\leq&amp;\;\; 0\\(|\text{out_edges}(v)| - 1) s_v\; - &amp;\sum_{e\in\text{out_edges}(v)}
+x_e &amp;\geq&amp;\;\; -1\end{aligned}\end{align} \]</div>
+<p>where <span class="math notranslate nohighlight">\(x_e\)</span> are selection indicators for edge <span class="math notranslate nohighlight">\(e\)</span>, and
+<span class="math notranslate nohighlight">\(s_v\)</span> is the split indicator for node <span class="math notranslate nohighlight">\(v\)</span>.</p>
+</dd></dl>
+
+</div></blockquote>
+</section>
+</section>
+<section id="costs">
+<h2>Costs<a class="headerlink" href="#costs" title="Link to this heading"></a></h2>
+<p>All costs inherit from the following base class:</p>
+<dl class="py class" id="module-motile.costs">
+<dt class="sig sig-object py" id="motile.costs.Cost">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">Cost</span></span><a class="headerlink" href="#motile.costs.Cost" title="Link to this definition"></a></dt>
+<dd><p>A base class for a cost that can be added to a solver.</p>
+<p>Weights should be initialized in the __init__ and added to a instance
+variable so that the Solver can discover them.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.costs.Cost.apply">
+<span class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.Cost.apply" title="Link to this definition"></a></dt>
+<dd><p>Apply a cost to the given solver.</p>
+<p>Use <a class="reference internal" href="#motile.Solver.get_variables" title="motile.Solver.get_variables"><code class="xref py py-func docutils literal notranslate"><span class="pre">motile.Solver.get_variables()</span></code></a> and
+<a class="reference internal" href="#motile.Solver.add_variable_cost" title="motile.Solver.add_variable_cost"><code class="xref py py-func docutils literal notranslate"><span class="pre">motile.Solver.add_variable_cost()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>solver</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#motile.Solver" title="motile.solver.Solver"><code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code></a></span>) – The <a class="reference internal" href="#motile.Solver" title="motile.Solver"><code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code></a> to create a cost for.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p>The following lists all costs that are already implemented in <code class="docutils literal notranslate"><span class="pre">motile</span></code>.</p>
+<section id="appear">
+<h3>Appear<a class="headerlink" href="#appear" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.Appear">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">Appear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.Appear" title="Link to this definition"></a></dt>
+<dd><p>Cost for <a class="reference internal" href="#motile.variables.NodeAppear" title="motile.variables.NodeAppear"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeAppear</span></code></a> variables.</p>
+<p>This is cost is not applied to nodes in the first frame of the graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weight</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The weight to apply to the cost attribute of each starting track.
+Defaults to 1.</p></li>
+<li><p><strong>attribute</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – The name of the attribute to use to look up cost. Default is
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, which means that a constant cost is used.</p></li>
+<li><p><strong>constant</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – A constant cost for each node that starts a track. Defaults to 0.</p></li>
+<li><p><strong>ignore_attribute</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – The name of an optional node attribute that, if it is set and
+evaluates to <code class="docutils literal notranslate"><span class="pre">True</span></code>, will not set the appear cost for that node.
+Defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div></blockquote>
+</section>
+<section id="edgeselection">
+<h3>EdgeSelection<a class="headerlink" href="#edgeselection" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.EdgeSelection">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">EdgeSelection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.EdgeSelection" title="Link to this definition"></a></dt>
+<dd><p>Cost for <a class="reference internal" href="#motile.variables.EdgeSelected" title="motile.variables.EdgeSelected"><code class="xref py py-class docutils literal notranslate"><span class="pre">EdgeSelected</span></code></a> variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weight</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The weight to apply to the cost given by the provided attribute of
+each edge. Default is <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p></li>
+<li><p><strong>attribute</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – The name of the edge attribute to use to look up cost. Default is
+None, which means only a constant cost is used.</p></li>
+<li><p><strong>constant</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – A constant cost for each selected edge. Default is <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div></blockquote>
+</section>
+<section id="nodeselection">
+<h3>NodeSelection<a class="headerlink" href="#nodeselection" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.NodeSelection">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">NodeSelection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.NodeSelection" title="Link to this definition"></a></dt>
+<dd><p>Cost for <a class="reference internal" href="#motile.variables.NodeSelected" title="motile.variables.NodeSelected"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeSelected</span></code></a> variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weight</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The weight to apply to the cost given by the provided attribute of
+each node. Default is <code class="docutils literal notranslate"><span class="pre">1.0</span></code></p></li>
+<li><p><strong>attribute</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – The name of the node attribute to use to look up cost, or None if a constant
+cost is desired. Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>constant</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – A constant cost for each selected node. Default is <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div></blockquote>
+</section>
+<section id="split">
+<h3>Split<a class="headerlink" href="#split" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.Split">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">Split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.Split" title="Link to this definition"></a></dt>
+<dd><p>Cost for <a class="reference internal" href="#motile.variables.NodeSplit" title="motile.variables.NodeSplit"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeSplit</span></code></a> variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weight</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The weight to apply to the cost of each split. Default is <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+<li><p><strong>attribute</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – The name of the attribute to use to look up the cost. Default is
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, which means that a constant cost is used.</p></li>
+<li><p><strong>constant</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – A constant cost for each node that has more than one selected
+child. Default is <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div></blockquote>
+</section>
+<section id="merge">
+<h3>Merge<a class="headerlink" href="#merge" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.Merge">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">Merge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.Merge" title="Link to this definition"></a></dt>
+<dd><p>Cost for <code class="xref py py-class docutils literal notranslate"><span class="pre">NodeMerge</span></code> variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weight</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The weight to apply to the cost of each split. Default is <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+<li><p><strong>attribute</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – The name of the attribute to use to look up the cost. Default is
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, which means that a constant cost is used.</p></li>
+<li><p><strong>constant</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – A constant cost for each node that has more than one selected
+parent. Default is <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div></blockquote>
+</section>
+<section id="edgedistance">
+<h3>EdgeDistance<a class="headerlink" href="#edgedistance" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.EdgeDistance">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">EdgeDistance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position_attribute</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.EdgeDistance" title="Link to this definition"></a></dt>
+<dd><p>Cost for <a class="reference internal" href="#motile.variables.EdgeSelected" title="motile.variables.EdgeSelected"><code class="xref py py-class docutils literal notranslate"><span class="pre">EdgeSelected</span></code></a> variables.</p>
+<p>Cost is based on the spatial distance of the incident nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>position_attribute</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>]</span>) – The name of the node attribute that corresponds to the spatial
+position. Can also be given as a tuple of multiple coordinates,
+e.g., <code class="docutils literal notranslate"><span class="pre">('z',</span> <span class="pre">'y',</span> <span class="pre">'x')</span></code>.</p></li>
+<li><p><strong>weight</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The weight to apply to the distance to convert it into a cost.</p></li>
+<li><p><strong>constant</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – A constant cost for each selected node. Default is <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div></blockquote>
+</section>
+</section>
+<section id="features">
+<h2>Features<a class="headerlink" href="#features" title="Link to this heading"></a></h2>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.Features">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">Features</span></span><a class="headerlink" href="#motile.costs.Features" title="Link to this definition"></a></dt>
+<dd><p>Simple container for features with resizeable dimensions.</p>
+<p>A <a class="reference internal" href="#motile.Solver" title="motile.Solver"><code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code></a> has a <a class="reference internal" href="#motile.costs.Features" title="motile.costs.Features"><code class="xref py py-class docutils literal notranslate"><span class="pre">Features</span></code></a> instance.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.costs.Features.add_feature">
+<span class="sig-name descname"><span class="pre">add_feature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variable_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.Features.add_feature" title="Link to this definition"></a></dt>
+<dd><p>Add a value to a feature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>variable_index</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <code class="xref py py-class docutils literal notranslate"><span class="pre">Variable</span></code></span>) – The index of the variable to add the value to.</p></li>
+<li><p><strong>feature_index</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – The index of the feature to add the value to.</p></li>
+<li><p><strong>value</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The value to add.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.costs.Features.resize">
+<span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_variables</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.Features.resize" title="Link to this definition"></a></dt>
+<dd><p>Resize the feature matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num_variables</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – The number of variables to resize to. If None, the number of
+variables is not changed.</p></li>
+<li><p><strong>num_features</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – The number of features to resize to. If None, the number of
+features is not changed.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.costs.Features.to_ndarray">
+<span class="sig-name descname"><span class="pre">to_ndarray</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.Features.to_ndarray" title="Link to this definition"></a></dt>
+<dd><p>Export the feature matrix as a numpy array.</p>
+<p>Note: you can also use <code class="docutils literal notranslate"><span class="pre">np.asarray(features)</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div></blockquote>
+</section>
+<section id="weights">
+<h2>Weights<a class="headerlink" href="#weights" title="Link to this heading"></a></h2>
+<section id="weight">
+<h3>Weight<a class="headerlink" href="#weight" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.Weight">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">Weight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.Weight" title="Link to this definition"></a></dt>
+<dd><p>A single Weight with observer/callback pattern on update.</p>
+<p>See also <a class="reference internal" href="#motile.costs.Weights" title="motile.costs.weights.Weights"><code class="xref py py-class docutils literal notranslate"><span class="pre">motile.costs.weights.Weights</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>initial_value</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The initial value of the weight.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.costs.Weight.register_modify_callback">
+<span class="sig-name descname"><span class="pre">register_modify_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.Weight.register_modify_callback" title="Link to this definition"></a></dt>
+<dd><p>Register a <code class="docutils literal notranslate"><span class="pre">callback</span></code> to be called when the weight is modified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>callback</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></a>[[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</span>) – A function that takes two arguments: the old value and the new value.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="motile.costs.Weight.value">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">value</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><a class="headerlink" href="#motile.costs.Weight.value" title="Link to this definition"></a></dt>
+<dd><p>Return the value of this weight.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div></blockquote>
+</section>
+<section id="id1">
+<h3>Weights<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.Weights">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">Weights</span></span><a class="headerlink" href="#motile.costs.Weights" title="Link to this definition"></a></dt>
+<dd><p>A simple container for weights with observer/callback pattern on update.</p>
+<p>A <a class="reference internal" href="#motile.Solver" title="motile.Solver"><code class="xref py py-class docutils literal notranslate"><span class="pre">motile.Solver</span></code></a> has a <a class="reference internal" href="#motile.costs.Weights" title="motile.costs.Weights"><code class="xref py py-class docutils literal notranslate"><span class="pre">Weights</span></code></a> instance that is used to
+store the weights of the model.  Changes to the weights can be observed with
+<code class="docutils literal notranslate"><span class="pre">Solver.weights.register_modify_callback</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.costs.Weights.add_weight">
+<span class="sig-name descname"><span class="pre">add_weight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.Weights.add_weight" title="Link to this definition"></a></dt>
+<dd><p>Add a weight to the container.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weight</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#motile.costs.Weight" title="motile.costs.weight.Weight"><code class="xref py py-class docutils literal notranslate"><span class="pre">Weight</span></code></a></span>) – The <a class="reference internal" href="#motile.costs.Weight" title="motile.costs.Weight"><code class="xref py py-class docutils literal notranslate"><span class="pre">Weight</span></code></a> to add.</p></li>
+<li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Hashable" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Hashable</span></code></a></span>) – The name of the weight.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the index of the weight</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.costs.Weights.from_ndarray">
+<span class="sig-name descname"><span class="pre">from_ndarray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.Weights.from_ndarray" title="Link to this definition"></a></dt>
+<dd><p>Update weights from an iterable of floats.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.costs.Weights.index_of">
+<span class="sig-name descname"><span class="pre">index_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.Weights.index_of" title="Link to this definition"></a></dt>
+<dd><p>Return the index of <code class="docutils literal notranslate"><span class="pre">weight</span></code> in this container.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.costs.Weights.register_modify_callback">
+<span class="sig-name descname"><span class="pre">register_modify_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.Weights.register_modify_callback" title="Link to this definition"></a></dt>
+<dd><p>Register <code class="docutils literal notranslate"><span class="pre">callback</span></code> to be called when a weight is modified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>callback</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></a>[[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</span>) – A function that takes two arguments: the old value (which may be
+<code class="docutils literal notranslate"><span class="pre">None</span></code>) and the new value.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.costs.Weights.to_ndarray">
+<span class="sig-name descname"><span class="pre">to_ndarray</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.Weights.to_ndarray" title="Link to this definition"></a></dt>
+<dd><p>Export the weights as a numpy array.</p>
+<p>Note: you can also use <code class="docutils literal notranslate"><span class="pre">np.asarray(weights)</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div></blockquote>
+</section>
+</section>
+<section id="constraints">
+<h2>Constraints<a class="headerlink" href="#constraints" title="Link to this heading"></a></h2>
+<p>All constraints inherit from the following base class:</p>
+<dl class="py class" id="module-motile.constraints">
+<dt class="sig sig-object py" id="motile.constraints.Constraint">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.constraints.</span></span><span class="sig-name descname"><span class="pre">Constraint</span></span><a class="headerlink" href="#motile.constraints.Constraint" title="Link to this definition"></a></dt>
+<dd><p>A base class for a constraint that can be added to a solver.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="motile.constraints.Constraint.instantiate">
+<span class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">instantiate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.constraints.Constraint.instantiate" title="Link to this definition"></a></dt>
+<dd><p>Create and return specific linear constraints for the given solver.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>solver</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#motile.Solver" title="motile.solver.Solver"><code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code></a></span>) – The <a class="reference internal" href="#motile.Solver" title="motile.Solver"><code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code></a> instance to create linear constraints for.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Constraint</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">Expression</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An iterable of <code class="xref py py-class docutils literal notranslate"><span class="pre">ilpy.Constraint</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p>The following lists all constraints that are already implemented in <code class="docutils literal notranslate"><span class="pre">motile</span></code>.</p>
+<section id="maxchildren">
+<h3>MaxChildren<a class="headerlink" href="#maxchildren" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.constraints.MaxChildren">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.constraints.</span></span><span class="sig-name descname"><span class="pre">MaxChildren</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_children</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.constraints.MaxChildren" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#motile.constraints.Constraint" title="motile.constraints.constraint.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Constraint</span></code></a></p>
+<p>Ensures that every selected node has no more than <code class="docutils literal notranslate"><span class="pre">max_children</span></code>.</p>
+<p>Where a “child” is a selected edges to the next frame.</p>
+<p>Adds the following linear constraint for each node <span class="math notranslate nohighlight">\(v\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{e \in \text{out_edges}(v)} x_e \leq \text{max_children}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>max_children</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – The maximum number of children allowed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div></blockquote>
+</section>
+<section id="maxparents">
+<h3>MaxParents<a class="headerlink" href="#maxparents" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.constraints.MaxParents">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.constraints.</span></span><span class="sig-name descname"><span class="pre">MaxParents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_parents</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.constraints.MaxParents" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#motile.constraints.Constraint" title="motile.constraints.constraint.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Constraint</span></code></a></p>
+<p>Ensures that every selected node has no more than <code class="docutils literal notranslate"><span class="pre">max_parents</span></code>.</p>
+<p>Where a “parent” is defined as an incoming selected edge from the previous frame.</p>
+<p>Adds the following linear constraint for each node <span class="math notranslate nohighlight">\(v\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{e \in \text{in_edges}(v)} x_e \leq \text{max_parents}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>max_parents</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – The maximum number of parents allowed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div></blockquote>
+</section>
+<section id="expressionconstraint">
+<h3>ExpressionConstraint<a class="headerlink" href="#expressionconstraint" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.constraints.ExpressionConstraint">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.constraints.</span></span><span class="sig-name descname"><span class="pre">ExpressionConstraint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expression</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eval_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eval_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.constraints.ExpressionConstraint" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#motile.constraints.Constraint" title="motile.constraints.constraint.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Constraint</span></code></a></p>
+<p>Enforce selection of nodes/edges based on an expression.</p>
+<p>The expression string is evaluated with the node/edge dict as a namespace.</p>
+<p>This is a powerful general constraint that allows you to select nodes/edges based on
+any combination of node/edge attributes. The <cite>expression</cite> string is evaluated for
+each node/edge (assuming eval_nodes/eval_edges is True) using the actual node object
+as a namespace to populate any variables names used in the provided expression. If
+the expression evaluates to True, the node/edge is selected; otherwise, it is
+excluded.</p>
+<p>This takes advantaged of python’s <cite>eval</cite> function, like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_expression</span> <span class="o">=</span> <span class="s2">&quot;some_attribute == True&quot;</span>
+<span class="nb">eval</span><span class="p">(</span><span class="n">my_expression</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;some_attribute&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>  <span class="c1"># returns True (select)</span>
+<span class="nb">eval</span><span class="p">(</span><span class="n">my_expression</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;some_attribute&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>  <span class="c1"># returns False (exclude)</span>
+<span class="nb">eval</span><span class="p">(</span><span class="n">my_expression</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">{})</span>  <span class="c1"># raises NameError (do nothing)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>expression</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – An expression to evaluate for each node/edge. The expression must
+evaluate to a boolean value. The expression can use any names of
+node/edge attributes as variables.</p></li>
+<li><p><strong>eval_nodes</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Whether to evaluate the expression for nodes. By default, True.</p></li>
+<li><p><strong>eval_edges</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Whether to evaluate the expression for edges. By default, True.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>If the nodes of a graph are:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cells</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;t&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;t&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;t&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Then the following constraint will select node 0:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">expr</span> <span class="o">=</span> <span class="s2">&quot;t == 0 and color != &#39;green&#39;&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">solver</span><span class="o">.</span><span class="n">add_constraints</span><span class="p">(</span><span class="n">ExpressionConstraint</span><span class="p">(</span><span class="n">expr</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div></blockquote>
+</section>
+<section id="pin">
+<h3>Pin<a class="headerlink" href="#pin" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="motile.constraints.Pin">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.constraints.</span></span><span class="sig-name descname"><span class="pre">Pin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attribute</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.constraints.Pin" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#motile.constraints.ExpressionConstraint" title="motile.constraints.expression.ExpressionConstraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExpressionConstraint</span></code></a></p>
+<p>Enforces the selection of nodes/edges based on truthiness of a given attribute.</p>
+<p>Every node or edge that has the given attribute will be selected if the
+attribute value is <code class="docutils literal notranslate"><span class="pre">True</span></code> (and not selected if the attribute value is
+<code class="docutils literal notranslate"><span class="pre">False</span></code>). The solver will only determine the selection of nodes and edges
+that do not have this attribute.</p>
+<p>This constraint is useful to complete partial tracking solutions, e.g.,
+when users have already manually selected (or unselected) certain nodes or
+edges.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>attribute</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The name of the node/edge attribute to use.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div></blockquote>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="learning.html" class="btn btn-neutral float-left" title="Learning of Cost Weights" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jan Funke, Talley Lambert, Caroline Malin-Mayor, Benjamin Gallusser, Florian Jug, Ana Cristina Pascual Ramos.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"></span> Version:
+    <span class="version-name">main</span>
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl>
+      <dt>Versions</dt>
+      
+        <dd><a href="/stable/">stable</a></dd>
+      
+        <dd><a href="/main/">main</a></dd>
+      
+    </dl>
+  </div>
+</div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
