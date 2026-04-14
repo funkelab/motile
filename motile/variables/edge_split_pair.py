@@ -13,10 +13,10 @@ if TYPE_CHECKING:
 
 # A split group is an ordered pair of edges sharing a source node.
 # Each edge is a tuple[int, int], so a group is tuple[tuple[int, int], tuple[int, int]].
-SplitGroup = tuple[tuple[int, int], tuple[int, int]]
+SplitPair = tuple[tuple[int, int], tuple[int, int]]
 
 
-class EdgeSplitGroup(Variable["SplitGroup"]):
+class EdgeSplitPair(Variable["SplitPair"]):
     r"""Binary variable for each pair of edges that could form a split.
 
     For every node with at least two outgoing edges, and for every pair of
@@ -39,8 +39,8 @@ class EdgeSplitGroup(Variable["SplitGroup"]):
     """
 
     @staticmethod
-    def instantiate(solver: Solver) -> Collection[SplitGroup]:
-        groups: list[SplitGroup] = []
+    def instantiate(solver: Solver) -> Collection[SplitPair]:
+        groups: list[SplitPair] = []
         for node in solver.graph.nodes:
             next_edges = solver.graph.next_edges[node]
             if len(next_edges) >= 2:
@@ -50,7 +50,7 @@ class EdgeSplitGroup(Variable["SplitGroup"]):
 
     @staticmethod
     def instantiate_constraints(solver: Solver) -> Iterable[ilpy.Expression]:
-        group_indicators = solver.get_variables(EdgeSplitGroup)
+        group_indicators = solver.get_variables(EdgeSplitPair)
         edge_indicators = solver.get_variables(EdgeSelected)
 
         for (e1, e2), _ in group_indicators.items():

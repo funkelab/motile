@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
-from ..variables.edge_split_group import EdgeSplitGroup
+from ..variables.edge_split_pair import EdgeSplitPair
 from .cost import Cost
 from .weight import Weight
 
@@ -45,7 +45,7 @@ class SymmetricDivision(Cost):
         self.constant = Weight(constant)
 
     def apply(self, solver: Solver) -> None:
-        group_variables = solver.get_variables(EdgeSplitGroup)
+        group_variables = solver.get_variables(EdgeSplitPair)
 
         for (e1, e2), index in group_variables.items():
             parent = e1[0]  # both edges share the same source

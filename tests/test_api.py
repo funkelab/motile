@@ -3,16 +3,27 @@ from unittest.mock import Mock
 import motile
 import networkx as nx
 import pytest
+from motile import TrackGraph
 from motile.constraints import MaxChildren, MaxParents
 from motile.costs import (
     Appear,
     Disappear,
     EdgeDistance,
+    EdgeMergeCost,
     EdgeSelection,
+    EdgeSplitCost,
     NodeSelection,
     Split,
 )
-from motile.variables import EdgeSelected, NodeSelected
+from motile.variables import (
+    EdgeContinuation,
+    EdgeMerge,
+    EdgeSelected,
+    EdgeSplit,
+    NodeMerge,
+    NodeSelected,
+    NodeSplit,
+)
 
 
 def _selected_nodes(solver: motile.Solver) -> list:
@@ -87,3 +98,105 @@ def test_solver(arlo_graph):
         == [(0, 2), (1, 3), (2, 4), (3, 5)]
     )
     assert list(subgraph.nodes) == _selected_nodes(solver) == [0, 1, 2, 3, 4, 5]
+
+
+def test_edge_types_split_and_merge():
+    """Test edge that is simultaneously part of a split and a merge.
+
+    Graph structure:
+
+        0 --- 2
+         \\ /
+          X      edge (0,3) has src=split node, tgt=merge node
+         / \\
+        1 --- 3
+        t=0   t=1
+
+    Edges: (0,2), (0,3), (1,3)
+    Node 0 has 2 outgoing edges -> split node
+    Node 3 has 2 incoming edges -> merge node
+    Edge (0,3) is both a split edge AND a merge edge
+
+    We use a large negative node selection cost to encourage selecting
+    all nodes, and a large negative edge selection cost (on EdgeSelected
+    directly, via NodeSelection trick) to encourage selecting all edges.
+    MaxChildren(2) and MaxParents(2) allow splits and merges.
+    """
+    nx_graph = nx.DiGraph()
+    nx_graph.add_nodes_from(
+        [
+            (0, {"t": 0, "x": 0}),
+            (1, {"t": 0, "x": 10}),
+            (2, {"t": 1, "x": 0}),
+            (3, {"t": 1, "x": 10}),
+        ]
+    )
+    nx_graph.add_edges_from([(0, 2), (0, 3), (1, 3)])
+    graph = TrackGraph(nx_graph)
+
+    solver = motile.Solver(graph)
+    # Large negative costs to encourage selecting everything
+    solver.add_cost(NodeSelection(constant=-100.0))
+    # EdgeSelection only applies to continuation edges, so also add
+    # split and merge costs to incentivize selecting all edge types
+    solver.add_cost(EdgeSelection(constant=-100.0))
+    solver.add_cost(EdgeSplitCost(constant=-100.0))
+    solver.add_cost(EdgeMergeCost(constant=-100.0))
+    solver.add_constraint(MaxParents(2))
+    solver.add_constraint(MaxChildren(2))
+
+    solution = solver.solve()
+
+    # Check all edges are selected
+    edge_indicators = solver.get_variables(EdgeSelected)
+    selected_edges = sorted(
+        [e for e, i in edge_indicators.items() if solution[i] > 0.5]
+    )
+    assert selected_edges == [(0, 2), (0, 3), (1, 3)]
+
+    # Check node split/merge indicators
+    split_indicators = solver.get_variables(NodeSplit)
+    merge_indicators = solver.get_variables(NodeMerge)
+
+    # Node 0 should be a split node (2 outgoing edges selected)
+    assert solution[split_indicators[0]] > 0.5, "Node 0 should be a split node"
+    # Node 1 should NOT be a split node (only 1 outgoing edge)
+    assert solution[split_indicators[1]] < 0.5, "Node 1 should not be a split node"
+    # Node 3 should be a merge node (2 incoming edges selected)
+    assert solution[merge_indicators[3]] > 0.5, "Node 3 should be a merge node"
+    # Node 2 should NOT be a merge node (only 1 incoming edge)
+    assert solution[merge_indicators[2]] < 0.5, "Node 2 should not be a merge node"
+
+    # Check edge type indicators
+    cont_indicators = solver.get_variables(EdgeContinuation)
+    split_edge_indicators = solver.get_variables(EdgeSplit)
+    merge_edge_indicators = solver.get_variables(EdgeMerge)
+
+    # Edge (0,2): src is split, tgt is not merge
+    #   -> EdgeSplit=1, EdgeMerge=0, EdgeContinuation=0
+    assert solution[split_edge_indicators[(0, 2)]] > 0.5, "(0,2) should be a split edge"
+    assert solution[merge_edge_indicators[(0, 2)]] < 0.5, (
+        "(0,2) should not be a merge edge"
+    )
+    assert solution[cont_indicators[(0, 2)]] < 0.5, (
+        "(0,2) should not be a continuation edge"
+    )
+
+    # Edge (1,3): src is not split, tgt is merge
+    #   -> EdgeSplit=0, EdgeMerge=1, EdgeContinuation=0
+    assert solution[split_edge_indicators[(1, 3)]] < 0.5, (
+        "(1,3) should not be a split edge"
+    )
+    assert solution[merge_edge_indicators[(1, 3)]] > 0.5, "(1,3) should be a merge edge"
+    assert solution[cont_indicators[(1, 3)]] < 0.5, (
+        "(1,3) should not be a continuation edge"
+    )
+
+    # Edge (0,3): src IS split, tgt IS merge
+    #   -> EdgeSplit=1, EdgeMerge=1, EdgeContinuation=0
+    #   This edge is BOTH a split edge and a merge edge.
+    assert solution[split_edge_indicators[(0, 3)]] > 0.5, "(0,3) should be a split edge"
+    assert solution[merge_edge_indicators[(0, 3)]] > 0.5, "(0,3) should be a merge edge"
+    assert solution[cont_indicators[(0, 3)]] < 0.5, (
+        "(0,3) should not be a continuation edge"
+    )
