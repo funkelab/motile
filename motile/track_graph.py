@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 from collections import defaultdict
-from typing import TYPE_CHECKING, Any, DefaultDict, Hashable, Iterator, cast
+from typing import TYPE_CHECKING, Any, DefaultDict, Hashable
 
 import networkx
 
@@ -11,15 +11,10 @@ logger = logging.getLogger(__name__)
 if TYPE_CHECKING:
     from typing import Mapping
 
-    from typing_extensions import TypeGuard
-
     from motile._types import (
         Attributes,
         Edge,
-        GenericEdge,
-        HyperEdge,
         Node,
-        Nodes,
     )
 
 
@@ -37,9 +32,6 @@ class TrackGraph:
         nx_graph:
 
             A directed networkx graph representing the TrackGraph to be created.
-            Hyperedges are represented by networkx nodes that do not have the
-            ``frame_attribute`` and are connected to nodes that do have this
-            attribute.
 
         frame_attribute:
 
@@ -56,9 +48,9 @@ class TrackGraph:
         self._graph_changed = True
 
         self.nodes: dict[Node, Attributes] = {}
-        self.edges: dict[GenericEdge, Attributes] = {}
-        self.prev_edges: defaultdict[Node, list[GenericEdge]] = DefaultDict(list)
-        self.next_edges: defaultdict[Node, list[GenericEdge]] = DefaultDict(list)
+        self.edges: dict[Edge, Attributes] = {}
+        self.prev_edges: defaultdict[Node, list[Edge]] = DefaultDict(list)
+        self.next_edges: defaultdict[Node, list[Edge]] = DefaultDict(list)
 
         if nx_graph:
             self.add_from_nx_graph(nx_graph)
@@ -79,44 +71,26 @@ class TrackGraph:
         self.nodes[node_id] = data
         self._graph_changed = True
 
-    def add_edge(self, edge_id: GenericEdge, data: Attributes) -> None:
+    def add_edge(self, edge_id: Edge, data: Attributes) -> None:
         """Adds an edge to this TrackGraph.
 
         Args:
-            edge_id: an ``GenericEdge`` (tuple of Nodes) defining the edge
-                (or hyperedge) to be added.
+            edge_id: a tuple ``(u, v)`` defining the edge to be added.
             data: all properties associated to the added edge.
         """
         self.edges[edge_id] = data
-
-        if self.is_hyperedge(edge_id):
-            us, vs = edge_id
-            for v in vs:
-                self.prev_edges[v].append(edge_id)
-            for u in us:
-                self.next_edges[v].append(edge_id)
-        else:
-            # normal (u, v) edge
-            u, v = cast("Edge", edge_id)
-            self.prev_edges[v].append(edge_id)
-            self.next_edges[u].append(edge_id)
-
+        u, v = edge_id
+        self.prev_edges[v].append(edge_id)
+        self.next_edges[u].append(edge_id)
         self._graph_changed = True
 
     def add_from_nx_graph(self, nx_graph: networkx.DiGraph) -> None:
         """Add nodes/edges from ``nx_graph`` to this TrackGraph.
 
-        Hyperedges are represented by nodes in the ``nx_graph`` that do not have the
-        ``frame_attribute`` property. All 'regular' nodes connected to such a hyperedge
-        node will be added as a hyperedge.
-
         Args:
             nx_graph (networkx.DiGraph):
 
                 A directed networkx graph representing a TrackGraph to be added.
-                Hyperedges are represented by networkx nodes that do not have the
-                ``frame_attribute`` and are connected to nodes that do have this
-                attribute.
 
                 Duplicate nodes and edges will not be added again but new attributes
                 associated to nodes and edges added. If attributes of existing nodes
@@ -124,7 +98,7 @@ class TrackGraph:
                 will be updating the previously set values.
         """
         nodes_count = 0
-        # add all regular nodes (all but ones representing hyperedges)
+        # add all regular nodes
         for node, data in nx_graph.nodes.items():
             if self.frame_attribute in data:
                 if node not in self.nodes:
@@ -140,37 +114,16 @@ class TrackGraph:
                 "the `nx_graph`.\nIt's likely the wrong `frame_attribute` was set."
             )
 
-        # add all edges and hyperedges
+        # add all edges
         for (u, v), data in nx_graph.edges.items():
-            # do nothing when you have an nx_edge leaving a hyperedge node
-            # (we will add this hyperedge when we encounter it via an incoming edge)
-            if self._is_hyperedge_nx_node(nx_graph, u):
-                continue
-            # add hyperedge when nx_edge leads to hyperedge node
-            if self._is_hyperedge_nx_node(nx_graph, v):
-                # get data off the hypernode
-                data = nx_graph.nodes[v]
-                edge = self._convert_nx_hypernode(nx_graph, v)
-                in_nodes, out_nodes = edge
-                # avoid adding duplicates
-                if edge not in self.edges:
-                    self.edges[edge] = data
-                    for in_node in in_nodes:
-                        self.next_edges[in_node].append(edge)
-                    for out_node in out_nodes:
-                        self.prev_edges[out_node].append(edge)
-            else:  # add a regular edge otherwise
-                self.edges[(u, v)] = data
-                self.prev_edges[v].append((u, v))
-                self.next_edges[u].append((u, v))
+            edge: Edge = (u, v)
+            if edge not in self.edges:
+                self.edges[edge] = data
+                self.prev_edges[v].append(edge)
+                self.next_edges[u].append(edge)
 
-    def to_nx_graph(self, flatten_hyperedges: bool = True) -> networkx.DiGraph:
-        """Convert a this TrackGraph into a networkx DiGraph.
-
-        Args:
-            flatten_hyperedges (bool, optional): If True, include one edge for each
-                (source, target) combo in a hyperedge. If False, introduce a new
-                hypernode to represent hyperedges. Defaults to True.
+    def to_nx_graph(self) -> networkx.DiGraph:
+        """Convert this TrackGraph into a networkx DiGraph.
 
         Returns:
             networkx.DiGraph: Directed networkx graph with same nodes, edges, and
@@ -180,96 +133,10 @@ class TrackGraph:
         nodes_list = list(self.nodes.items())
         nx_graph.add_nodes_from(nodes_list)
         edges_list: list[tuple[Any, Any, Mapping]] = []
-        for edge, data in self.edges.items():
-            if self.is_hyperedge(edge):
-                us, vs = edge
-                if flatten_hyperedges:
-                    # flatten the hyperedges into multiple normal edges
-                    for u in us:
-                        for v in vs:
-                            edges_list.append((u, v, {}))
-                else:
-                    # add a hypernode to connect all in nodes with all out nodes
-                    hypernode_id = "_".join(list(map(str, us)) + list(map(str, vs)))
-                    nx_graph.add_node(hypernode_id, **data)
-                    for u in us:
-                        edges_list.append((u, hypernode_id, {}))
-                    for v in vs:
-                        edges_list.append((hypernode_id, v, {}))
-            else:
-                u, v = edge  # type: ignore
-                edges_list.append((u, v, data))
-
+        for (u, v), data in self.edges.items():
+            edges_list.append((u, v, data))
         nx_graph.add_edges_from(edges_list)
         return nx_graph
-
-    def nodes_of(self, edge: GenericEdge | Nodes | Node) -> Iterator[Node]:
-        """Returns an ``Iterator`` of node id's that are incident to the given edge.
-
-        Args:
-            edge: an edge of this TrackGraph.
-
-        Yields:
-            all nodes incident to the given edge.
-        """
-        # recursively descent into tuples and yield their elements if they are
-        # not tuples
-        if isinstance(edge, tuple):
-            for x in edge:
-                yield from self.nodes_of(x)
-        else:
-            yield edge
-
-    def is_hyperedge(self, edge: GenericEdge) -> TypeGuard[HyperEdge]:
-        """Test if the given edge is a hyperedge in this track graph."""
-        assert len(edge) == 2, "(Hyper)edges need to be 2-tuples"
-        num_tuples = sum(isinstance(x, tuple) for x in edge)
-        if num_tuples == 0:
-            return False
-        elif num_tuples == 2:
-            return True
-        raise RuntimeError(
-            f"(Hyper)edges have to contain two tuples or two node IDs, not {edge}"
-        )
-
-    def _is_hyperedge_nx_node(self, nx_graph: networkx.DiGraph, nx_node: Any) -> bool:
-        """Return ``True`` if ``nx_node`` is a hyperedge node in ``nx_graph``.
-
-        Checks if the given networkx node in the given directed networkx graph
-        represents an hyperedge. This boils down to checking if the node does not
-        have the ``frame_attribute`` set.
-
-        Args:
-            nx_graph: a networkx ``DiGraph``.
-            nx_node: a node in the given ``nx_graph``.
-
-        Returns:
-            bool: true iff the given ``nx_node`` does not posses the
-            ``frame_attribute``.
-        """
-        return self.frame_attribute not in nx_graph.nodes[nx_node]
-
-    def _convert_nx_hypernode(
-        self, nx_graph: networkx.DiGraph, hyperedge_node: Any
-    ) -> HyperEdge:
-        """Creates a hyperedge tuple for hyperedge node in a given networkx ``DiGraph``.
-
-        Args:
-            nx_graph: a networkx ``DiGraph``.
-            hyperedge_node: a node in the given ``nx_graph`` that represents
-                a hyperedge.
-
-        Returns:
-            a tuple representing the hyperedge the given ``nx_node`` represented. (It
-            will be a tuple with one entry per involved time point, listing all nodes at
-            that time point.)
-        """
-        assert self._is_hyperedge_nx_node(nx_graph, hyperedge_node)
-
-        in_nodes = tuple(nx_graph.predecessors(hyperedge_node))
-        out_nodes = tuple(nx_graph.successors(hyperedge_node))
-
-        return (in_nodes, out_nodes)
 
     def get_frames(self) -> tuple[int, int]:
         """Return tuple with first and last (exclusive) frame this graph has nodes for.

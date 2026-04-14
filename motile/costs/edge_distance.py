@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING
 
 import numpy as np
 
-from ..variables import EdgeSelected
+from ..variables import EdgeContinuation
 from .cost import Cost
 from .weight import Weight
 
@@ -15,9 +15,10 @@ if TYPE_CHECKING:
 
 
 class EdgeDistance(Cost):
-    """Cost for :class:`~motile.variables.EdgeSelected` variables.
+    """Cost for :class:`~motile.variables.EdgeContinuation` variables.
 
-    Cost is based on the spatial distance of the incident nodes.
+    Cost is based on the spatial distance of the incident nodes. Applied only
+    to continuation edges (not split or merge edges).
 
     Args:
         position_attribute:
@@ -43,9 +44,9 @@ class EdgeDistance(Cost):
         self.constant = Weight(constant)
 
     def apply(self, solver: Solver) -> None:
-        edge_variables = solver.get_variables(EdgeSelected)
-        for key, index in edge_variables.items():
-            u, v = cast("tuple[int, int]", key)
+        edge_variables = solver.get_variables(EdgeContinuation)
+        for edge, index in edge_variables.items():
+            u, v = edge
             pos_u = self.__get_node_position(solver.graph, u)
             pos_v = self.__get_node_position(solver.graph, v)
 
