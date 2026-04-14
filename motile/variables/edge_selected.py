@@ -8,15 +8,20 @@ from .variable import Variable
 if TYPE_CHECKING:
     import ilpy
 
-    from motile._types import GenericEdge
+    from motile._types import Edge
     from motile.solver import Solver
 
 
-class EdgeSelected(Variable["GenericEdge"]):
-    """Binary variable indicates whether an edge is part of the solution or not."""
+class EdgeSelected(Variable["Edge"]):
+    """Binary variable indicates whether an edge is part of the solution or not.
+
+    This is the base edge variable. All constraints operate on this variable.
+    Costs should not be applied directly to this variable; instead, use the
+    semantic edge variables (EdgeContinuation, EdgeSplit, EdgeMerge).
+    """
 
     @staticmethod
-    def instantiate(solver: Solver) -> Collection[GenericEdge]:
+    def instantiate(solver: Solver) -> Collection[Edge]:
         return solver.graph.edges
 
     @staticmethod
@@ -25,6 +30,6 @@ class EdgeSelected(Variable["GenericEdge"]):
         edge_indicators = solver.get_variables(EdgeSelected)
 
         for edge in solver.graph.edges:
-            nodes = list(solver.graph.nodes_of(edge))
+            u, v = edge
             x_e = edge_indicators[edge]
-            yield len(nodes) * x_e - sum(node_indicators[n] for n in nodes) <= 0
+            yield 2 * x_e - node_indicators[u] - node_indicators[v] <= 0
