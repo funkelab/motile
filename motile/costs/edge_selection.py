@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from ..variables import EdgeContinuation
+from ..variables import EdgeSelected
 from .cost import Cost
 from .weight import Weight
 
@@ -11,10 +11,9 @@ if TYPE_CHECKING:
 
 
 class EdgeSelection(Cost):
-    """Cost for :class:`~motile.variables.EdgeContinuation` variables.
+    """Cost for :class:`~motile.variables.EdgeSelected` variables.
 
-    This cost is applied to continuation edges (edges that are part of a
-    one-to-one linking, not part of a split or merge).
+    This cost is applied to all selected edges regardless of edge type.
 
     Args:
         weight:
@@ -26,7 +25,7 @@ class EdgeSelection(Cost):
             None, which means only a constant cost is used.
 
         constant:
-            A constant cost for each selected continuation edge. Default is ``0.0``.
+            A constant cost for each selected edge. Default is ``0.0``.
     """
 
     def __init__(
@@ -37,7 +36,7 @@ class EdgeSelection(Cost):
         self.attribute = attribute
 
     def apply(self, solver: Solver) -> None:
-        edge_variables = solver.get_variables(EdgeContinuation)
+        edge_variables = solver.get_variables(EdgeSelected)
 
         for edge, index in edge_variables.items():
             if self.attribute is not None:
