@@ -95,9 +95,9 @@ def test_solver(arlo_graph):
     assert (
         list(subgraph.edges)
         == _selected_edges(solver)
-        == [(0, 2), (1, 3), (2, 4), (3, 5)]
+        == [(0, 2), (1, 3), (2, 4), (3, 5), (3, 6)]
     )
-    assert list(subgraph.nodes) == _selected_nodes(solver) == [0, 1, 2, 3, 4, 5]
+    assert list(subgraph.nodes) == _selected_nodes(solver) == [0, 1, 2, 3, 4, 5, 6]
 
 
 def test_edge_types_split_and_merge():
@@ -137,11 +137,12 @@ def test_edge_types_split_and_merge():
     solver = motile.Solver(graph)
     # Large negative costs to encourage selecting everything
     solver.add_cost(NodeSelection(constant=-100.0))
-    # EdgeSelection only applies to continuation edges, so also add
-    # split and merge costs to incentivize selecting all edge types
     solver.add_cost(EdgeSelection(constant=-100.0))
     solver.add_cost(EdgeSplitCost(constant=-100.0))
     solver.add_cost(EdgeMergeCost(constant=-100.0))
+    # EdgeDistance with zero weight to instantiate EdgeContinuation variables
+    # (needed for assertions below)
+    solver.add_cost(EdgeDistance(position_attribute="x", weight=0.0))
     solver.add_constraint(MaxParents(2))
     solver.add_constraint(MaxChildren(2))
 
@@ -200,3 +201,60 @@ def test_edge_types_split_and_merge():
     assert solution[cont_indicators[(0, 3)]] < 0.5, (
         "(0,3) should not be a continuation edge"
     )
+
+
+def test_edge_distance_continuation_only(arlo_graph):
+    """Test that EdgeDistance cost applies only to continuation edges, not split edges.
+
+    Uses the arlo_graph where node 3 can split to nodes 5 and 6. With a high
+    EdgeDistance weight, the distance cost on continuation edges discourages
+    long links. But split edges (3->5, 3->6) are not penalized by EdgeDistance,
+    only by the Split cost.
+
+    Without EdgeDistance on continuation only:
+        The solver would select [(0,2), (1,3), (2,4), (3,5)] — no split,
+        because the distance cost on (3,6) would make the split too expensive.
+
+    With EdgeDistance on continuation only:
+        The solver selects [(0,2), (1,3), (2,4), (3,5), (3,6)] — split at
+        node 3, because EdgeDistance doesn't penalize the split edges.
+    """
+    solver = motile.Solver(arlo_graph)
+    solver.add_cost(NodeSelection(weight=-1.0, attribute="score", constant=-100.0))
+    solver.add_cost(
+        EdgeSelection(weight=0.5, attribute="prediction_distance", constant=-1.0)
+    )
+    solver.add_cost(EdgeDistance(position_attribute=("x",), weight=0.5))
+    solver.add_cost(Appear(constant=200.0, attribute="score", weight=-1.0))
+    solver.add_cost(Disappear(constant=55.0))
+    solver.add_cost(Split(constant=100.0, attribute="score", weight=1.0))
+    # Zero-weight EdgeSplitCost to instantiate EdgeSplit variables for assertions
+    solver.add_cost(EdgeSplitCost(weight=0.0))
+
+    solver.add_constraint(MaxParents(1))
+    solver.add_constraint(MaxChildren(2))
+
+    solution = solver.solve()
+
+    edge_indicators = solver.get_variables(EdgeSelected)
+    selected_edges = sorted(
+        [e for e, i in edge_indicators.items() if solution[i] > 0.5]
+    )
+
+    # The split at node 3 is selected because EdgeDistance does not penalize
+    # split edges (3->5) and (3->6), only the Split cost applies to them.
+    assert selected_edges == [(0, 2), (1, 3), (2, 4), (3, 5), (3, 6)]
+
+    # Verify that split edges are not continuation edges
+    cont_indicators = solver.get_variables(EdgeContinuation)
+    split_indicators = solver.get_variables(EdgeSplit)
+
+    # (3,5) and (3,6) are split edges, not continuation edges
+    assert solution[split_indicators[(3, 5)]] > 0.5
+    assert solution[split_indicators[(3, 6)]] > 0.5
+    assert solution[cont_indicators[(3, 5)]] < 0.5
+    assert solution[cont_indicators[(3, 6)]] < 0.5
+
+    # (0,2) and (1,3) are continuation edges
+    assert solution[cont_indicators[(0, 2)]] > 0.5
+    assert solution[cont_indicators[(1, 3)]] > 0.5

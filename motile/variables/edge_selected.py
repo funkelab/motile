@@ -16,8 +16,8 @@ class EdgeSelected(Variable["Edge"]):
     """Binary variable indicates whether an edge is part of the solution or not.
 
     This is the base edge variable. All constraints operate on this variable.
-    Costs should not be applied directly to this variable; instead, use the
-    semantic edge variables (EdgeContinuation, EdgeSplit, EdgeMerge).
+    Costs on this variable affect all edges, while costs on the semantic
+    edge variables (EdgeContinuation, EdgeSplit, EdgeMerge) affect only a subset.
     """
 
     @staticmethod
