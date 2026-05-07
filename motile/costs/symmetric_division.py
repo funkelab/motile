@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 
 class SymmetricDivision(Cost):
-    """Cost for :class:`~motile.variables.EdgeSplitGroup` variables.
+    """Cost for :class:`~motile.variables.EdgeSplitPair` variables.
 
     For each pair of edges forming a split, the cost is the euclidean distance
     from the parent node's position to the midpoint of the two children's

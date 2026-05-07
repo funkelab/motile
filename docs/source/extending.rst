@@ -353,3 +353,10 @@ Let's inspect the solution!
 
   print(solver.get_variables(ContinuationPairs))
   draw_solution(graph, solver, label_attribute="score")
+
+The same pattern can be applied to other tracking events. A common place to
+encode dataset-specific knowledge is at divisions — for example, penalizing
+asymmetry in daughter positions or differences in area between mother and
+daughters. See :class:`~motile.costs.SymmetricDivision` and
+:class:`~motile.variables.EdgeSplitPair` for a built-in example of this
+pattern applied to splits.
