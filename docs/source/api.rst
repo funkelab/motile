@@ -15,25 +15,13 @@ API Reference
 
     ``Node: TypeAlias = int``
 
-   - Collections of nodes are tuples of ``Node``
-
-    ``Nodes: TypeAlias = tuple[Node, ...]``
-
    - Edges are 2-tuples of ``Node``.
 
     ``Edge: TypeAlias = tuple[Node, Node]``
 
-   - Hyperedges are 2-tuples of ``Nodes``:
+    Example: ``(0, 1)`` is an edge from node 0 to node 1.
 
-    ``HyperEdge: TypeAlias = tuple[Nodes, Nodes]``
-
-    Examples:
-
-    - ``(0, 1)`` is an edge from node 0 to node 1.
-    - ``((0,), (1, 2))`` is a hyperedge from node 0 to nodes 1 and 2 (i.e. a split).
-    - ``((0, 1), 2)`` is a not a valid edge.
-
-   - All attributes in a graph (for both ``Node``s and ``(Hyper)Edge``s) are
+   - All attributes in a graph (for both ``Node``s and ``Edge``s) are
      dictionaries mapping string attribute names to values. For example, a
      node's attributes might be ``{ "x": 0.5, "y": 0.5, "t": 0 }``
 
