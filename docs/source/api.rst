@@ -73,13 +73,37 @@ EdgeSelected
 ^^^^^^^^^^^^
   .. autoclass:: EdgeSelected
 
+EdgeContinuation
+^^^^^^^^^^^^^^^^
+  .. autoclass:: EdgeContinuation
+
+EdgeSplit
+^^^^^^^^^
+  .. autoclass:: EdgeSplit
+
+EdgeMerge
+^^^^^^^^^
+  .. autoclass:: EdgeMerge
+
+EdgeSplitPair
+^^^^^^^^^^^^^
+  .. autoclass:: EdgeSplitPair
+
 NodeAppear
 ^^^^^^^^^^
   .. autoclass:: NodeAppear
 
+NodeDisappear
+^^^^^^^^^^^^^
+  .. autoclass:: NodeDisappear
+
 NodeSplit
 ^^^^^^^^^
   .. autoclass:: NodeSplit
+
+NodeMerge
+^^^^^^^^^
+  .. autoclass:: NodeMerge
 
 Costs
 -----
@@ -97,13 +121,29 @@ Appear
 ^^^^^^
   .. autoclass:: Appear
 
-EdgeSelection
-^^^^^^^^^^^^^
-  .. autoclass:: EdgeSelection
+Disappear
+^^^^^^^^^
+  .. autoclass:: Disappear
 
 NodeSelection
 ^^^^^^^^^^^^^
   .. autoclass:: NodeSelection
+
+EdgeSelection
+^^^^^^^^^^^^^
+  .. autoclass:: EdgeSelection
+
+EdgeDistance
+^^^^^^^^^^^^
+  .. autoclass:: EdgeDistance
+
+EdgeSplitCost
+^^^^^^^^^^^^^
+  .. autoclass:: EdgeSplitCost
+
+EdgeMergeCost
+^^^^^^^^^^^^^
+  .. autoclass:: EdgeMergeCost
 
 Split
 ^^^^^
@@ -113,9 +153,9 @@ Merge
 ^^^^^
   .. autoclass:: Merge
 
-EdgeDistance
-^^^^^^^^^^^^
-  .. autoclass:: EdgeDistance
+SymmetricDivision
+^^^^^^^^^^^^^^^^^
+  .. autoclass:: SymmetricDivision
 
 Features
 --------
