@@ -3,7 +3,7 @@ from __future__ import annotations
 from itertools import combinations
 from typing import TYPE_CHECKING, Collection, Iterable
 
-from .edge_selected import EdgeSelected
+from .edge_split import EdgeSplit
 from .variable import Variable
 
 if TYPE_CHECKING:
@@ -11,8 +11,6 @@ if TYPE_CHECKING:
 
     from motile.solver import Solver
 
-# A split group is an ordered pair of edges sharing a source node.
-# Each edge is a tuple[int, int], so a group is tuple[tuple[int, int], tuple[int, int]].
 SplitPair = tuple[tuple[int, int], tuple[int, int]]
 
 
@@ -51,7 +49,7 @@ class EdgeSplitPair(Variable["SplitPair"]):
     @staticmethod
     def instantiate_constraints(solver: Solver) -> Iterable[ilpy.Expression]:
         group_indicators = solver.get_variables(EdgeSplitPair)
-        edge_indicators = solver.get_variables(EdgeSelected)
+        edge_indicators = solver.get_variables(EdgeSplit)
 
         for (e1, e2), _ in group_indicators.items():
             g = group_indicators[(e1, e2)]

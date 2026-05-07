@@ -1,11 +1,16 @@
 import motile
 import networkx as nx
+from motile.constraints import MaxChildren, MaxParents
 from motile.costs import (
     Appear,
     Disappear,
+    EdgeMergeCost,
     EdgeSelection,
+    EdgeSplitCost,
     Merge,
     NodeSelection,
+    Split,
+    SymmetricDivision,
 )
 
 
@@ -199,3 +204,204 @@ def test_variable_merge_cost() -> None:
         solution_graph.has_edge(2, 4),
     ]
     assert sum(edges_to_4) == 1  # exactly one edge to node 4
+
+
+def test_edge_split_cost_with_attribute() -> None:
+    """Test that EdgeSplitCost can use edge attributes to selectively penalize splits.
+
+    Graph structure:
+        t=0: node 0
+        t=1: node 1 (split_cost=10.0), node 2 (split_cost=-5.0)
+        t=2: node 3, node 4
+
+        edges: 0->1, 0->2, 1->3, 2->4
+
+    Node 0 has two outgoing edges, so selecting both creates a split.
+    We use EdgeSplitCost with attribute to make the split edge (0->1)
+    expensive and (0->2) cheap. The solver should still select the split
+    because the cheap edge outweighs the expensive one overall, but the
+    attribute-based cost is being applied.
+    """
+    nx_graph = nx.DiGraph()
+    nx_graph.add_nodes_from(
+        [
+            (0, {"t": 0, "x": 0}),
+            (1, {"t": 1, "x": 10}),
+            (2, {"t": 1, "x": -10}),
+            (3, {"t": 2, "x": 10}),
+            (4, {"t": 2, "x": -10}),
+        ]
+    )
+    nx_graph.add_edges_from(
+        [
+            (0, 1, {"split_cost": 10.0}),
+            (0, 2, {"split_cost": 10.0}),
+            (1, 3, {"split_cost": 0.0}),
+            (2, 4, {"split_cost": 0.0}),
+        ]
+    )
+    graph = motile.TrackGraph(nx_graph)
+
+    # Without EdgeSplitCost: split is free, both edges selected
+    solver = motile.Solver(graph)
+    solver.add_cost(NodeSelection(constant=-100.0))
+    solver.add_cost(EdgeSelection(constant=-100.0))
+    solver.add_constraint(MaxChildren(2))
+    solver.add_constraint(MaxParents(1))
+    solver.solve()
+    solution_graph = solver.get_selected_subgraph()
+    assert (0, 1) in solution_graph.edges
+    assert (0, 2) in solution_graph.edges
+
+    # With high attribute-based EdgeSplitCost: split is too expensive
+    solver = motile.Solver(graph)
+    solver.add_cost(NodeSelection(constant=-100.0))
+    solver.add_cost(EdgeSelection(constant=-100.0))
+    solver.add_cost(EdgeSplitCost(attribute="split_cost", weight=5.0))
+    solver.add_constraint(MaxChildren(2))
+    solver.add_constraint(MaxParents(1))
+    solver.solve()
+    solution_graph = solver.get_selected_subgraph()
+    # Only one outgoing edge from node 0 should be selected (no split)
+    outgoing_from_0 = [(u, v) for u, v in solution_graph.edges if u == 0]
+    assert len(outgoing_from_0) == 1
+
+
+def test_edge_merge_cost_with_attribute() -> None:
+    """Test that EdgeMergeCost can use edge attributes to penalize merges.
+
+    Graph structure:
+        t=0: node 0, node 1
+        t=1: node 2
+        edges: 0->2 (merge_cost=10.0), 1->2 (merge_cost=10.0)
+
+    Without EdgeMergeCost, both edges are selected (merge at node 2).
+    With high attribute-based EdgeMergeCost, only one edge is selected.
+    """
+    nx_graph = nx.DiGraph()
+    nx_graph.add_nodes_from(
+        [
+            (0, {"t": 0}),
+            (1, {"t": 0}),
+            (2, {"t": 1}),
+        ]
+    )
+    nx_graph.add_edges_from(
+        [
+            (0, 2, {"merge_cost": 10.0}),
+            (1, 2, {"merge_cost": 10.0}),
+        ]
+    )
+    graph = motile.TrackGraph(nx_graph)
+
+    # Without EdgeMergeCost: merge occurs
+    solver = motile.Solver(graph)
+    solver.add_cost(EdgeSelection(constant=-1.0))
+    solver.solve()
+    solution_graph = solver.get_selected_subgraph()
+    assert len(solution_graph.edges) == 2
+
+    # With high attribute-based EdgeMergeCost: merge is too expensive
+    solver = motile.Solver(graph)
+    solver.add_cost(EdgeSelection(constant=-1.0))
+    solver.add_cost(EdgeMergeCost(attribute="merge_cost", weight=5.0))
+    solver.solve()
+    solution_graph = solver.get_selected_subgraph()
+    assert len(solution_graph.edges) == 1
+
+
+def test_symmetric_division_cost() -> None:
+    """Test that SymmetricDivision cost penalizes asymmetric splits.
+
+    Graph structure (t=0 -> t=1):
+        node 0 at x=0 can split to:
+          - node 1 at x=-5 and node 2 at x=5   (symmetric: midpoint=0, distance=0)
+          - node 1 at x=-5 and node 3 at x=20   (asymmetric: midpoint=7.5, distance=7.5)
+          - node 2 at x=5  and node 3 at x=20   (asymmetric: midpoint=12.5)
+
+    With a high SymmetricDivision weight, the solver should prefer the
+    symmetric split (nodes 1 and 2) over any asymmetric one.
+    """
+    nx_graph = nx.DiGraph()
+    nx_graph.add_nodes_from(
+        [
+            (0, {"t": 0, "x": 0}),
+            (1, {"t": 1, "x": -5}),
+            (2, {"t": 1, "x": 5}),
+            (3, {"t": 1, "x": 20}),
+        ]
+    )
+    nx_graph.add_edges_from([(0, 1), (0, 2), (0, 3)])
+    graph = motile.TrackGraph(nx_graph)
+
+    solver = motile.Solver(graph)
+    solver.add_cost(NodeSelection(constant=-100.0))
+    solver.add_cost(EdgeSelection(constant=-100.0))
+    solver.add_cost(Split(constant=0.0))
+    solver.add_cost(SymmetricDivision(position_attribute="x", weight=50.0))
+    solver.add_constraint(MaxChildren(2))
+    solver.add_constraint(MaxParents(1))
+
+    solver.solve()
+    solution_graph = solver.get_selected_subgraph()
+
+    # The symmetric split (0->1, 0->2) should be chosen
+    assert (0, 1) in solution_graph.edges
+    assert (0, 2) in solution_graph.edges
+    assert (0, 3) not in solution_graph.edges
+
+    # With negative weight, the solver should prefer the most asymmetric split
+    solver = motile.Solver(graph)
+    solver.add_cost(NodeSelection(constant=-100.0))
+    solver.add_cost(EdgeSelection(constant=-100.0))
+    solver.add_cost(Split(constant=0.0))
+    solver.add_cost(SymmetricDivision(position_attribute="x", weight=-50.0))
+    solver.add_constraint(MaxChildren(2))
+    solver.add_constraint(MaxParents(1))
+
+    solver.solve()
+    solution_graph = solver.get_selected_subgraph()
+
+    # The most asymmetric split (0->1, 0->3) or (0->2, 0->3) should be chosen
+    # (0->2, 0->3) has midpoint=12.5, distance=12.5 — the most asymmetric
+    assert (0, 3) in solution_graph.edges
+    assert (0, 1) not in solution_graph.edges
+
+
+def test_symmetric_division_cost_tuple_position() -> None:
+    """Test SymmetricDivision with tuple position_attribute.
+
+    Graph structure (t=0 -> t=1):
+        node 0 at (y=0, x=0) can split to:
+          - node 1 at (y=-3, x=-4) and node 2 at (y=3, x=4)  (symmetric: midpoint=(0,0))
+          - node 1 at (y=-3, x=-4) and node 3 at (y=0, x=20)  (asymmetric)
+
+    The symmetric pair should be preferred.
+    """
+    nx_graph = nx.DiGraph()
+    nx_graph.add_nodes_from(
+        [
+            (0, {"t": 0, "y": 0, "x": 0}),
+            (1, {"t": 1, "y": -3, "x": -4}),
+            (2, {"t": 1, "y": 3, "x": 4}),
+            (3, {"t": 1, "y": 0, "x": 20}),
+        ]
+    )
+    nx_graph.add_edges_from([(0, 1), (0, 2), (0, 3)])
+    graph = motile.TrackGraph(nx_graph)
+
+    solver = motile.Solver(graph)
+    solver.add_cost(NodeSelection(constant=-100.0))
+    solver.add_cost(EdgeSelection(constant=-100.0))
+    solver.add_cost(Split(constant=0.0))
+    solver.add_cost(SymmetricDivision(position_attribute=("y", "x"), weight=50.0))
+    solver.add_constraint(MaxChildren(2))
+    solver.add_constraint(MaxParents(1))
+
+    solver.solve()
+    solution_graph = solver.get_selected_subgraph()
+
+    # The symmetric split (0->1, 0->2) should be chosen
+    assert (0, 1) in solution_graph.edges
+    assert (0, 2) in solution_graph.edges
+    assert (0, 3) not in solution_graph.edges
