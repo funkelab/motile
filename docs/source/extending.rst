@@ -243,30 +243,31 @@ Variables can also be introduced for other things that are not nodes or edges.
 We could create variables only for a subset of nodes, for pairs of edges, or
 the number of division events.
 
-Let's say we want to add new variables for *pairs of edges* that leave and
-enter the same node. Having such a variable might be useful to, for example,
-measure the curvature of a track and put a cost on that.
+Let's say we want to add new variables for *pairs of continuation edges* that
+leave and enter the same node. Having such a variable might be useful to, for
+example, measure the curvature of a track and put a cost on that. We only want
+to consider continuation edges (not split or merge edges), since divisions and merges often introduce sharp differences in cell movement.
 
 To create our new variables, we simply return a list of all pairs of edges we
 wish to have a variable for in :func:`instantiate
 <motile.variables.Variable.instantiate>`. However, declaring those variables
 alone is not sufficient. To give them semantic meaning, we also have to make
 sure that our edge-pair variables are set to 1 if the two edges they represent
-have been selected, and 0 otherwise. To that end, we also add constraints that
-are specific to our variables by overriding the :func:`instantiate_constraints
+are both selected continuation edges, and 0 otherwise. To that end, we also add
+constraints that are specific to our variables by overriding the
+:func:`instantiate_constraints
 <motile.variables.Variable.instantiate_constraints>` method, such that our
-variables are linked to the already existing :class:`EdgeSelected
-<motile.variables.EdgeSelected>` variables.
+variables are linked to the :class:`EdgeContinuation
+<motile.variables.EdgeContinuation>` variables.
 
 The complete variable declaration looks like this:
 
 .. jupyter-execute::
 
-  import ilpy
-  from motile.variables import EdgeSelected
+  from motile.variables import EdgeContinuation
 
 
-  class EdgePairs(motile.variables.Variable):
+  class ContinuationPairs(motile.variables.Variable):
 
     @staticmethod
     def instantiate(solver):
@@ -285,18 +286,18 @@ The complete variable declaration looks like this:
     @staticmethod
     def instantiate_constraints(solver):
 
-        edge_indicators = solver.get_variables(EdgeSelected)
-        edge_pair_indicators = solver.get_variables(EdgePairs)
+        cont_indicators = solver.get_variables(EdgeContinuation)
+        pair_indicators = solver.get_variables(ContinuationPairs)
 
-        constraints = []
-        for (in_edge, out_edge), pair_index in edge_pair_indicators.items():
+        for (in_edge, out_edge), pair_index in pair_indicators.items():
 
-            in_edge_index = edge_indicators[in_edge]
-            out_edge_index = edge_indicators[out_edge]
+            c1 = cont_indicators[in_edge]
+            c2 = cont_indicators[out_edge]
 
-            # edge pair indicator = 1 <=> in edge = 1 and out edge = 1
-            yield pair_index * 2 + in_edge_index * -1 + out_edge_index * -1 <= 0
-            yield pair_index * -1 + out_edge_index + in_edge_index <= 1
+            # pair indicator = 1 <=> both edges are active continuations
+            yield pair_index <= c1
+            yield pair_index <= c2
+            yield pair_index >= c1 + c2 - 1
 
 Variables on their own, however, don't do anything yet. They only start to
 affect the solution if they are involved in constraints or have a cost.
@@ -314,10 +315,10 @@ local curvature of the track:
 
       def apply(self, solver):
 
-          # get edge pair variables
-          edge_pair_indicators = solver.get_variables(EdgePairs)
+          # get continuation pair variables
+          pair_indicators = solver.get_variables(ContinuationPairs)
 
-          for (in_edge, out_edge), index in edge_pair_indicators.items():
+          for (in_edge, out_edge), index in pair_indicators.items():
 
               in_offset = self.get_edge_offset(solver.graph, in_edge)
               out_offset = self.get_edge_offset(solver.graph, out_edge)
@@ -350,5 +351,5 @@ Let's inspect the solution!
 
 .. jupyter-execute::
 
-  print(solver.get_variables(EdgePairs))
+  print(solver.get_variables(ContinuationPairs))
   draw_solution(graph, solver, label_attribute="score")

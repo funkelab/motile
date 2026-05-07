@@ -1,5 +1,4 @@
 from .edge_continuation import EdgeContinuation
-from .edge_continuation_pair import EdgeContinuationPair
 from .edge_merge import EdgeMerge
 from .edge_selected import EdgeSelected
 from .edge_split import EdgeSplit
@@ -13,7 +12,6 @@ from .variable import Variable
 
 __all__ = [
     "EdgeContinuation",
-    "EdgeContinuationPair",
     "EdgeMerge",
     "EdgeSelected",
     "EdgeSplit",
