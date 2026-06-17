@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from ..variables import NodeSelected
+from ..variables import NodeSplit
 from .cost import Cost
 from .weight import Weight
 
@@ -10,33 +10,33 @@ if TYPE_CHECKING:
     from motile.solver import Solver
 
 
-class NodeSelection(Cost):
-    """Cost for :class:`~motile.variables.NodeSelected` variables.
+class NodeSplitCost(Cost):
+    """Cost for :class:`~motile.variables.NodeSplit` variables.
 
     Args:
         weight:
-            The weight to apply to the cost given by the provided attribute of
-            each node. Default is ``1.0``
+            The weight to apply to the cost of each split. Default is ``1``.
 
         attribute:
-            The name of the node attribute to use to look up cost, or None if a constant
-            cost is desired. Default is ``None``.
+            The name of the attribute to use to look up the cost. Default is
+            ``None``, which means that a constant cost is used.
 
         constant:
-            A constant cost for each selected node. Default is ``0.0``.
+            A constant cost for each node that has more than one selected
+            child. Default is ``0``.
     """
 
     def __init__(
-        self, weight: float = 1, attribute: str | None = None, constant: float = 0.0
+        self, weight: float = 1, attribute: str | None = None, constant: float = 0
     ) -> None:
         self.weight = Weight(weight)
         self.constant = Weight(constant)
         self.attribute = attribute
 
     def apply(self, solver: Solver) -> None:
-        node_variables = solver.get_variables(NodeSelected)
+        split_indicators = solver.get_variables(NodeSplit)
 
-        for node, index in node_variables.items():
+        for node, index in split_indicators.items():
             if self.attribute is not None:
                 solver.add_variable_cost(
                     index, solver.graph.nodes[node][self.attribute], self.weight

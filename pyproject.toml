@@ -26,6 +26,9 @@ dependencies = [
     'structsvm',
 ]
 
+[project.optional-dependencies]
+gurobi = ["ilpy[gurobi]>=0.4.0"]
+
 [dependency-groups]
 test = [
     "pytest",
@@ -64,6 +67,7 @@ path = "motile/__init__.py"
 [tool.ruff]
 target-version = "py38"
 src = ["motile"]
+extend-exclude = ["docs/jupyter_execute", "docs/build"]
 
 [tool.ruff.lint]
 select = [

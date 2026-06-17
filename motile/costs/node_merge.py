@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from ..variables import NodeSplit
+from ..variables import NodeMerge
 from .cost import Cost
 from .weight import Weight
 
@@ -10,8 +10,8 @@ if TYPE_CHECKING:
     from motile.solver import Solver
 
 
-class Split(Cost):
-    """Cost for :class:`~motile.variables.NodeSplit` variables.
+class NodeMergeCost(Cost):
+    """Cost for :class:`~motile.variables.NodeMerge` variables.
 
     Args:
         weight:
@@ -23,7 +23,7 @@ class Split(Cost):
 
         constant:
             A constant cost for each node that has more than one selected
-            child. Default is ``0``.
+            parent. Default is ``0``.
     """
 
     def __init__(
@@ -34,9 +34,9 @@ class Split(Cost):
         self.attribute = attribute
 
     def apply(self, solver: Solver) -> None:
-        split_indicators = solver.get_variables(NodeSplit)
+        merge_indicators = solver.get_variables(NodeMerge)
 
-        for node, index in split_indicators.items():
+        for node, index in merge_indicators.items():
             if self.attribute is not None:
                 solver.add_variable_cost(
                     index, solver.graph.nodes[node][self.attribute], self.weight

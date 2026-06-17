@@ -79,16 +79,16 @@ model is:
   :hide-output:
 
   from motile.constraints import MaxParents, MaxChildren
-  from motile.costs import NodeSelection, EdgeSelection, Appear
+  from motile.costs import NodeSelectedCost, EdgeSelectedCost, NodeAppearCost
 
   solver = motile.Solver(graph)
 
   solver.add_constraint(MaxParents(1))
   solver.add_constraint(MaxChildren(1))
 
-  solver.add_cost(NodeSelection(weight=-1, attribute="score"))
-  solver.add_cost(EdgeSelection(weight=-1, attribute="score"))
-  solver.add_cost(Appear(constant=1))
+  solver.add_cost(NodeSelectedCost(weight=-1, attribute="score"))
+  solver.add_cost(EdgeSelectedCost(weight=-1, attribute="score"))
+  solver.add_cost(NodeAppearCost(constant=1))
 
   solver.solve()
 
@@ -357,6 +357,6 @@ Let's inspect the solution!
 The same pattern can be applied to other tracking events. A common place to
 encode dataset-specific knowledge is at divisions — for example, penalizing
 asymmetry in daughter positions or differences in area between mother and
-daughters. See :class:`~motile.costs.SymmetricDivision` and
+daughters. See :class:`~motile.costs.SymmetricSplitCost` and
 :class:`~motile.variables.EdgeSplitPair` for a built-in example of this
 pattern applied to splits.

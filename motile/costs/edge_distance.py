@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from motile.solver import Solver
 
 
-class EdgeDistance(Cost):
+class EdgeDistanceCost(Cost):
     """Cost for :class:`~motile.variables.EdgeContinuation` variables.
 
     Cost is based on the spatial distance of the incident nodes. Applied only

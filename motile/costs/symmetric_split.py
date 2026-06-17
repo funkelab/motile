@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from motile.track_graph import TrackGraph
 
 
-class SymmetricDivision(Cost):
+class SymmetricSplitCost(Cost):
     """Cost for :class:`~motile.variables.EdgeSplitPair` variables.
 
     For each pair of edges forming a split, the cost is the euclidean distance

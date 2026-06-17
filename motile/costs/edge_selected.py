@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from motile.solver import Solver
 
 
-class EdgeSelection(Cost):
+class EdgeSelectedCost(Cost):
     """Cost for :class:`~motile.variables.EdgeSelected` variables.
 
     This cost is applied to all selected edges regardless of edge type.

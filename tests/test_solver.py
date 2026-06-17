@@ -1,6 +1,6 @@
 import motile
 import networkx as nx
-from motile.costs import EdgeSelection, NodeSelection
+from motile.costs import EdgeSelectedCost, NodeSelectedCost
 
 
 def test_empty_graph() -> None:
@@ -9,8 +9,8 @@ def test_empty_graph() -> None:
     graph = motile.TrackGraph(nx_graph)
 
     solver = motile.Solver(graph)
-    solver.add_cost(NodeSelection(constant=-1))
-    solver.add_cost(EdgeSelection(constant=-1))
+    solver.add_cost(NodeSelectedCost(constant=-1))
+    solver.add_cost(EdgeSelectedCost(constant=-1))
 
     # Should not error
     solver.solve()
@@ -36,8 +36,8 @@ def test_graph_with_no_edges() -> None:
     graph = motile.TrackGraph(nx_graph)
 
     solver = motile.Solver(graph)
-    solver.add_cost(NodeSelection(constant=-1))
-    solver.add_cost(EdgeSelection(constant=-1))
+    solver.add_cost(NodeSelectedCost(constant=-1))
+    solver.add_cost(EdgeSelectedCost(constant=-1))
 
     # Should not error
     solver.solve()

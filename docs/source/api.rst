@@ -21,7 +21,7 @@ API Reference
 
     Example: ``(0, 1)`` is an edge from node 0 to node 1.
 
-   - All attributes in a graph (for both ``Node``s and ``Edge``s) are
+   - All attributes in a graph (for both ``Node``\ s and ``Edge``\ s) are
      dictionaries mapping string attribute names to values. For example, a
      node's attributes might be ``{ "x": 0.5, "y": 0.5, "t": 0 }``
 
@@ -53,45 +53,36 @@ Solver variables are introduced by inheriting from the following abstract base c
 
 The following lists all variables that are already implemented in ``motile``.
 
-NodeSelected
-^^^^^^^^^^^^
-  .. autoclass:: NodeSelected
+Node Variables
+^^^^^^^^^^^^^^
 
-EdgeSelected
-^^^^^^^^^^^^
-  .. autoclass:: EdgeSelected
+.. autoclass:: NodeSelected
 
-EdgeContinuation
-^^^^^^^^^^^^^^^^
-  .. autoclass:: EdgeContinuation
+.. autoclass:: NodeSplit
 
-EdgeSplit
-^^^^^^^^^
-  .. autoclass:: EdgeSplit
+.. autoclass:: NodeMerge
 
-EdgeMerge
-^^^^^^^^^
-  .. autoclass:: EdgeMerge
+.. autoclass:: NodeAppear
 
-EdgeSplitPair
-^^^^^^^^^^^^^
-  .. autoclass:: EdgeSplitPair
+.. autoclass:: NodeDisappear
 
-NodeAppear
-^^^^^^^^^^
-  .. autoclass:: NodeAppear
+Edge Variables
+^^^^^^^^^^^^^^
 
-NodeDisappear
-^^^^^^^^^^^^^
-  .. autoclass:: NodeDisappear
+.. autoclass:: EdgeSelected
 
-NodeSplit
-^^^^^^^^^
-  .. autoclass:: NodeSplit
+.. autoclass:: EdgeContinuation
 
-NodeMerge
-^^^^^^^^^
-  .. autoclass:: NodeMerge
+.. autoclass:: EdgeSplit
+
+.. autoclass:: EdgeMerge
+
+Edge Pair Variables
+^^^^^^^^^^^^^^^^^^^
+
+.. autoclass:: EdgeSplitPair
+
+.. autoclass:: EdgeMergePair
 
 Costs
 -----
@@ -105,45 +96,36 @@ All costs inherit from the following base class:
 
 The following lists all costs that are already implemented in ``motile``.
 
-Appear
-^^^^^^
-  .. autoclass:: Appear
+Node Costs
+^^^^^^^^^^
 
-Disappear
-^^^^^^^^^
-  .. autoclass:: Disappear
+.. autoclass:: NodeSelectedCost
 
-NodeSelection
-^^^^^^^^^^^^^
-  .. autoclass:: NodeSelection
+.. autoclass:: NodeSplitCost
 
-EdgeSelection
-^^^^^^^^^^^^^
-  .. autoclass:: EdgeSelection
+.. autoclass:: NodeMergeCost
 
-EdgeDistance
-^^^^^^^^^^^^
-  .. autoclass:: EdgeDistance
+.. autoclass:: NodeAppearCost
 
-EdgeSplitCost
-^^^^^^^^^^^^^
-  .. autoclass:: EdgeSplitCost
+.. autoclass:: NodeDisappearCost
 
-EdgeMergeCost
-^^^^^^^^^^^^^
-  .. autoclass:: EdgeMergeCost
+Edge Costs
+^^^^^^^^^^
 
-Split
-^^^^^
-  .. autoclass:: Split
+.. autoclass:: EdgeSelectedCost
 
-Merge
-^^^^^
-  .. autoclass:: Merge
+.. autoclass:: EdgeDistanceCost
 
-SymmetricDivision
-^^^^^^^^^^^^^^^^^
-  .. autoclass:: SymmetricDivision
+.. autoclass:: EdgeSplitCost
+
+.. autoclass:: EdgeMergeCost
+
+Edge Pair Costs
+^^^^^^^^^^^^^^^
+
+.. autoclass:: SymmetricSplitCost
+
+.. autoclass:: SymmetricMergeCost
 
 Features
 --------
