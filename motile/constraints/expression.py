@@ -10,10 +10,10 @@ from ..variables import EdgeSelected, NodeSelected, Variable
 from .constraint import Constraint
 
 if TYPE_CHECKING:
-    from motile._types import Attributes, GenericEdge, Node
+    from motile._types import Attributes, Edge, Node
     from motile.solver import Solver
 
-    NodesOrEdges = Union[dict[Node, Attributes], dict[GenericEdge, Attributes]]
+    NodesOrEdges = Union[dict[Node, Attributes], dict[Edge, Attributes]]
 
 
 class ExpressionConstraint(Constraint):

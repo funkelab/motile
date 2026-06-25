@@ -7,7 +7,7 @@ from motile.constraints import (
     MaxParents,
     Pin,
 )
-from motile.costs import Appear, EdgeSelection, NodeSelection
+from motile.costs import EdgeSelectedCost, NodeAppearCost, NodeSelectedCost
 
 from .test_api import _selected_edges, _selected_nodes
 
@@ -34,7 +34,7 @@ def test_pin(solver: motile.Solver) -> None:
 
 def test_expression(solver: motile.Solver) -> None:
     solver.graph.nodes[5]["color"] = "red"  # type: ignore
-    solver.add_cost(NodeSelection(weight=-1.0, attribute="score", constant=-1))
+    solver.add_cost(NodeSelectedCost(weight=-1.0, attribute="score", constant=-1))
 
     assert _selected_nodes(solver) != [1, 6], "test invalid"
     # constrain solver based on attributes of nodes/edges
@@ -45,7 +45,7 @@ def test_expression(solver: motile.Solver) -> None:
 
 def test_max_children(solver: motile.Solver) -> None:
     solver.add_cost(
-        EdgeSelection(weight=1.0, attribute="prediction_distance", constant=-100)
+        EdgeSelectedCost(weight=1.0, attribute="prediction_distance", constant=-100)
     )
 
     expect = [(0, 2), (1, 3), (2, 4), (3, 5)]
@@ -56,7 +56,7 @@ def test_max_children(solver: motile.Solver) -> None:
 
 def test_max_parents(solver: motile.Solver) -> None:
     solver.add_cost(
-        EdgeSelection(weight=1.0, attribute="prediction_distance", constant=-100)
+        EdgeSelectedCost(weight=1.0, attribute="prediction_distance", constant=-100)
     )
 
     expect = [(0, 2), (1, 3), (2, 4), (3, 5), (3, 6)]
@@ -73,9 +73,9 @@ def test_exlusive_nodes(solver: motile.Solver) -> None:
     ]
 
     solver.add_cost(
-        EdgeSelection(weight=1.0, attribute="prediction_distance", constant=-100)
+        EdgeSelectedCost(weight=1.0, attribute="prediction_distance", constant=-100)
     )
-    solver.add_cost(Appear(constant=2.0, attribute="score", weight=0))
+    solver.add_cost(NodeAppearCost(constant=2.0, attribute="score", weight=0))
     solver.add_constraint(MaxParents(1))
     solver.add_constraint(MaxChildren(2))
     solver.add_constraint(ExclusiveNodes(exclusive_sets))
