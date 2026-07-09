@@ -114,17 +114,15 @@
 </li>
       <li><a href="api.html#motile.costs.Features.add_feature">add_feature() (motile.costs.Features method)</a>
 </li>
-      <li><a href="api.html#motile.TrackGraph.add_from_nx_graph">add_from_nx_graph() (motile.TrackGraph method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#motile.TrackGraph.add_from_nx_graph">add_from_nx_graph() (motile.TrackGraph method)</a>
+</li>
       <li><a href="api.html#motile.TrackGraph.add_node">add_node() (motile.TrackGraph method)</a>
 </li>
       <li><a href="api.html#motile.Solver.add_variable_cost">add_variable_cost() (motile.Solver method)</a>
 </li>
       <li><a href="api.html#motile.costs.Weights.add_weight">add_weight() (motile.costs.Weights method)</a>
-</li>
-      <li><a href="api.html#motile.costs.Appear">Appear (class in motile.costs)</a>
 </li>
       <li><a href="api.html#motile.costs.Cost.apply">apply() (motile.costs.Cost method)</a>
 </li>
@@ -148,13 +146,27 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#motile.costs.EdgeDistance">EdgeDistance (class in motile.costs)</a>
+      <li><a href="api.html#motile.variables.EdgeContinuation">EdgeContinuation (class in motile.variables)</a>
 </li>
-      <li><a href="api.html#motile.variables.EdgeSelected">EdgeSelected (class in motile.variables)</a>
+      <li><a href="api.html#motile.costs.EdgeDistanceCost">EdgeDistanceCost (class in motile.costs)</a>
+</li>
+      <li><a href="api.html#motile.variables.EdgeMerge">EdgeMerge (class in motile.variables)</a>
+</li>
+      <li><a href="api.html#motile.costs.EdgeMergeCost">EdgeMergeCost (class in motile.costs)</a>
+</li>
+      <li><a href="api.html#motile.variables.EdgeMergePair">EdgeMergePair (class in motile.variables)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#motile.costs.EdgeSelection">EdgeSelection (class in motile.costs)</a>
+      <li><a href="api.html#motile.variables.EdgeSelected">EdgeSelected (class in motile.variables)</a>
+</li>
+      <li><a href="api.html#motile.costs.EdgeSelectedCost">EdgeSelectedCost (class in motile.costs)</a>
+</li>
+      <li><a href="api.html#motile.variables.EdgeSplit">EdgeSplit (class in motile.variables)</a>
+</li>
+      <li><a href="api.html#motile.costs.EdgeSplitCost">EdgeSplitCost (class in motile.costs)</a>
+</li>
+      <li><a href="api.html#motile.variables.EdgeSplitPair">EdgeSplitPair (class in motile.variables)</a>
 </li>
       <li><a href="api.html#motile.constraints.ExpressionConstraint">ExpressionConstraint (class in motile.constraints)</a>
 </li>
@@ -204,8 +216,6 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#motile.variables.Variable.instantiate_constraints">instantiate_constraints() (motile.variables.Variable static method)</a>
 </li>
-      <li><a href="api.html#motile.TrackGraph.is_hyperedge">is_hyperedge() (motile.TrackGraph method)</a>
-</li>
   </ul></td>
 </tr></table>
 
@@ -215,8 +225,6 @@
       <li><a href="api.html#motile.constraints.MaxChildren">MaxChildren (class in motile.constraints)</a>
 </li>
       <li><a href="api.html#motile.constraints.MaxParents">MaxParents (class in motile.constraints)</a>
-</li>
-      <li><a href="api.html#motile.costs.Merge">Merge (class in motile.costs)</a>
 </li>
       <li>
     module
@@ -260,17 +268,27 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#motile.variables.NodeAppear">NodeAppear (class in motile.variables)</a>
 </li>
-      <li><a href="api.html#motile.TrackGraph.nodes_by_frame">nodes_by_frame() (motile.TrackGraph method)</a>
+      <li><a href="api.html#motile.costs.NodeAppearCost">NodeAppearCost (class in motile.costs)</a>
 </li>
-      <li><a href="api.html#motile.TrackGraph.nodes_of">nodes_of() (motile.TrackGraph method)</a>
+      <li><a href="api.html#motile.variables.NodeDisappear">NodeDisappear (class in motile.variables)</a>
+</li>
+      <li><a href="api.html#motile.costs.NodeDisappearCost">NodeDisappearCost (class in motile.costs)</a>
+</li>
+      <li><a href="api.html#motile.variables.NodeMerge">NodeMerge (class in motile.variables)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#motile.costs.NodeMergeCost">NodeMergeCost (class in motile.costs)</a>
+</li>
+      <li><a href="api.html#motile.TrackGraph.nodes_by_frame">nodes_by_frame() (motile.TrackGraph method)</a>
+</li>
       <li><a href="api.html#motile.variables.NodeSelected">NodeSelected (class in motile.variables)</a>
 </li>
-      <li><a href="api.html#motile.costs.NodeSelection">NodeSelection (class in motile.costs)</a>
+      <li><a href="api.html#motile.costs.NodeSelectedCost">NodeSelectedCost (class in motile.costs)</a>
 </li>
       <li><a href="api.html#motile.variables.NodeSplit">NodeSplit (class in motile.variables)</a>
+</li>
+      <li><a href="api.html#motile.costs.NodeSplitCost">NodeSplitCost (class in motile.costs)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -304,11 +322,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#motile.Solver.solve">solve() (motile.Solver method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#motile.Solver">Solver (class in motile)</a>
 </li>
-      <li><a href="api.html#motile.costs.Split">Split (class in motile.costs)</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#motile.costs.SymmetricMergeCost">SymmetricMergeCost (class in motile.costs)</a>
+</li>
+      <li><a href="api.html#motile.costs.SymmetricSplitCost">SymmetricSplitCost (class in motile.costs)</a>
 </li>
   </ul></td>
 </tr></table>

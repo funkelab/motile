@@ -104,22 +104,22 @@ optimal solution. Specifically, the solver minimizes:
   \sum_{y} c_y \cdot y
 
 where :math:`y` are binary indicator variables (e.g., whether a node or edge is
-selected) and :math:`c_y` is the cost associated with that variable. 
+selected) and :math:`c_y` is the cost associated with that variable.
 
 For our node and edge scores, higher is better; therefore, we need to invert the scores by giving them a negative weight.
-We can do this by instantiating the classes :class:`costs.NodeSelection` and
-:class:`costs.EdgeSelection`:
+We can do this by instantiating the classes :class:`costs.NodeSelectedCost` and
+:class:`costs.EdgeSelectedCost`:
 
 .. jupyter-execute::
 
-  from motile.costs import NodeSelection, EdgeSelection
+  from motile.costs import NodeSelectedCost, EdgeSelectedCost
 
   solver.add_cost(
-      NodeSelection(
+      NodeSelectedCost(
           weight=-1.0,
           attribute='score'))
   solver.add_cost(
-      EdgeSelection(
+      EdgeSelectedCost(
           weight=-1.0,
           attribute='score'))
 
@@ -208,15 +208,15 @@ to offset this cost will then be selected.
 Adding a Cost for Starting a Track
 ----------------------------------
 
-``motile`` provides :class:`costs.Appear`, which we can add to our solver to
+``motile`` provides :class:`costs.NodeAppearCost`, which we can add to our solver to
 discourage selection of short tracks. We add them similarly to how we added the
 node and edge selection costs:
 
 .. jupyter-execute::
 
-  from motile.costs import Appear
+  from motile.costs import NodeAppearCost
 
-  solver.add_cost(Appear(constant=1.0))
+  solver.add_cost(NodeAppearCost(constant=1.0))
 
 And if we solve the tracking problem again with those costs...
 
@@ -236,8 +236,8 @@ to justify starting a new track:
 Adding Divisions
 ----------------
 
-Tracking dividing objects with ``motile`` is easy - just change the `MaxChildren` 
-constraint to 2. Because ``motile`` does not currently support removing constraints, 
+Tracking dividing objects with ``motile`` is easy - just change the `MaxChildren`
+constraint to 2. Because ``motile`` does not currently support removing constraints,
 we must make a new solver...
 
 .. jupyter-execute::
@@ -250,14 +250,14 @@ and add the same costs as before...
 .. jupyter-execute::
 
   solver.add_cost(
-      NodeSelection(
+      NodeSelectedCost(
           weight=-1.0,
           attribute='score'))
   solver.add_cost(
-      EdgeSelection(
+      EdgeSelectedCost(
           weight=-1.0,
           attribute='score'))
-  solver.add_cost(Appear(constant=1.0))
+  solver.add_cost(NodeAppearCost(constant=1.0))
 
 but with the updated constraints.
 

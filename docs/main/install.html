@@ -56,7 +56,11 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#gurobi-optional">Gurobi (optional)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#developers">Developers</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="extending.html">Extending <code class="docutils literal notranslate"><span class="pre">motile</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="learning.html">Learning of Cost Weights</a></li>
@@ -91,19 +95,27 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>motile
 </pre></div>
 </div>
-<p>This will install <code class="docutils literal notranslate"><span class="pre">motile</span></code> with all required dependencies, including
-two discrete optimizers:</p>
-<ol class="arabic simple">
-<li><p>The <a class="reference external" href="https://www.gurobi.com/">Gurobi Optimizer</a>. This is a comercial
-solver, which requires a valid license. Academic licenses are provided for
-free, see <a class="reference external" href="https://www.gurobi.com/academia/academic-program-and-licenses/">here</a> for how
-to obtain one.</p></li>
-<li><p>The <a class="reference external" href="https://www.scipopt.org/">SCIP Optimizer</a>, a free and open source
-solver. If <code class="docutils literal notranslate"><span class="pre">motile</span></code> does not find a valid Gurobi license it will fall
-back to using SCIP.</p></li>
-</ol>
+<p>This will install <code class="docutils literal notranslate"><span class="pre">motile</span></code> with all required dependencies, including the
+<a class="reference external" href="https://www.scipopt.org/">SCIP Optimizer</a>, a free and open source discrete
+optimizer (via <a class="reference external" href="https://github.com/funkelab/ilpy">ilpy</a>).</p>
+<section id="gurobi-optional">
+<h2>Gurobi (optional)<a class="headerlink" href="#gurobi-optional" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">motile</span></code> also supports the <a class="reference external" href="https://www.gurobi.com/">Gurobi Optimizer</a>, a
+commercial solver that requires a valid license. Academic licenses are provided
+for free, see <a class="reference external" href="https://www.gurobi.com/academia/academic-program-and-licenses/">here</a> for how to
+obtain one.</p>
+<p>To install with Gurobi support:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>motile<span class="o">[</span>gurobi<span class="o">]</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">motile</span></code> finds a valid Gurobi license at runtime, it will use Gurobi;
+otherwise it will fall back to SCIP.</p>
+</section>
+<section id="developers">
+<h2>Developers<a class="headerlink" href="#developers" title="Link to this heading"></a></h2>
 <p>Developers can use <cite>uv</cite> for dependency management. See CONTRIBUTING.md for more
 information.</p>
+</section>
 </section>
 
 

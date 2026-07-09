@@ -86,23 +86,23 @@ subject to certain constraints. This can be done with ``motile`` as follows:
   :hide-output:
 
   from motile.constraints import MaxParents, MaxChildren
-  from motile.costs import NodeSelection, EdgeSelection, Appear
+  from motile.costs import NodeSelectedCost, EdgeSelectedCost, NodeAppearCost
 
   # create a motile solver
   solver = motile.Solver(graph)
 
   # tell it how to compute costs for selecting nodes and edges
   solver.add_cost(
-      NodeSelection(
+      NodeSelectedCost(
           weight=-1.0,
           attribute='score'))
   solver.add_cost(
-      EdgeSelection(
+      EdgeSelectedCost(
           weight=-1.0,
           attribute='score'))
 
   # add a small penalty to start a new track
-  solver.add_cost(Appear(constant=1.0))
+  solver.add_cost(NodeAppearCost(constant=1.0))
 
   # add constraints on the solution (no splits, no merges)
   solver.add_constraint(MaxParents(1))

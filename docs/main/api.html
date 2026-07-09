@@ -67,9 +67,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#motile.TrackGraph.add_from_nx_graph"><code class="docutils literal notranslate"><span class="pre">TrackGraph.add_from_nx_graph()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#motile.TrackGraph.add_node"><code class="docutils literal notranslate"><span class="pre">TrackGraph.add_node()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#motile.TrackGraph.get_frames"><code class="docutils literal notranslate"><span class="pre">TrackGraph.get_frames()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#motile.TrackGraph.is_hyperedge"><code class="docutils literal notranslate"><span class="pre">TrackGraph.is_hyperedge()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#motile.TrackGraph.nodes_by_frame"><code class="docutils literal notranslate"><span class="pre">TrackGraph.nodes_by_frame()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#motile.TrackGraph.nodes_of"><code class="docutils literal notranslate"><span class="pre">TrackGraph.nodes_of()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#motile.TrackGraph.to_nx_graph"><code class="docutils literal notranslate"><span class="pre">TrackGraph.to_nx_graph()</span></code></a></li>
 </ul>
 </li>
@@ -95,20 +93,24 @@
 <li class="toctree-l4"><a class="reference internal" href="#motile.variables.Variable.instantiate_constraints"><code class="docutils literal notranslate"><span class="pre">Variable.instantiate_constraints()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#nodeselected">NodeSelected</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#node-variables">Node Variables</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#motile.variables.NodeSelected"><code class="docutils literal notranslate"><span class="pre">NodeSelected</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#edgeselected">EdgeSelected</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#motile.variables.EdgeSelected"><code class="docutils literal notranslate"><span class="pre">EdgeSelected</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#nodeappear">NodeAppear</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#motile.variables.NodeAppear"><code class="docutils literal notranslate"><span class="pre">NodeAppear</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#nodesplit">NodeSplit</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#motile.variables.NodeSplit"><code class="docutils literal notranslate"><span class="pre">NodeSplit</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.variables.NodeMerge"><code class="docutils literal notranslate"><span class="pre">NodeMerge</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.variables.NodeAppear"><code class="docutils literal notranslate"><span class="pre">NodeAppear</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.variables.NodeDisappear"><code class="docutils literal notranslate"><span class="pre">NodeDisappear</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#edge-variables">Edge Variables</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.variables.EdgeSelected"><code class="docutils literal notranslate"><span class="pre">EdgeSelected</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.variables.EdgeContinuation"><code class="docutils literal notranslate"><span class="pre">EdgeContinuation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.variables.EdgeSplit"><code class="docutils literal notranslate"><span class="pre">EdgeSplit</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.variables.EdgeMerge"><code class="docutils literal notranslate"><span class="pre">EdgeMerge</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#edge-pair-variables">Edge Pair Variables</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.variables.EdgeSplitPair"><code class="docutils literal notranslate"><span class="pre">EdgeSplitPair</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.variables.EdgeMergePair"><code class="docutils literal notranslate"><span class="pre">EdgeMergePair</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -118,28 +120,24 @@
 <li class="toctree-l4"><a class="reference internal" href="#motile.costs.Cost.apply"><code class="docutils literal notranslate"><span class="pre">Cost.apply()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#appear">Appear</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#motile.costs.Appear"><code class="docutils literal notranslate"><span class="pre">Appear</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#node-costs">Node Costs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.NodeSelectedCost"><code class="docutils literal notranslate"><span class="pre">NodeSelectedCost</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.NodeSplitCost"><code class="docutils literal notranslate"><span class="pre">NodeSplitCost</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.NodeMergeCost"><code class="docutils literal notranslate"><span class="pre">NodeMergeCost</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.NodeAppearCost"><code class="docutils literal notranslate"><span class="pre">NodeAppearCost</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.NodeDisappearCost"><code class="docutils literal notranslate"><span class="pre">NodeDisappearCost</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#edgeselection">EdgeSelection</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#motile.costs.EdgeSelection"><code class="docutils literal notranslate"><span class="pre">EdgeSelection</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#edge-costs">Edge Costs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.EdgeSelectedCost"><code class="docutils literal notranslate"><span class="pre">EdgeSelectedCost</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.EdgeDistanceCost"><code class="docutils literal notranslate"><span class="pre">EdgeDistanceCost</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.EdgeSplitCost"><code class="docutils literal notranslate"><span class="pre">EdgeSplitCost</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.EdgeMergeCost"><code class="docutils literal notranslate"><span class="pre">EdgeMergeCost</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#nodeselection">NodeSelection</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#motile.costs.NodeSelection"><code class="docutils literal notranslate"><span class="pre">NodeSelection</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#split">Split</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#motile.costs.Split"><code class="docutils literal notranslate"><span class="pre">Split</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#merge">Merge</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#motile.costs.Merge"><code class="docutils literal notranslate"><span class="pre">Merge</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#edgedistance">EdgeDistance</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#motile.costs.EdgeDistance"><code class="docutils literal notranslate"><span class="pre">EdgeDistance</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#edge-pair-costs">Edge Pair Costs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.SymmetricSplitCost"><code class="docutils literal notranslate"><span class="pre">SymmetricSplitCost</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motile.costs.SymmetricMergeCost"><code class="docutils literal notranslate"><span class="pre">SymmetricMergeCost</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -227,33 +225,16 @@
 <div><p><code class="docutils literal notranslate"><span class="pre">Node:</span> <span class="pre">TypeAlias</span> <span class="pre">=</span> <span class="pre">int</span></code></p>
 </div></blockquote>
 <ul class="simple">
-<li><p>Collections of nodes are tuples of <code class="docutils literal notranslate"><span class="pre">Node</span></code></p></li>
-</ul>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">Nodes:</span> <span class="pre">TypeAlias</span> <span class="pre">=</span> <span class="pre">tuple[Node,</span> <span class="pre">...]</span></code></p>
-</div></blockquote>
-<ul class="simple">
 <li><p>Edges are 2-tuples of <code class="docutils literal notranslate"><span class="pre">Node</span></code>.</p></li>
 </ul>
 <blockquote>
 <div><p><code class="docutils literal notranslate"><span class="pre">Edge:</span> <span class="pre">TypeAlias</span> <span class="pre">=</span> <span class="pre">tuple[Node,</span> <span class="pre">Node]</span></code></p>
-</div></blockquote>
-<ul class="simple">
-<li><p>Hyperedges are 2-tuples of <code class="docutils literal notranslate"><span class="pre">Nodes</span></code>:</p></li>
-</ul>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">HyperEdge:</span> <span class="pre">TypeAlias</span> <span class="pre">=</span> <span class="pre">tuple[Nodes,</span> <span class="pre">Nodes]</span></code></p>
-<p>Examples:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">1)</span></code> is an edge from node 0 to node 1.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">((0,),</span> <span class="pre">(1,</span> <span class="pre">2))</span></code> is a hyperedge from node 0 to nodes 1 and 2 (i.e. a split).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">((0,</span> <span class="pre">1),</span> <span class="pre">2)</span></code> is a not a valid edge.</p></li>
-</ul>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">1)</span></code> is an edge from node 0 to node 1.</p>
 </div></blockquote>
 <ul>
-<li><p>All attributes in a graph (for both <code class="docutils literal notranslate"><span class="pre">Node``s</span> <span class="pre">and</span> <span class="pre">``(Hyper)Edge``s)</span> <span class="pre">are</span>
-<span class="pre">dictionaries</span> <span class="pre">mapping</span> <span class="pre">string</span> <span class="pre">attribute</span> <span class="pre">names</span> <span class="pre">to</span> <span class="pre">values.</span> <span class="pre">For</span> <span class="pre">example,</span> <span class="pre">a</span>
-<span class="pre">node's</span> <span class="pre">attributes</span> <span class="pre">might</span> <span class="pre">be</span> <span class="pre">``{</span> <span class="pre">&quot;x&quot;:</span> <span class="pre">0.5,</span> <span class="pre">&quot;y&quot;:</span> <span class="pre">0.5,</span> <span class="pre">&quot;t&quot;:</span> <span class="pre">0</span> <span class="pre">}</span></code></p>
+<li><p>All attributes in a graph (for both <code class="docutils literal notranslate"><span class="pre">Node</span></code>s and <code class="docutils literal notranslate"><span class="pre">Edge</span></code>s) are
+dictionaries mapping string attribute names to values. For example, a
+node’s attributes might be <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">&quot;x&quot;:</span> <span class="pre">0.5,</span> <span class="pre">&quot;y&quot;:</span> <span class="pre">0.5,</span> <span class="pre">&quot;t&quot;:</span> <span class="pre">0</span> <span class="pre">}</span></code></p>
 <p><code class="docutils literal notranslate"><span class="pre">Attributes:</span> <span class="pre">TypeAlias</span> <span class="pre">=</span> <span class="pre">Mapping[str,</span> <span class="pre">Any]</span></code></p>
 </li>
 </ul>
@@ -272,10 +253,7 @@ all the methods inherited from <a class="reference external" href="https://netwo
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>nx_graph</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://networkx.org/documentation/stable/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.6.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DiGraph</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – A directed networkx graph representing the TrackGraph to be created.
-Hyperedges are represented by networkx nodes that do not have the
-<code class="docutils literal notranslate"><span class="pre">frame_attribute</span></code> and are connected to nodes that do have this
-attribute.</p></li>
+<li><p><strong>nx_graph</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://networkx.org/documentation/stable/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.6.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DiGraph</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – A directed networkx graph representing the TrackGraph to be created.</p></li>
 <li><p><strong>frame_attribute</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The name of the node attribute that corresponds to the frame (i.e.,
 the time dimension) of the object. Defaults to <code class="docutils literal notranslate"><span class="pre">'t'</span></code>.</p></li>
 </ul>
@@ -288,8 +266,7 @@ the time dimension) of the object. Defaults to <code class="docutils literal not
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>edge_id</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>]]]</span>) – an <code class="docutils literal notranslate"><span class="pre">GenericEdge</span></code> (tuple of Nodes) defining the edge
-(or hyperedge) to be added.</p></li>
+<li><p><strong>edge_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</span>) – a tuple <code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v)</span></code> defining the edge to be added.</p></li>
 <li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</span>) – all properties associated to the added edge.</p></li>
 </ul>
 </dd>
@@ -303,15 +280,9 @@ the time dimension) of the object. Defaults to <code class="docutils literal not
 <dt class="sig sig-object py" id="motile.TrackGraph.add_from_nx_graph">
 <span class="sig-name descname"><span class="pre">add_from_nx_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx_graph</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.TrackGraph.add_from_nx_graph" title="Link to this definition"></a></dt>
 <dd><p>Add nodes/edges from <code class="docutils literal notranslate"><span class="pre">nx_graph</span></code> to this TrackGraph.</p>
-<p>Hyperedges are represented by nodes in the <code class="docutils literal notranslate"><span class="pre">nx_graph</span></code> that do not have the
-<code class="docutils literal notranslate"><span class="pre">frame_attribute</span></code> property. All ‘regular’ nodes connected to such a hyperedge
-node will be added as a hyperedge.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>nx_graph</strong> (<a class="reference external" href="https://networkx.org/documentation/stable/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.6.1)"><em>networkx.DiGraph</em></a>) – <p>A directed networkx graph representing a TrackGraph to be added.
-Hyperedges are represented by networkx nodes that do not have the
-<code class="docutils literal notranslate"><span class="pre">frame_attribute</span></code> and are connected to nodes that do have this
-attribute.</p>
+<dd class="field-odd"><p><strong>nx_graph</strong> (<a class="reference external" href="https://networkx.org/documentation/stable/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.6.1)"><em>networkx.DiGraph</em></a>) – <p>A directed networkx graph representing a TrackGraph to be added.</p>
 <p>Duplicate nodes and edges will not be added again but new attributes
 associated to nodes and edges added. If attributes of existing nodes
 or edges do already exist, the values set in the given <code class="docutils literal notranslate"><span class="pre">nx_graph</span></code>
@@ -355,17 +326,6 @@ Returns <code class="docutils literal notranslate"><span class="pre">(0,</span> 
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="motile.TrackGraph.is_hyperedge">
-<span class="sig-name descname"><span class="pre">is_hyperedge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.TrackGraph.is_hyperedge" title="Link to this definition"></a></dt>
-<dd><p>Test if the given edge is a hyperedge in this track graph.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeGuard</span></code>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>]]]</span></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="motile.TrackGraph.nodes_by_frame">
 <span class="sig-name descname"><span class="pre">nodes_by_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.TrackGraph.nodes_by_frame" title="Link to this definition"></a></dt>
 <dd><p>Get all nodes in frame <code class="docutils literal notranslate"><span class="pre">t</span></code>.</p>
@@ -377,41 +337,19 @@ Returns <code class="docutils literal notranslate"><span class="pre">(0,</span> 
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="motile.TrackGraph.nodes_of">
-<span class="sig-name descname"><span class="pre">nodes_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.TrackGraph.nodes_of" title="Link to this definition"></a></dt>
-<dd><p>Returns an <code class="docutils literal notranslate"><span class="pre">Iterator</span></code> of node id’s that are incident to the given edge.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>edge</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>]], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</span>) – an edge of this TrackGraph.</p>
-</dd>
-<dt class="field-even">Yields<span class="colon">:</span></dt>
-<dd class="field-even"><p>all nodes incident to the given edge.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</span></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="motile.TrackGraph.to_nx_graph">
-<span class="sig-name descname"><span class="pre">to_nx_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flatten_hyperedges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.TrackGraph.to_nx_graph" title="Link to this definition"></a></dt>
-<dd><p>Convert a this TrackGraph into a networkx DiGraph.</p>
+<span class="sig-name descname"><span class="pre">to_nx_graph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#motile.TrackGraph.to_nx_graph" title="Link to this definition"></a></dt>
+<dd><p>Convert this TrackGraph into a networkx DiGraph.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>flatten_hyperedges</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, include one edge for each
-(source, target) combo in a hyperedge. If False, introduce a new
-hypernode to represent hyperedges. Defaults to True.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><dl class="simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
 <dt>Directed networkx graph with same nodes, edges, and</dt><dd><p>attributes.</p>
 </dd>
 </dl>
 </p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://networkx.org/documentation/stable/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.6.1)">networkx.DiGraph</a></p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://networkx.org/documentation/stable/reference/classes/digraph.html#networkx.DiGraph" title="(in NetworkX v3.6.1)">networkx.DiGraph</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -477,8 +415,8 @@ cost class, if not given.</p></li>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="motile.Solver.costs">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">costs</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a></span><a class="headerlink" href="#motile.Solver.costs" title="Link to this definition"></a></dt>
-<dd><p>Returns the costs as a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>.</p>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">costs</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><span class="pre">ndarray</span></a></span><a class="headerlink" href="#motile.Solver.costs" title="Link to this definition"></a></dt>
+<dd><p>Returns the costs as a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -680,32 +618,43 @@ one for each variable to create.</p>
 </dd></dl>
 
 <p>The following lists all variables that are already implemented in <code class="docutils literal notranslate"><span class="pre">motile</span></code>.</p>
-<section id="nodeselected">
-<h3>NodeSelected<a class="headerlink" href="#nodeselected" title="Link to this heading"></a></h3>
-<blockquote>
-<div><dl class="py class">
+<section id="node-variables">
+<h3>Node Variables<a class="headerlink" href="#node-variables" title="Link to this heading"></a></h3>
+<dl class="py class">
 <dt class="sig sig-object py" id="motile.variables.NodeSelected">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">NodeSelected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.NodeSelected" title="Link to this definition"></a></dt>
 <dd><p>Binary variable indicating whether a node is part of the solution or not.</p>
 </dd></dl>
 
-</div></blockquote>
-</section>
-<section id="edgeselected">
-<h3>EdgeSelected<a class="headerlink" href="#edgeselected" title="Link to this heading"></a></h3>
-<blockquote>
-<div><dl class="py class">
-<dt class="sig sig-object py" id="motile.variables.EdgeSelected">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">EdgeSelected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.EdgeSelected" title="Link to this definition"></a></dt>
-<dd><p>Binary variable indicates whether an edge is part of the solution or not.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="motile.variables.NodeSplit">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">NodeSplit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.NodeSplit" title="Link to this definition"></a></dt>
+<dd><p>Binary variable indicating whether a node has more than one child.</p>
+<p>(i.e., the node is selected and has more than one selected outgoing edge).</p>
+<p>This variable is coupled to the edge selection variables through the
+following linear constraints:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}2 s_v\; - &amp;\sum_{e\in\text{out_edges}(v)} x_e &amp;\leq&amp;\;\; 0\\(|\text{out_edges}(v)| - 1) s_v\; - &amp;\sum_{e\in\text{out_edges}(v)}
+x_e &amp;\geq&amp;\;\; -1\end{aligned}\end{align} \]</div>
+<p>where <span class="math notranslate nohighlight">\(x_e\)</span> are selection indicators for edge <span class="math notranslate nohighlight">\(e\)</span>, and
+<span class="math notranslate nohighlight">\(s_v\)</span> is the split indicator for node <span class="math notranslate nohighlight">\(v\)</span>.</p>
 </dd></dl>
 
-</div></blockquote>
-</section>
-<section id="nodeappear">
-<h3>NodeAppear<a class="headerlink" href="#nodeappear" title="Link to this heading"></a></h3>
-<blockquote>
-<div><dl class="py class">
+<dl class="py class">
+<dt class="sig sig-object py" id="motile.variables.NodeMerge">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">NodeMerge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.NodeMerge" title="Link to this definition"></a></dt>
+<dd><p>Binary variable indicating whether a node has more than one parent.</p>
+<p>(i.e., the node is selected and has more than one selected incoming edge).</p>
+<p>This variable is coupled to the edge selection variables through the
+following linear constraints:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}2 m_v\; - &amp;\sum_{e\in\text{in_edges}(v)} x_e &amp;\leq&amp;\;\; 0\\(|\text{in_edges}(v)| - 1) m_v\; - &amp;\sum_{e\in\text{in_edges}(v)}
+x_e &amp;\geq&amp;\;\; -1\end{aligned}\end{align} \]</div>
+<p>where <span class="math notranslate nohighlight">\(x_e\)</span> are selection indicators for edge <span class="math notranslate nohighlight">\(e\)</span>, and
+<span class="math notranslate nohighlight">\(m_v\)</span> is the merge indicator for node <span class="math notranslate nohighlight">\(v\)</span>.</p>
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="motile.variables.NodeAppear">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">NodeAppear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.NodeAppear" title="Link to this definition"></a></dt>
 <dd><p>Binary variable indicating whether a node is the start of a track.</p>
@@ -721,26 +670,112 @@ the following linear constraints:</p>
 node <span class="math notranslate nohighlight">\(v\)</span>.</p>
 </dd></dl>
 
-</div></blockquote>
-</section>
-<section id="nodesplit">
-<h3>NodeSplit<a class="headerlink" href="#nodesplit" title="Link to this heading"></a></h3>
-<blockquote>
-<div><dl class="py class">
-<dt class="sig sig-object py" id="motile.variables.NodeSplit">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">NodeSplit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.NodeSplit" title="Link to this definition"></a></dt>
-<dd><p>Binary variable indicating whether a node has more than one child.</p>
-<p>(i.e., the node is selected and has more than one selected outgoing edge).</p>
-<p>This variable is coupled to the edge selection variables through the
-following linear constraints:</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="motile.variables.NodeDisappear">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">NodeDisappear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.NodeDisappear" title="Link to this definition"></a></dt>
+<dd><p>Binary variable to indicate whether a node disappears.</p>
+<p>This variable indicates whether the node is the end of a track (i.e., the node is
+selected and has no selected outgoing edges).</p>
+<p>This variable is coupled to the node and edge selection variables through
+the following linear constraints:</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}2 s_v\; - &amp;\sum_{e\in\text{out_edges}(v)} x_e &amp;\leq&amp;\;\; 0\\(|\text{out_edges}(v)| - 1) s_v\; - &amp;\sum_{e\in\text{out_edges}(v)}
-x_e &amp;\geq&amp;\;\; -1\end{aligned}\end{align} \]</div>
-<p>where <span class="math notranslate nohighlight">\(x_e\)</span> are selection indicators for edge <span class="math notranslate nohighlight">\(e\)</span>, and
-<span class="math notranslate nohighlight">\(s_v\)</span> is the split indicator for node <span class="math notranslate nohighlight">\(v\)</span>.</p>
+\[ \begin{align}\begin{aligned}\begin{split}|\\text{out_edges}(v)|\cdot x_v - &amp;\sum_{e \in \\text{out_edges}(v)} x_e
+- d_v &amp;\leq&amp;\;\; |\\text{out_edges}(v)| - 1\end{split}\\\begin{split}|\\text{out_edges}(v)|\cdot x_v - &amp;\sum_{e \in \\text{out_edges}(v)} x_e
+- d_v\cdot |\\text{out_edges}(v)| &amp;\geq&amp;\;\; 0\end{split}\end{aligned}\end{align} \]</div>
+<p>where <span class="math notranslate nohighlight">\(x_v\)</span> and <span class="math notranslate nohighlight">\(x_e\)</span> are selection indicators for node
+<span class="math notranslate nohighlight">\(v\)</span> and edge <span class="math notranslate nohighlight">\(e\)</span>, and <span class="math notranslate nohighlight">\(d_v\)</span> is the disappear indicator for
+node <span class="math notranslate nohighlight">\(v\)</span>.</p>
 </dd></dl>
 
-</div></blockquote>
+</section>
+<section id="edge-variables">
+<h3>Edge Variables<a class="headerlink" href="#edge-variables" title="Link to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="motile.variables.EdgeSelected">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">EdgeSelected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.EdgeSelected" title="Link to this definition"></a></dt>
+<dd><p>Binary variable indicates whether an edge is part of the solution or not.</p>
+<p>This is the base edge variable. All constraints operate on this variable.
+Costs on this variable affect all edges, while costs on the semantic
+edge variables (EdgeContinuation, EdgeSplit, EdgeMerge) affect only a subset.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="motile.variables.EdgeContinuation">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">EdgeContinuation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.EdgeContinuation" title="Link to this definition"></a></dt>
+<dd><p>Binary variable indicating whether an edge is a continuation.</p>
+<p>A continuation edge is one that is selected and whose source node is not
+a split node and whose target node is not a merge node. In other words,
+it represents a simple one-to-one linking between frames.</p>
+<p>This variable is coupled to the edge selection, node split, and node merge
+variables through the following linear constraints:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}c_e &amp;\leq x_e\\c_e &amp;\leq 1 - s_{\text{src}(e)}\\c_e &amp;\leq 1 - m_{\text{tgt}(e)}\\c_e &amp;\geq x_e - s_{\text{src}(e)} - m_{\text{tgt}(e)}\end{aligned}\end{align} \]</div>
+<p>where <span class="math notranslate nohighlight">\(x_e\)</span> is the edge selection indicator, <span class="math notranslate nohighlight">\(s_v\)</span> is the
+node split indicator, <span class="math notranslate nohighlight">\(m_v\)</span> is the node merge indicator, and
+<span class="math notranslate nohighlight">\(c_e\)</span> is the edge continuation indicator.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="motile.variables.EdgeSplit">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">EdgeSplit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.EdgeSplit" title="Link to this definition"></a></dt>
+<dd><p>Binary variable indicating whether an edge is part of a split.</p>
+<p>An edge is a split edge if it is selected and its source node has more than
+one selected outgoing edge (i.e., the source node is a split node).</p>
+<p>This variable is coupled to the edge selection and node split variables
+through the following linear constraints:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}y_e &amp;\leq x_e\\y_e &amp;\leq s_{\text{src}(e)}\\y_e &amp;\geq x_e + s_{\text{src}(e)} - 1\end{aligned}\end{align} \]</div>
+<p>where <span class="math notranslate nohighlight">\(x_e\)</span> is the edge selection indicator, <span class="math notranslate nohighlight">\(s_v\)</span> is the
+node split indicator, and <span class="math notranslate nohighlight">\(y_e\)</span> is the edge split indicator.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="motile.variables.EdgeMerge">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">EdgeMerge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.EdgeMerge" title="Link to this definition"></a></dt>
+<dd><p>Binary variable indicating whether an edge is part of a merge.</p>
+<p>An edge is a merge edge if it is selected and its target node has more than
+one selected incoming edge (i.e., the target node is a merge node).</p>
+<p>This variable is coupled to the edge selection and node merge variables
+through the following linear constraints:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}y_e &amp;\leq x_e\\y_e &amp;\leq m_{\text{tgt}(e)}\\y_e &amp;\geq x_e + m_{\text{tgt}(e)} - 1\end{aligned}\end{align} \]</div>
+<p>where <span class="math notranslate nohighlight">\(x_e\)</span> is the edge selection indicator, <span class="math notranslate nohighlight">\(m_v\)</span> is the
+node merge indicator, and <span class="math notranslate nohighlight">\(y_e\)</span> is the edge merge indicator.</p>
+</dd></dl>
+
+</section>
+<section id="edge-pair-variables">
+<h3>Edge Pair Variables<a class="headerlink" href="#edge-pair-variables" title="Link to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="motile.variables.EdgeSplitPair">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">EdgeSplitPair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.EdgeSplitPair" title="Link to this definition"></a></dt>
+<dd><p>Binary variable for each pair of edges that could form a split.</p>
+<p>For every node with at least two outgoing edges, and for every pair of
+those outgoing edges <code class="docutils literal notranslate"><span class="pre">(e1,</span> <span class="pre">e2)</span></code>, this variable is 1 iff both edges are
+selected (i.e., the pair is active as a split).</p>
+<p>This is coupled to the edge selection variables as a product of two
+binaries:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}g_{e_1,e_2} &amp;\leq x_{e_1}\\g_{e_1,e_2} &amp;\leq x_{e_2}\\g_{e_1,e_2} &amp;\geq x_{e_1} + x_{e_2} - 1\end{aligned}\end{align} \]</div>
+<p>where <span class="math notranslate nohighlight">\(x_e\)</span> are edge selection indicators and
+<span class="math notranslate nohighlight">\(g_{e_1,e_2}\)</span> is the split group indicator.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="motile.variables.EdgeMergePair">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.variables.</span></span><span class="sig-name descname"><span class="pre">EdgeMergePair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_map</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.variables.EdgeMergePair" title="Link to this definition"></a></dt>
+<dd><p>Binary variable for each pair of edges that could form a merge.</p>
+<p>For every node with at least two incoming edges, and for every pair of
+those incoming edges <code class="docutils literal notranslate"><span class="pre">(e1,</span> <span class="pre">e2)</span></code>, this variable is 1 iff both edges are
+selected (i.e., the pair is active as a merge).</p>
+<p>This is coupled to the edge selection variables as a product of two
+binaries:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}g_{e_1,e_2} &amp;\leq x_{e_1}\\g_{e_1,e_2} &amp;\leq x_{e_2}\\g_{e_1,e_2} &amp;\geq x_{e_1} + x_{e_2} - 1\end{aligned}\end{align} \]</div>
+<p>where <span class="math notranslate nohighlight">\(x_e\)</span> are edge merge indicators and
+<span class="math notranslate nohighlight">\(g_{e_1,e_2}\)</span> is the merge group indicator.</p>
+</dd></dl>
+
 </section>
 </section>
 <section id="costs">
@@ -771,12 +806,62 @@ variable so that the Solver can discover them.</p>
 </dd></dl>
 
 <p>The following lists all costs that are already implemented in <code class="docutils literal notranslate"><span class="pre">motile</span></code>.</p>
-<section id="appear">
-<h3>Appear<a class="headerlink" href="#appear" title="Link to this heading"></a></h3>
-<blockquote>
-<div><dl class="py class">
-<dt class="sig sig-object py" id="motile.costs.Appear">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">Appear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.Appear" title="Link to this definition"></a></dt>
+<section id="node-costs">
+<h3>Node Costs<a class="headerlink" href="#node-costs" title="Link to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.NodeSelectedCost">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">NodeSelectedCost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.NodeSelectedCost" title="Link to this definition"></a></dt>
+<dd><p>Cost for <a class="reference internal" href="#motile.variables.NodeSelected" title="motile.variables.NodeSelected"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeSelected</span></code></a> variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weight</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The weight to apply to the cost given by the provided attribute of
+each node. Default is <code class="docutils literal notranslate"><span class="pre">1.0</span></code></p></li>
+<li><p><strong>attribute</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – The name of the node attribute to use to look up cost, or None if a constant
+cost is desired. Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>constant</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – A constant cost for each selected node. Default is <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.NodeSplitCost">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">NodeSplitCost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.NodeSplitCost" title="Link to this definition"></a></dt>
+<dd><p>Cost for <a class="reference internal" href="#motile.variables.NodeSplit" title="motile.variables.NodeSplit"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeSplit</span></code></a> variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weight</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The weight to apply to the cost of each split. Default is <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+<li><p><strong>attribute</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – The name of the attribute to use to look up the cost. Default is
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, which means that a constant cost is used.</p></li>
+<li><p><strong>constant</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – A constant cost for each node that has more than one selected
+child. Default is <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.NodeMergeCost">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">NodeMergeCost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.NodeMergeCost" title="Link to this definition"></a></dt>
+<dd><p>Cost for <a class="reference internal" href="#motile.variables.NodeMerge" title="motile.variables.NodeMerge"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeMerge</span></code></a> variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weight</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The weight to apply to the cost of each split. Default is <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+<li><p><strong>attribute</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – The name of the attribute to use to look up the cost. Default is
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, which means that a constant cost is used.</p></li>
+<li><p><strong>constant</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – A constant cost for each node that has more than one selected
+parent. Default is <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.NodeAppearCost">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">NodeAppearCost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.NodeAppearCost" title="Link to this definition"></a></dt>
 <dd><p>Cost for <a class="reference internal" href="#motile.variables.NodeAppear" title="motile.variables.NodeAppear"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeAppear</span></code></a> variables.</p>
 <p>This is cost is not applied to nodes in the first frame of the graph.</p>
 <dl class="field-list simple">
@@ -795,15 +880,34 @@ Defaults to None</p></li>
 </dl>
 </dd></dl>
 
-</div></blockquote>
+<dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.NodeDisappearCost">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">NodeDisappearCost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.NodeDisappearCost" title="Link to this definition"></a></dt>
+<dd><p>Cost for <a class="reference internal" href="#motile.variables.NodeDisappear" title="motile.variables.NodeDisappear"><code class="xref py py-class docutils literal notranslate"><span class="pre">motile.variables.NodeDisappear</span></code></a> variables.</p>
+<p>This is cost is not applied to nodes in the last frame of the graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weight</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The weight to apply to the cost of each ending track. Defaults to 1.</p></li>
+<li><p><strong>attribute</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – The name of the attribute to use to look up cost. Default is
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, which means that a constant cost is used.</p></li>
+<li><p><strong>constant</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – A constant cost for each node that starts a track. Defaults to 0.</p></li>
+<li><p><strong>ignore_attribute</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – The name of an optional node attribute that, if it is set and
+evaluates to <code class="docutils literal notranslate"><span class="pre">True</span></code>, will not set the disappear cost for that node.
+Defaults to None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
-<section id="edgeselection">
-<h3>EdgeSelection<a class="headerlink" href="#edgeselection" title="Link to this heading"></a></h3>
-<blockquote>
-<div><dl class="py class">
-<dt class="sig sig-object py" id="motile.costs.EdgeSelection">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">EdgeSelection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.EdgeSelection" title="Link to this definition"></a></dt>
+<section id="edge-costs">
+<h3>Edge Costs<a class="headerlink" href="#edge-costs" title="Link to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.EdgeSelectedCost">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">EdgeSelectedCost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.EdgeSelectedCost" title="Link to this definition"></a></dt>
 <dd><p>Cost for <a class="reference internal" href="#motile.variables.EdgeSelected" title="motile.variables.EdgeSelected"><code class="xref py py-class docutils literal notranslate"><span class="pre">EdgeSelected</span></code></a> variables.</p>
+<p>This cost is applied to all selected edges regardless of edge type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -817,82 +921,12 @@ None, which means only a constant cost is used.</p></li>
 </dl>
 </dd></dl>
 
-</div></blockquote>
-</section>
-<section id="nodeselection">
-<h3>NodeSelection<a class="headerlink" href="#nodeselection" title="Link to this heading"></a></h3>
-<blockquote>
-<div><dl class="py class">
-<dt class="sig sig-object py" id="motile.costs.NodeSelection">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">NodeSelection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.NodeSelection" title="Link to this definition"></a></dt>
-<dd><p>Cost for <a class="reference internal" href="#motile.variables.NodeSelected" title="motile.variables.NodeSelected"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeSelected</span></code></a> variables.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>weight</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The weight to apply to the cost given by the provided attribute of
-each node. Default is <code class="docutils literal notranslate"><span class="pre">1.0</span></code></p></li>
-<li><p><strong>attribute</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – The name of the node attribute to use to look up cost, or None if a constant
-cost is desired. Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
-<li><p><strong>constant</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – A constant cost for each selected node. Default is <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-</div></blockquote>
-</section>
-<section id="split">
-<h3>Split<a class="headerlink" href="#split" title="Link to this heading"></a></h3>
-<blockquote>
-<div><dl class="py class">
-<dt class="sig sig-object py" id="motile.costs.Split">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">Split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.Split" title="Link to this definition"></a></dt>
-<dd><p>Cost for <a class="reference internal" href="#motile.variables.NodeSplit" title="motile.variables.NodeSplit"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeSplit</span></code></a> variables.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>weight</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The weight to apply to the cost of each split. Default is <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
-<li><p><strong>attribute</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – The name of the attribute to use to look up the cost. Default is
-<code class="docutils literal notranslate"><span class="pre">None</span></code>, which means that a constant cost is used.</p></li>
-<li><p><strong>constant</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – A constant cost for each node that has more than one selected
-child. Default is <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-</div></blockquote>
-</section>
-<section id="merge">
-<h3>Merge<a class="headerlink" href="#merge" title="Link to this heading"></a></h3>
-<blockquote>
-<div><dl class="py class">
-<dt class="sig sig-object py" id="motile.costs.Merge">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">Merge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.Merge" title="Link to this definition"></a></dt>
-<dd><p>Cost for <code class="xref py py-class docutils literal notranslate"><span class="pre">NodeMerge</span></code> variables.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>weight</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The weight to apply to the cost of each split. Default is <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
-<li><p><strong>attribute</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – The name of the attribute to use to look up the cost. Default is
-<code class="docutils literal notranslate"><span class="pre">None</span></code>, which means that a constant cost is used.</p></li>
-<li><p><strong>constant</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – A constant cost for each node that has more than one selected
-parent. Default is <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-</div></blockquote>
-</section>
-<section id="edgedistance">
-<h3>EdgeDistance<a class="headerlink" href="#edgedistance" title="Link to this heading"></a></h3>
-<blockquote>
-<div><dl class="py class">
-<dt class="sig sig-object py" id="motile.costs.EdgeDistance">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">EdgeDistance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position_attribute</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.EdgeDistance" title="Link to this definition"></a></dt>
-<dd><p>Cost for <a class="reference internal" href="#motile.variables.EdgeSelected" title="motile.variables.EdgeSelected"><code class="xref py py-class docutils literal notranslate"><span class="pre">EdgeSelected</span></code></a> variables.</p>
-<p>Cost is based on the spatial distance of the incident nodes.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.EdgeDistanceCost">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">EdgeDistanceCost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position_attribute</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.EdgeDistanceCost" title="Link to this definition"></a></dt>
+<dd><p>Cost for <a class="reference internal" href="#motile.variables.EdgeContinuation" title="motile.variables.EdgeContinuation"><code class="xref py py-class docutils literal notranslate"><span class="pre">EdgeContinuation</span></code></a> variables.</p>
+<p>Cost is based on the spatial distance of the incident nodes. Applied only
+to continuation edges (not split or merge edges).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -906,7 +940,87 @@ e.g., <code class="docutils literal notranslate"><span class="pre">('z',</span> 
 </dl>
 </dd></dl>
 
-</div></blockquote>
+<dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.EdgeSplitCost">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">EdgeSplitCost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.EdgeSplitCost" title="Link to this definition"></a></dt>
+<dd><p>Cost for <a class="reference internal" href="#motile.variables.EdgeSplit" title="motile.variables.EdgeSplit"><code class="xref py py-class docutils literal notranslate"><span class="pre">EdgeSplit</span></code></a> variables.</p>
+<p>This cost is applied to edges that are part of a split (i.e., edges whose
+source node has more than one selected outgoing edge).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weight</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The weight to apply to the cost of each split edge. Default is <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+<li><p><strong>attribute</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – The name of the edge attribute to use to look up the cost. Default
+is <code class="docutils literal notranslate"><span class="pre">None</span></code>, which means that a constant cost is used.</p></li>
+<li><p><strong>constant</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – A constant cost for each split edge. Default is <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.EdgeMergeCost">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">EdgeMergeCost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.EdgeMergeCost" title="Link to this definition"></a></dt>
+<dd><p>Cost for <a class="reference internal" href="#motile.variables.EdgeMerge" title="motile.variables.EdgeMerge"><code class="xref py py-class docutils literal notranslate"><span class="pre">EdgeMerge</span></code></a> variables.</p>
+<p>This cost is applied to edges that are part of a merge (i.e., edges whose
+target node has more than one selected incoming edge).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weight</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The weight to apply to the cost of each merge edge. Default is <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+<li><p><strong>attribute</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – The name of the edge attribute to use to look up the cost. Default
+is <code class="docutils literal notranslate"><span class="pre">None</span></code>, which means that a constant cost is used.</p></li>
+<li><p><strong>constant</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – A constant cost for each merge edge. Default is <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="edge-pair-costs">
+<h3>Edge Pair Costs<a class="headerlink" href="#edge-pair-costs" title="Link to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.SymmetricSplitCost">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">SymmetricSplitCost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position_attribute</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.SymmetricSplitCost" title="Link to this definition"></a></dt>
+<dd><p>Cost for <a class="reference internal" href="#motile.variables.EdgeSplitPair" title="motile.variables.EdgeSplitPair"><code class="xref py py-class docutils literal notranslate"><span class="pre">EdgeSplitPair</span></code></a> variables.</p>
+<p>For each pair of edges forming a split, the cost is the euclidean distance
+from the parent node’s position to the midpoint of the two children’s
+positions. A perfectly symmetric division (children equidistant from parent)
+has zero cost; asymmetric divisions have higher cost.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>position_attribute</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>]</span>) – The name of the node attribute that corresponds to the spatial
+position. Can also be given as a tuple of multiple coordinates,
+e.g., <code class="docutils literal notranslate"><span class="pre">('z',</span> <span class="pre">'y',</span> <span class="pre">'x')</span></code>.</p></li>
+<li><p><strong>weight</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The weight to apply to the distance. Default is <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p></li>
+<li><p><strong>constant</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – A constant cost for each active split group. Default is <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="motile.costs.SymmetricMergeCost">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">motile.costs.</span></span><span class="sig-name descname"><span class="pre">SymmetricMergeCost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position_attribute</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#motile.costs.SymmetricMergeCost" title="Link to this definition"></a></dt>
+<dd><p>Cost for <a class="reference internal" href="#motile.variables.EdgeMergePair" title="motile.variables.EdgeMergePair"><code class="xref py py-class docutils literal notranslate"><span class="pre">EdgeMergePair</span></code></a> variables.</p>
+<p>For each pair of edges forming a merge, the cost is the euclidean distance
+from the child node’s position to the midpoint of the two parents’
+positions. A perfectly symmetric merge (parents equidistant from child)
+has zero cost; asymmetric merges have higher cost.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>position_attribute</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>]</span>) – The name of the node attribute that corresponds to the spatial
+position. Can also be given as a tuple of multiple coordinates,
+e.g., <code class="docutils literal notranslate"><span class="pre">('z',</span> <span class="pre">'y',</span> <span class="pre">'x')</span></code>.</p></li>
+<li><p><strong>weight</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – The weight to apply to the distance. Default is <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p></li>
+<li><p><strong>constant</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – A constant cost for each active merge group. Default is <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </section>
 <section id="features">
@@ -961,7 +1075,7 @@ features is not changed.</p></li>
 <p>Note: you can also use <code class="docutils literal notranslate"><span class="pre">np.asarray(features)</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1083,7 +1197,7 @@ store the weights of the model.  Changes to the weights can be observed with
 <p>Note: you can also use <code class="docutils literal notranslate"><span class="pre">np.asarray(weights)</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
