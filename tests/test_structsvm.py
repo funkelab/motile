@@ -4,7 +4,7 @@ import motile
 import networkx
 import numpy as np
 from motile.constraints import MaxChildren, MaxParents
-from motile.costs import Appear, EdgeSelection, NodeSelection
+from motile.costs import EdgeSelectedCost, NodeAppearCost, NodeSelectedCost
 from motile.variables import EdgeSelected, NodeSelected
 
 logger = logging.getLogger(__name__)
@@ -45,9 +45,9 @@ def create_toy_solver(graph):
     solver.add_constraint(MaxParents(1))
     solver.add_constraint(MaxChildren(1))
 
-    solver.add_cost(NodeSelection(weight=1.0, attribute="score", constant=-10.0))
-    solver.add_cost(EdgeSelection(weight=10.0, attribute="score"))
-    solver.add_cost(Appear(constant=10.0))
+    solver.add_cost(NodeSelectedCost(weight=1.0, attribute="score", constant=-10.0))
+    solver.add_cost(EdgeSelectedCost(weight=10.0, attribute="score"))
+    solver.add_cost(NodeAppearCost(constant=10.0))
 
     logger.debug("====== Initial Weights ======")
     logger.debug(solver.weights)
@@ -75,18 +75,20 @@ def test_structsvm_common_toy_example(toy_graph):
     optimal_weights = solver.weights
 
     np.testing.assert_allclose(
-        optimal_weights[("NodeSelection", "weight")], -3.27, atol=0.01
+        optimal_weights[("NodeSelectedCost", "weight")], -3.27, atol=0.01
     )
     np.testing.assert_allclose(
-        optimal_weights[("NodeSelection", "constant")], 1.78, atol=0.01
+        optimal_weights[("NodeSelectedCost", "constant")], 1.78, atol=0.01
     )
     np.testing.assert_allclose(
-        optimal_weights[("EdgeSelection", "weight")], -3.23, atol=0.01
+        optimal_weights[("EdgeSelectedCost", "weight")], -3.23, atol=0.01
     )
     np.testing.assert_allclose(
-        optimal_weights[("EdgeSelection", "constant")], 1.06, atol=0.01
+        optimal_weights[("EdgeSelectedCost", "constant")], 1.06, atol=0.01
     )
-    np.testing.assert_allclose(optimal_weights[("Appear", "constant")], 0.20, atol=0.01)
+    np.testing.assert_allclose(
+        optimal_weights[("NodeAppearCost", "constant")], 0.20, atol=0.01
+    )
 
     solver = create_toy_solver(graph)
     solver.weights.from_ndarray(optimal_weights.to_ndarray())
@@ -118,12 +120,12 @@ def create_noise_solver(graph):
     solver.add_constraint(MaxParents(1))
     solver.add_constraint(MaxChildren(1))
 
-    solver.add_cost(NodeSelection(weight=1.0, attribute="score", constant=-10.0))
-    solver.add_cost(EdgeSelection(weight=10.0, attribute="score", constant=3.0))
-    solver.add_cost(Appear(constant=10.0))
+    solver.add_cost(NodeSelectedCost(weight=1.0, attribute="score", constant=-10.0))
+    solver.add_cost(EdgeSelectedCost(weight=10.0, attribute="score", constant=3.0))
+    solver.add_cost(NodeAppearCost(constant=10.0))
 
     solver.add_cost(
-        NodeSelection(
+        NodeSelectedCost(
             weight=2,
             constant=4,
             attribute="noise",
@@ -131,7 +133,7 @@ def create_noise_solver(graph):
         name="NodeNoise",
     )
     solver.add_cost(
-        EdgeSelection(
+        EdgeSelectedCost(
             weight=6,
             constant=8,
             attribute="noise",
@@ -169,18 +171,20 @@ def test_structsvm_noise():
     logger.debug(solver.features.to_ndarray())
 
     np.testing.assert_allclose(
-        optimal_weights[("NodeSelection", "weight")], -2.77, atol=0.01
+        optimal_weights[("NodeSelectedCost", "weight")], -2.77, atol=0.01
     )
     np.testing.assert_allclose(
-        optimal_weights[("NodeSelection", "constant")], 0.39, atol=0.01
+        optimal_weights[("NodeSelectedCost", "constant")], 0.39, atol=0.01
     )
     np.testing.assert_allclose(
-        optimal_weights[("EdgeSelection", "weight")], -3.33, atol=0.01
+        optimal_weights[("EdgeSelectedCost", "weight")], -3.33, atol=0.01
     )
     np.testing.assert_allclose(
-        optimal_weights[("EdgeSelection", "constant")], 0, atol=0.01
+        optimal_weights[("EdgeSelectedCost", "constant")], 0, atol=0.01
     )
-    np.testing.assert_allclose(optimal_weights[("Appear", "constant")], 0.39, atol=0.01)
+    np.testing.assert_allclose(
+        optimal_weights[("NodeAppearCost", "constant")], 0.39, atol=0.01
+    )
 
     def _assert_edges(solver, solution):
         edge_indicators = solver.get_variables(EdgeSelected)

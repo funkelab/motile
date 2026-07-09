@@ -86,20 +86,20 @@ model is:
 .. jupyter-execute::
 
   from motile.constraints import MaxParents, MaxChildren
-  from motile.costs import NodeSelection, EdgeSelection, Appear
+  from motile.costs import NodeSelectedCost, EdgeSelectedCost, NodeAppearCost
 
   solver = motile.Solver(graph)
 
   solver.add_constraint(MaxParents(1))
   solver.add_constraint(MaxChildren(1))
 
-  solver.add_cost(NodeSelection(weight=1, attribute="score"))
-  solver.add_cost(EdgeSelection(weight=-1, attribute="score", constant=0.5))
-  solver.add_cost(Appear(constant=1))
+  solver.add_cost(NodeSelectedCost(weight=1, attribute="score"))
+  solver.add_cost(EdgeSelectedCost(weight=-1, attribute="score", constant=0.5))
+  solver.add_cost(NodeAppearCost(constant=1))
 
 Each of those costs is calculated as the product of `weights` and `features`:
 
-:class:`motile.costs.NodeSelection` and :class:`motile.costs.EdgeSelection`
+:class:`motile.costs.NodeSelectedCost` and :class:`motile.costs.EdgeSelectedCost`
 each have a weight (given as argument ``weight``) by which to scale a node or
 edge feature (given by argument ``attribute``). Both cost terms also support a
 constant cost (given by argument ``constant``), which is in fact also a weight
@@ -118,7 +118,7 @@ selection of an edge, a node that starts a track, or any other variable added
 to the solver.
 
 In the example above, the :class:`motile.variables.EdgeSelected` variable
-(which is the target of the cost :class:`motile.costs.EdgeSelection`), has the
+(which is the target of the cost :class:`motile.costs.EdgeSelectedCost`), has the
 following weights and features:
 
 .. math::
@@ -144,11 +144,11 @@ The solver minimizes the total cost over all variables:
   \min \sum_{y} c_y \cdot y = \min \sum_{y} \vct{w}^\intercal\vct{f}_y \cdot y
 
 For a concrete example, consider a solver with
-:class:`~motile.costs.NodeSelection` (``weight``\ =\ :math:`w_v`,
+:class:`~motile.costs.NodeSelectedCost` (``weight``\ =\ :math:`w_v`,
 ``attribute``\ =\ ``"score"``, ``constant``\ =\ :math:`k_v`),
-:class:`~motile.costs.EdgeSelection` (``weight``\ =\ :math:`w_e`,
+:class:`~motile.costs.EdgeSelectedCost` (``weight``\ =\ :math:`w_e`,
 ``attribute``\ =\ ``"score"``, ``constant``\ =\ :math:`k_e`), and
-:class:`~motile.costs.Appear` (``constant``\ =\ :math:`k_a`).
+:class:`~motile.costs.NodeAppearCost` (``constant``\ =\ :math:`k_a`).
 The total objective is:
 
 .. math::
@@ -195,7 +195,7 @@ costs. Here, we further lower the cost of edges for example:
 .. jupyter-execute::
   :hide-output:
 
-  solver.weights[("EdgeSelection", "weight")] = -2
+  solver.weights[("EdgeSelectedCost", "weight")] = -2
 
   solution = solver.solve()
 
@@ -284,9 +284,9 @@ To see whether those weights are any good, we will solve again...
   solver.add_constraint(MaxParents(1))
   solver.add_constraint(MaxChildren(1))
 
-  solver.add_cost(NodeSelection(weight=1, attribute="score"))
-  solver.add_cost(EdgeSelection(weight=-2, attribute="score", constant=1))
-  solver.add_cost(Appear(constant=1))
+  solver.add_cost(NodeSelectedCost(weight=1, attribute="score"))
+  solver.add_cost(EdgeSelectedCost(weight=-2, attribute="score", constant=1))
+  solver.add_cost(NodeAppearCost(constant=1))
 
   solver.weights.from_ndarray(optimal_weights.to_ndarray())
 
