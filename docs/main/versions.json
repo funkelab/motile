@@ -1,11 +1,5 @@
 [
-  {
-    "name": "main",
-    "url": "/motile/main/"
-  },
-  {
-    "name": "v0.4.0",
-    "url": "/motile/v0.4.0/",
-    "latest": true
-  }
+  {"name": "main", "url": "/motile/main/"},
+  {"name": "v1.0.0", "url": "/motile/v1.0.0/", "latest": true},
+  {"name": "v0.4.0", "url": "/motile/v0.4.0/"}
 ]

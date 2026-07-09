@@ -264,7 +264,7 @@ also means having the ability to move, which is neat.</p>
       dl.appendChild(dd);
     });
   }
-  fetch('versions.json')
+  fetch('/motile/versions.json')
     .then(function(r) { return r.json(); })
     .then(populateVersions)
     .catch(function() {

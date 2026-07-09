@@ -571,7 +571,7 @@ pattern applied to splits.</p>
       dl.appendChild(dd);
     });
   }
-  fetch('versions.json')
+  fetch('/motile/versions.json')
     .then(function(r) { return r.json(); })
     .then(populateVersions)
     .catch(function() {
