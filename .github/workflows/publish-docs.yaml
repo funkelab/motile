@@ -111,9 +111,10 @@ jobs:
           mkdir -p extra-pages/stable
 
           # Generate versions.json
+          VERSIONS_SPACE=$(echo $VERSIONS | tr '\n' ' ')
           python3 -c "
           import json
-          versions = '${VERSIONS}'.split()
+          versions = '${VERSIONS_SPACE}'.split()
           latest = '${LATEST}'
           result = [{'name': 'main', 'url': '/motile/main/'}]
           for v in versions:
