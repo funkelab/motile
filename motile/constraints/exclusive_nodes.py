@@ -1,11 +1,14 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Iterable
+from typing import TYPE_CHECKING
 
-from ..variables import NodeSelected
+from motile.variables import NodeSelected
+
 from .constraint import Constraint
 
 if TYPE_CHECKING:
+    from collections.abc import Iterable
+
     import ilpy
 
     from motile.solver import Solver

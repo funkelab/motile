@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from ..variables import NodeDisappear
+from motile.variables import NodeDisappear
+
 from .cost import Cost
 from .weight import Weight
 

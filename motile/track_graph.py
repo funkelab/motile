@@ -2,14 +2,14 @@ from __future__ import annotations
 
 import logging
 from collections import defaultdict
-from typing import TYPE_CHECKING, Any, DefaultDict, Hashable
+from typing import TYPE_CHECKING, Any
 
 import networkx
 
 logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
-    from typing import Mapping
+    from collections.abc import Hashable, Mapping
 
     from motile._types import (
         Attributes,
@@ -49,8 +49,8 @@ class TrackGraph:
 
         self.nodes: dict[Node, Attributes] = {}
         self.edges: dict[Edge, Attributes] = {}
-        self.prev_edges: defaultdict[Node, list[Edge]] = DefaultDict(list)
-        self.next_edges: defaultdict[Node, list[Edge]] = DefaultDict(list)
+        self.prev_edges: defaultdict[Node, list[Edge]] = defaultdict(list)
+        self.next_edges: defaultdict[Node, list[Edge]] = defaultdict(list)
 
         if nx_graph:
             self.add_from_nx_graph(nx_graph)

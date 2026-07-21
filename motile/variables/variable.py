@@ -1,16 +1,8 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import (
-    TYPE_CHECKING,
-    ClassVar,
-    Collection,
-    Hashable,
-    Iterable,
-    Iterator,
-    Mapping,
-    TypeVar,
-)
+from collections.abc import Collection, Hashable, Iterable, Iterator, Mapping
+from typing import TYPE_CHECKING, ClassVar, TypeVar
 
 import ilpy
 

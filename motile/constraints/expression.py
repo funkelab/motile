@@ -2,18 +2,19 @@ from __future__ import annotations
 
 import ast
 import contextlib
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, TypeAlias
 
 import ilpy
 
-from ..variables import EdgeSelected, NodeSelected, Variable
+from motile.variables import EdgeSelected, NodeSelected, Variable
+
 from .constraint import Constraint
 
 if TYPE_CHECKING:
     from motile._types import Attributes, Edge, Node
     from motile.solver import Solver
 
-    NodesOrEdges = Union[dict[Node, Attributes], dict[Edge, Attributes]]
+    NodesOrEdges: TypeAlias = dict[Node, Attributes] | dict[Edge, Attributes]
 
 
 class ExpressionConstraint(Constraint):

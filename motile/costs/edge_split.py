@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from ..variables import EdgeSplit
+from motile.variables import EdgeSplit
+
 from .cost import Cost
 from .weight import Weight
 

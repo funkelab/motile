@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Collection, Iterable
+from typing import TYPE_CHECKING
 
 from .edge_selected import EdgeSelected
 from .node_merge import NodeMerge
@@ -8,6 +8,8 @@ from .node_split import NodeSplit
 from .variable import Variable
 
 if TYPE_CHECKING:
+    from collections.abc import Collection, Iterable
+
     import ilpy
 
     from motile._types import Edge

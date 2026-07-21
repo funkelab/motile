@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 from itertools import combinations
-from typing import TYPE_CHECKING, Collection, Iterable
+from typing import TYPE_CHECKING
 
 from .edge_merge import EdgeMerge
 from .variable import Variable
 
 if TYPE_CHECKING:
+    from collections.abc import Collection, Iterable
+
     import ilpy
 
     from motile.solver import Solver

@@ -4,7 +4,8 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
-from ..variables import EdgeContinuation
+from motile.variables import EdgeContinuation
+
 from .cost import Cost
 from .weight import Weight
 

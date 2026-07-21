@@ -1,13 +1,16 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Callable, Hashable, Iterable, Optional
+from collections.abc import Callable
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 
 if TYPE_CHECKING:
+    from collections.abc import Hashable, Iterable
+
     from .weight import Weight
 
-Callback = Callable[[Optional[float], float], Any]
+Callback = Callable[[float | None, float], Any]
 
 
 class Weights:

@@ -1,11 +1,13 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Collection, Iterable
+from typing import TYPE_CHECKING
 
 from .node_selected import NodeSelected
 from .variable import Variable
 
 if TYPE_CHECKING:
+    from collections.abc import Collection, Iterable
+
     import ilpy
 
     from motile._types import Edge
