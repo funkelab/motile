@@ -35,6 +35,7 @@ classifiers = [
 dependencies = [
     "networkx>=3.0",
     "ilpy>=0.6.0",
+    "numpy>=2.3.2; python_version >= '3.14'",
     "numpy>=2.1.0; python_version >= '3.13'",
     "numpy>=2.0.0",
     "structsvm>=0.2",
@@ -44,7 +45,7 @@ dependencies = [
 gurobi = ["ilpy[gurobi]>=0.6.0"]
 
 [dependency-groups]
-test = ["pytest>=7.0", "pytest-cov>=4.0"]
+test = ["pytest>=8.4.0", "pytest-cov>=4.0"]
 dev = [
     { include-group = "test" },
     { include-group = "docs" },
