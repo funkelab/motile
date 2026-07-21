@@ -1,14 +1,18 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Iterable
+from typing import TYPE_CHECKING
 
-import ilpy
 from ilpy.expressions import Constant
 
-from ..variables import EdgeSelected
+from motile.variables import EdgeSelected
+
 from .constraint import Constraint
 
 if TYPE_CHECKING:
+    from collections.abc import Iterable
+
+    import ilpy
+
     from motile.solver import Solver
 
 

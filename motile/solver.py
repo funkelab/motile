@@ -2,12 +2,11 @@ from __future__ import annotations
 
 import logging
 import warnings
-from typing import TYPE_CHECKING, Callable, Mapping, TypeVar, cast
+from typing import TYPE_CHECKING, TypeVar, cast
 
 import ilpy
 import numpy as np
 
-from .constraints.constraint import Constraint
 from .costs import Features, Weight, Weights
 from .ssvm import fit_weights
 from .track_graph import TrackGraph
@@ -15,8 +14,12 @@ from .track_graph import TrackGraph
 logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
+    from collections.abc import Callable, Mapping
+
     from motile.costs import Cost
     from motile.variables import Variable
+
+    from .constraints.constraint import Constraint
 
     V = TypeVar("V", bound=Variable)
 

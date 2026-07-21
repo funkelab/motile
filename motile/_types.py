@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import Any, Mapping, TypeAlias
+from collections.abc import Mapping
+from typing import Any, TypeAlias
 
 # Nodes are integers
 Node: TypeAlias = int

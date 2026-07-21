@@ -1,4 +1,5 @@
-from typing import Any, Callable, List
+from collections.abc import Callable
+from typing import Any
 
 Callback = Callable[[float, float], Any]
 
@@ -15,7 +16,7 @@ class Weight:
 
     def __init__(self, initial_value: float) -> None:
         self._value = initial_value
-        self._modify_callbacks: List[Callback] = []
+        self._modify_callbacks: list[Callback] = []
 
     @property
     def value(self) -> float:

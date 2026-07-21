@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Collection, Hashable, Iterable
+from collections.abc import Collection, Hashable, Iterable
 
 import ilpy
 import pytest
@@ -21,4 +21,4 @@ def test_variable_subclass_protocols(
 
     constraints = VarCls.instantiate_constraints(solver)
     assert isinstance(constraints, Iterable)
-    assert all(isinstance(c, (ilpy.Expression, ilpy.Constraint)) for c in constraints)
+    assert all(isinstance(c, ilpy.Expression | ilpy.Constraint) for c in constraints)

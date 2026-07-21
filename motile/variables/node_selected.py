@@ -1,10 +1,12 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Collection
+from typing import TYPE_CHECKING
 
 from .variable import Variable
 
 if TYPE_CHECKING:
+    from collections.abc import Collection
+
     from motile._types import Node
     from motile.solver import Solver
 

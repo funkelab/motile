@@ -7,13 +7,18 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 import os
+import sys
 from datetime import datetime
 
 import motile
-import tomli
+
+if sys.version_info >= (3, 11):
+    import tomllib
+else:
+    import tomli as tomllib
 
 with open("../../pyproject.toml", "rb") as fh:
-    project = tomli.load(fh)["project"]
+    project = tomllib.load(fh)["project"]
 
 author_list = ", ".join([author["name"] for author in project["authors"]])
 

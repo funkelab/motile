@@ -4,7 +4,8 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
-from ..variables.edge_merge_pair import EdgeMergePair
+from motile.variables.edge_merge_pair import EdgeMergePair
+
 from .cost import Cost
 from .weight import Weight
 
