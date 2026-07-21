@@ -2,48 +2,78 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+    tags: [v*]
   pull_request:
-    branches:
-      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  lint: 
+  lint:
     name: Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - name: Run pre-commit linting
-        run: pipx run pre-commit run --all-files
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+          python-version: "3.13"
+      - run: uv run prek --all-files
 
   test:
-    name: ${{ matrix.platform }} py${{ matrix.python-version }}
+    name: ${{ matrix.platform }} py${{ matrix.python-version }} ${{ matrix.resolution }}
     runs-on: ${{ matrix.platform }}
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.9", "3.10", "3.11"]
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
         platform: [ubuntu-latest, macos-latest]
+        resolution: [highest, lowest-direct]
         include:
           - platform: windows-latest
             python-version: "3.10"
+            resolution: highest
+        exclude:
+          # macOS/Windows: only test oldest + newest Python, highest resolution.
+          # dep-bounds testing is platform-independent, so lowest-direct only
+          # needs to run on ubuntu.
+          - platform: macos-latest
+            python-version: "3.11"
+          - platform: macos-latest
+            python-version: "3.13"
+          - platform: macos-latest
+            resolution: lowest-direct
+
 
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
       - name: Set up Python ${{ matrix.python-version }}
         uses: astral-sh/setup-uv@v7
         with:
           python-version: ${{ matrix.python-version }}
           enable-cache: true
 
-      - name: Install dependencies
-        run: uv sync
+      - name: Install Dependencies
+        run: uv sync --no-dev --group test --resolution ${{ matrix.resolution }}
 
-      - name: Test
-        run: uv run pytest tests -v --color=yes --cov=motile --cov-report=xml
-      
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v7
+      - name: 🧪 Run Tests
+        run: uv run --no-sync coverage run -p -m pytest -v --color=yes
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v7
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          name: covreport-${{ matrix.platform }}-py${{ matrix.python-version }}-${{ matrix.resolution }}
+          path: ./.coverage*
+          include-hidden-files: true
+
+  upload_coverage:
+    if: always()
+    needs: [test]
+    uses: pyapp-kit/workflows/.github/workflows/upload-coverage.yml@v2
+    secrets:
+      codecov_token: ${{ secrets.CODECOV_TOKEN }}
